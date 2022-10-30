@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @MappedSuperclass
 public class User {
+    @Id
     private Long id;
 
     private String firstName;
@@ -25,7 +26,5 @@ public class User {
     @Column(nullable = false)
     private String roleName;
 
-    @OneToMany
-    private List<Notification> notifications;
 
 }

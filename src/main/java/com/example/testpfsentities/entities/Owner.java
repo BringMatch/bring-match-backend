@@ -15,4 +15,7 @@ public class Owner extends User{
     @OneToMany
     private List<Ground> grounds;
 
+    @OneToMany
+    private List<NotificationOwner> notificationPlayer;
+
 }

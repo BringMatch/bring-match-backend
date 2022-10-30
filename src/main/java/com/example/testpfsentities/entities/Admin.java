@@ -13,5 +13,6 @@ public class Admin extends User{
     @OneToMany
     private List<Owner> owners;
 
-
+    @OneToMany
+    private List<NotificationAdmin> notificationPlayer;
 }

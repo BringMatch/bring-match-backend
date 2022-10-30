@@ -20,4 +20,7 @@ public class Player extends User {
     @OneToMany(mappedBy = "playerStats")
     private List<Statistic> statisticsPlayers;
 
+    @OneToMany
+    private List<NotificationPlayer> notificationPlayer;
+
 }

@@ -5,7 +5,6 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
-@Entity
 @MappedSuperclass
 public class Notification {
 

@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+
 public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
