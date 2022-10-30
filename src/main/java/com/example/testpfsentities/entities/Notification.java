@@ -2,16 +2,16 @@ package com.example.testpfsentities.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.List;
+import javax.persistence.MappedSuperclass;
+import java.util.Date;
 
 @Entity
-public class Admin extends User{
+@MappedSuperclass
+public class Notification {
+
     @Id
     private Long id;
 
-    @OneToMany
-    private List<Owner> owners;
-
+    private Date timestamp;
 
 }

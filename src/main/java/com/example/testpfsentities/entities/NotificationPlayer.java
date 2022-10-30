@@ -1,4 +1,4 @@
 package com.example.testpfsentities.entities;
 
-public class Categories {
+public class NotificationPlayer {
 }
