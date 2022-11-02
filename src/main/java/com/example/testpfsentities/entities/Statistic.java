@@ -6,15 +6,12 @@ import java.util.List;
 @Entity
 public class Statistic {
     @Id
-    private Long id;
-
-
+    private Long statistic_id;
 
     @ManyToOne
     private Player playerStats;
 
     @ManyToOne
     private Match matchStats;
-
 
 }

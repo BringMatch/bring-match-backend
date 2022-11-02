@@ -7,8 +7,7 @@ import java.util.List;
 
 @Entity
 public class Admin extends User{
-    @Id
-    private Long id;
+
 
     @OneToMany
     private List<Owner> owners;

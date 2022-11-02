@@ -5,11 +5,10 @@ import java.util.List;
 
 @Embeddable
 public class Evaluation {
-    private Long id;
 
+    private Long evaluation_id;
     private String numberGoals;
     private String numberAssists;
     private Double generalNote;
-
 
 }

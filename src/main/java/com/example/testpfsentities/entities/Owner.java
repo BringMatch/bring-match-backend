@@ -9,8 +9,6 @@ import java.util.List;
 @Entity
 public class Owner extends User{
 
-    @Id
-    private Long id;
 
     @OneToMany
     private List<Ground> grounds;

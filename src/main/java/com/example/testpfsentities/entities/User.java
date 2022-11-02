@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @MappedSuperclass
 public class User {
+
     @Id
     private Long id;
 

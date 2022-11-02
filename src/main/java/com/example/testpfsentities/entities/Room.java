@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class Room {
     @Id
-    private Long id;
+    private Long room_id;
 
     private String name;
 

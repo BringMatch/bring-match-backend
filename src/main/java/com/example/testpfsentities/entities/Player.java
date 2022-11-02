@@ -12,9 +12,7 @@ public class Player extends User {
     )
     private List<Team> teams;
 
-
     @Embedded
-//    @OneToOne
     private Evaluation evaluation;
 
     @OneToMany(mappedBy = "playerStats")
