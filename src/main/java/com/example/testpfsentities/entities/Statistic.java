@@ -14,4 +14,7 @@ public class Statistic {
     @ManyToOne
     private Match matchStats;
 
+    @Embedded
+    private Evaluation evaluation;
+
 }

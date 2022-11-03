@@ -12,13 +12,13 @@ public class Player extends User {
     )
     private List<Team> teams;
 
-    @Embedded
-    private Evaluation evaluation;
 
     @OneToMany(mappedBy = "playerStats")
     private List<Statistic> statisticsPlayers;
 
-    @OneToMany
+    private boolean match_owner;
+
+    @OneToMany(mappedBy = "player")
     private List<NotificationPlayer> notificationPlayer;
 
 }

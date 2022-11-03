@@ -10,10 +10,15 @@ import java.util.List;
 public class Owner extends User{
 
 
-    @OneToMany
+    @OneToMany(mappedBy = "owner")
     private List<Ground> grounds;
 
-    @OneToMany
+    @OneToMany(mappedBy = "owner")
     private List<NotificationOwner> notificationPlayer;
+
+    private Boolean active;
+    private String num_cin;
+
+    private String num_certif_prop;
 
 }

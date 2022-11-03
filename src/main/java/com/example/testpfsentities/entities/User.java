@@ -3,8 +3,12 @@ package com.example.testpfsentities.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -13,6 +17,7 @@ import java.util.List;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String firstName;
@@ -25,7 +30,15 @@ public class User {
     private String userPassword;
 
     @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
     private String roleName;
 
+    @CreatedDate
+    Instant createdAt;
+
+    @LastModifiedDate
+    Instant updatedAt;
 
 }

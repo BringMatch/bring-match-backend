@@ -16,6 +16,6 @@ public class Room {
     @OneToOne
     private Match match;
 
-    @OneToMany
+    @OneToMany(mappedBy = "room")
     private List<Team> teams;
 }
