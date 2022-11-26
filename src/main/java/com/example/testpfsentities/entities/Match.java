@@ -1,5 +1,6 @@
 package com.example.testpfsentities.entities;
 
+import com.example.testpfsentities.entities.enums.MatchType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,9 @@ public class Match {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private Category category;
+
+    @Enumerated(EnumType.STRING)
+    private MatchType matchType;
 
 
     @OneToOne

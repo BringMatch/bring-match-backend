@@ -35,6 +35,14 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
         return new NullAuthenticatedSessionStrategy();
     }
 
+    /**
+     * Tell Spring Security that keycloak will take care of users
+     */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(keycloakAuthenticationProvider());
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);

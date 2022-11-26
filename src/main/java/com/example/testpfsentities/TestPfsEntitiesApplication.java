@@ -3,6 +3,7 @@ package com.example.testpfsentities;
 import org.apache.commons.collections4.EnumerationUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.h2.command.Command;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,6 +26,11 @@ public class TestPfsEntitiesApplication {
             System.out.println(EnumUtils.isValidEnum(Test.class, Test.HAHA.name()) + "haha");
         };
 
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
 }

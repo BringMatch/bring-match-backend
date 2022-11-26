@@ -3,18 +3,16 @@ package com.example.testpfsentities.service.impl;
 import com.example.testpfsentities.entities.Admin;
 import com.example.testpfsentities.repository.AdminRepository;
 import com.example.testpfsentities.service.AdminService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
 @Service
+@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
-
-    public AdminServiceImpl(AdminRepository adminRepository) {
-        this.adminRepository = adminRepository;
-    }
 
 
     @Override

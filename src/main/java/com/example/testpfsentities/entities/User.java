@@ -1,8 +1,9 @@
 package com.example.testpfsentities.entities;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -13,19 +14,17 @@ import java.util.List;
 
 @Getter
 @Setter
-@MappedSuperclass
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+@FieldDefaults(level = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@JsonIgnoreProperties( allowSetters = true)
+@Inheritance
+public class User extends AbstractEntity {
     private String firstName;
     private String lastName;
-
     // the user should connect with his phoneNumber !
     private String phoneNumber;   // signIn using phoneNumber for clients
-
     @Column(nullable = false)
     private String userPassword;
 
@@ -34,11 +33,5 @@ public class User {
 
     @Column(nullable = false)
     private String roleName;
-
-    @CreatedDate
-    Instant createdAt;
-
-    @LastModifiedDate
-    Instant updatedAt;
 
 }

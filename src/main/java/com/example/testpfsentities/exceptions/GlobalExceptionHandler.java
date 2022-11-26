@@ -25,17 +25,17 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<Object> handleBusinessException(BusinessException e) {
-        log.warn(BUSINESS_EXCEPTION_HAS_OCCURED, e.getMessage());
-        List<Message> messages = e.getMessageList();
-        messages.forEach(message -> Optional.ofNullable(message.getCode()).ifPresent(code -> message.setText(localMessageReader.getMessage(code))));
-        return new ResponseEntity<>(messages, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    public void handleBusinessException(BusinessException e) {
+//        log.warn(BUSINESS_EXCEPTION_HAS_OCCURED, e.getMessage());
+//        List<Message> messages = e.getMessageList();
+//        messages.forEach(message -> Optional.ofNullable(message.getCode()).ifPresent(code -> message.setText(localMessageReader.getMessage(code))));
+//        return new ResponseEntity<>(messages, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     @ResponseBody
     @ExceptionHandler(TechnicalException.class)
     public ResponseEntity<Object> handleTechnicalException(TechnicalException e) {
-        log.error(TECHNICAL_EXCEPTION_HAS_OCCURED, e.getMessage());
+//        log.error(TECHNICAL_EXCEPTION_HAS_OCCURED, e.getMessage());
         return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

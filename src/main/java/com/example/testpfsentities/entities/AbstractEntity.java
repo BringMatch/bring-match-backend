@@ -18,10 +18,7 @@ import java.time.Instant;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @FieldDefaults(level = AccessLevel.PROTECTED)
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
 public abstract class AbstractEntity implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid")
