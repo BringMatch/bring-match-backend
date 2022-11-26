@@ -6,11 +6,13 @@ import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -28,12 +30,15 @@ public class PlayerController {
     }
 
     @GetMapping(ApiPaths.GET_PLAYERS)
-    public ResponseEntity<List<Player>> getPlayers() {
+    public ResponseEntity<List<Player>> getPlayers(Authentication authentication, Principal principal) {
+        System.out.println(authentication.getPrincipal());
+        System.out.println(principal.getName());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header("Custom-Header", "foo")
                 .header("Bearer " , "myJwtToken")
                 .body(playerService.getPlayers());
+
     }
 
 }
