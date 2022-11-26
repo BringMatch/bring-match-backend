@@ -1,9 +1,7 @@
 package com.example.testpfsentities.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class NotificationOwner extends Notification {
@@ -11,4 +9,7 @@ public class NotificationOwner extends Notification {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Reservation> reservations;
 }

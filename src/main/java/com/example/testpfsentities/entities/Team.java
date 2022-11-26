@@ -13,7 +13,6 @@ public class Team {
     @ManyToMany(mappedBy = "teams")
     private List<Player> players;
 
-    @ManyToOne
-    private Room room;
+
 
 }

@@ -4,28 +4,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
-
-public class Match {
+public class PlayerStats {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private Category category;
+    private Long numGoals;
+    private Long numAssists;
 
 
-    @OneToOne
-    private GlobalStats globalStats;
+    private boolean MOTM;
 
     @ManyToOne
-    private Ground ground;
-
-    @OneToOne(mappedBy = "match")
-    private Reservation reservation;
+    private Player player;
 
 }

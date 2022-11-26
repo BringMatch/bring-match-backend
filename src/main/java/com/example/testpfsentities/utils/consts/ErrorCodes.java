@@ -1,4 +1,4 @@
 package com.example.testpfsentities.utils.consts;
 
-public class ErrorCodes {
+public final class ErrorCodes {
 }

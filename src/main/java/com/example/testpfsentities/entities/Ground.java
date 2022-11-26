@@ -22,4 +22,6 @@ public class Ground {
     @ManyToOne
     private Owner owner;
 
+
+
 }

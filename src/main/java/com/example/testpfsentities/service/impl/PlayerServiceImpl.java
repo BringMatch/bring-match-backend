@@ -38,7 +38,6 @@ public class PlayerServiceImpl implements PlayerService {
         player.setMatch_owner(true);
         player.setTeams(null);
         player.setNotificationPlayer(null);
-        player.setStatisticsPlayers(null);
         playerRepository.save(player);
     }
 

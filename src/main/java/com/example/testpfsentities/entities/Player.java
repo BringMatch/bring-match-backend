@@ -18,8 +18,8 @@ public class Player extends User {
     private List<Team> teams;
 
 
-    @OneToMany(mappedBy = "playerStats")
-    private List<Statistic> statisticsPlayers;
+    @OneToMany(mappedBy = "player")
+    private List<PlayerStats> playerStats;
 
     private boolean match_owner;
 

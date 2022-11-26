@@ -30,7 +30,10 @@ public class PlayerController {
     @GetMapping(ApiPaths.GET_PLAYERS)
     public ResponseEntity<List<Player>> getPlayers() {
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
+                .header("Custom-Header", "foo")
+                .header("Bearer " , "myJwtToken")
                 .body(playerService.getPlayers());
     }
+
 }
