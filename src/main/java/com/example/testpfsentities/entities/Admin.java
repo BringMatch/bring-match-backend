@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Cascade;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -18,9 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 @JsonIgnoreProperties(allowSetters = true)
 public class Admin extends User {
-    @OneToMany
+
+    @OneToMany(targetEntity = Owner.class, cascade = CascadeType.ALL)
     private List<Owner> owners;
 
-    @OneToMany(mappedBy = "admin")
+    @OneToMany(mappedBy = "userFrom" , cascade =CascadeType.ALL)
     private List<NotificationAdmin> notificationAdmins;
 }

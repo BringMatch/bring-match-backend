@@ -17,14 +17,16 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties( allowSetters = true)
-@Inheritance
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User extends AbstractEntity {
     private String firstName;
     private String lastName;
     // the user should connect with his phoneNumber !
-    private String phoneNumber;   // signIn using phoneNumber for clients
+    private String phoneNumber;
+
     @Column(nullable = false)
     private String userPassword;
 
@@ -33,5 +35,8 @@ public class User extends AbstractEntity {
 
     @Column(nullable = false)
     private String roleName;
+//
+    @Transient
+    String password;
 
 }
