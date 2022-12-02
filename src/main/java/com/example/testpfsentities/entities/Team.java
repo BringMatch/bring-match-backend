@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties(value = {"match"},allowSetters = true)
+@JsonIgnoreProperties(value = {"match","players"},allowSetters = true)
 public class Team extends AbstractEntity {
     @ManyToMany(mappedBy = "teams")
     private List<Player> players;

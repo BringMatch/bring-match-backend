@@ -8,11 +8,13 @@ import com.example.testpfsentities.mapper.GroundMapper;
 import com.example.testpfsentities.mapper.MatchMapper;
 import com.example.testpfsentities.mapper.OwnerMapper;
 import com.example.testpfsentities.repository.*;
+import com.example.testpfsentities.scheduling.NewUserEvent;
 import com.example.testpfsentities.service.OwnerService;
 import com.example.testpfsentities.validations.GroundValidator;
 import com.example.testpfsentities.validations.OwnerValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class OwnerServiceImpl implements OwnerService {
     private final GroundValidator groundValidator;
     private final GroundRepository groundRepository;
     private final MatchRepository matchRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     public void save(OwnerDto ownerDto) {
@@ -49,6 +52,7 @@ public class OwnerServiceImpl implements OwnerService {
         notificationAdmin.setUserFrom(admin);
         notificationAdmin.setRead(false);
         notificationAdminRepository.save(notificationAdmin);
+        applicationEventPublisher.publishEvent(new NewUserEvent(this, owner));
     }
 
     @Override

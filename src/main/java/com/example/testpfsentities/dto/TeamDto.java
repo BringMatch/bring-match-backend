@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TeamDto {
     private String id;
+    private String teamName;
     private String player_id;
     private String match_id;
     private String positionPlayer;

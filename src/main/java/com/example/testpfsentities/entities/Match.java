@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@JsonIgnoreProperties(allowSetters = true)
+@JsonIgnoreProperties(value = {"ground"}, allowSetters = true)
 public class Match extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private MatchType matchType;
@@ -20,11 +20,8 @@ public class Match extends AbstractEntity {
     @ManyToOne
     private Ground ground;
 
-    @OneToMany(mappedBy = "match" , cascade = CascadeType.ALL , orphanRemoval = true)
+    @OneToMany(mappedBy = "match", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Team> teams;
-
-    @OneToOne(mappedBy = "match")
-    private Reservation reservation;
 
     private Boolean privateMatch;
 
