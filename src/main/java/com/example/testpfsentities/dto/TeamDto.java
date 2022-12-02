@@ -9,12 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlayerDto {
+public class TeamDto {
     private String id;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private String phoneNumber;
-    private String email;
-    private String roleName;
+    private String player_id;
+    private String match_id;
+    private String positionPlayer;
 }

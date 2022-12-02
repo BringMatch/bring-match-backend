@@ -28,9 +28,6 @@ public class User extends AbstractEntity {
     private String phoneNumber;
 
     @Column(nullable = false)
-    private String userPassword;
-
-    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)

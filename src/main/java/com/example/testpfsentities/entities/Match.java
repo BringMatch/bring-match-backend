@@ -1,6 +1,7 @@
 package com.example.testpfsentities.entities;
 
 import com.example.testpfsentities.entities.enums.MatchType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,25 +11,21 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-
-public class Match {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
-
-
+@JsonIgnoreProperties(allowSetters = true)
+public class Match extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private MatchType matchType;
-
-
     @OneToOne
     private GlobalStats globalStats;
-
     @ManyToOne
     private Ground ground;
 
+    @OneToMany(mappedBy = "match" , cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<Team> teams;
+
     @OneToOne(mappedBy = "match")
     private Reservation reservation;
+
+    private Boolean privateMatch;
 
 }

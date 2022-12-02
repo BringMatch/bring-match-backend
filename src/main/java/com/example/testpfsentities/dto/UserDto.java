@@ -3,6 +3,7 @@ package com.example.testpfsentities.dto;
 import com.example.testpfsentities.entities.enums.UserType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -19,6 +21,9 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String id;
     @Size(min = 5, message = "min is 5")
     @Size(max = 10, message = "max is 10")
     private String firstName;

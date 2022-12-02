@@ -19,7 +19,8 @@ import java.util.List;
 @JsonIgnoreProperties(allowSetters = true)
 public class Owner extends User {
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = Ground.class)
+    @JoinTable(name = "owners_grounds" , inverseJoinColumns = @JoinColumn(name = "ground_id"))
     private List<Ground> grounds;
 
     @OneToMany(mappedBy = "owner")

@@ -8,19 +8,18 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class Reservation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
-
-
+public class Reservation extends AbstractEntity {
     @OneToOne
     private Match match;
 
     @ManyToOne
-    private Owner owner;
+    private Ground ground;
 
+    @OneToOne(mappedBy = "reservation")
+    private NotificationOwner notificationOwner;
+
+    private String team_one_creator_id;
+    private String team_two_creator_id;
 
     private boolean status;
 

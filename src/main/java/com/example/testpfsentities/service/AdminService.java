@@ -11,4 +11,7 @@ public interface AdminService {
     List<Admin> getAdmins();
 
     void updateStatusNotification(String notif_id);
+
+    void updateStatusOwnerWithTrue(String owner_id);
+    void updateStatusOwnerWithFalse(String owner_id);
 }

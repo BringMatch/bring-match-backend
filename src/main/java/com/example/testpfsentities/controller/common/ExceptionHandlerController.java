@@ -1,6 +1,7 @@
 package com.example.testpfsentities.controller.common;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,12 +17,18 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(400).body(message);
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity handlerException(HttpMessageNotReadableException httpMessageNotReadableException) {
+        String message = httpMessageNotReadableException.getMessage();
+        return ResponseEntity.status(400).body(message);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handlerException(MethodArgumentNotValidException methodArgumentNotValidException) {
         String message = methodArgumentNotValidException.getFieldError().getDefaultMessage();
         String field = methodArgumentNotValidException.getFieldError().getField();
-        Map<String,String> map = new HashMap<>();
-        map.put(field , message);
+        Map<String, String> map = new HashMap<>();
+        map.put(field, message);
         return ResponseEntity.status(400).body(map);
     }
 }

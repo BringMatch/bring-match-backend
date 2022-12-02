@@ -5,17 +5,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
 @Setter
-public class Image {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
-
+@Entity
+public class Image extends AbstractEntity {
     private String name;
-
     @ManyToOne
     @JoinTable(name = "ground_images", joinColumns = @JoinColumn(name = "image"),
             inverseJoinColumns = @JoinColumn(name = "ground")

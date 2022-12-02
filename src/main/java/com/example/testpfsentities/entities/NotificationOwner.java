@@ -1,12 +1,19 @@
 package com.example.testpfsentities.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@JsonIgnoreProperties(value = {"reservations"},allowSetters = true)
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 
 public class NotificationOwner extends Notification {
 
@@ -14,6 +21,6 @@ public class NotificationOwner extends Notification {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToMany(mappedBy = "owner")
-    private List<Reservation> reservations;
+    @OneToOne
+    private Reservation reservation;
 }

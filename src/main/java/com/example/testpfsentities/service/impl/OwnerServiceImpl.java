@@ -1,45 +1,49 @@
 package com.example.testpfsentities.service.impl;
 
+import com.example.testpfsentities.dto.GroundDto;
+import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.dto.OwnerDto;
-import com.example.testpfsentities.entities.Admin;
-import com.example.testpfsentities.entities.NotificationAdmin;
-import com.example.testpfsentities.entities.Owner;
+import com.example.testpfsentities.entities.*;
+import com.example.testpfsentities.mapper.GroundMapper;
+import com.example.testpfsentities.mapper.MatchMapper;
 import com.example.testpfsentities.mapper.OwnerMapper;
-import com.example.testpfsentities.repository.AdminRepository;
-import com.example.testpfsentities.repository.NotificationAdminRepository;
-import com.example.testpfsentities.repository.OwnerRepository;
+import com.example.testpfsentities.repository.*;
 import com.example.testpfsentities.service.OwnerService;
+import com.example.testpfsentities.validations.GroundValidator;
 import com.example.testpfsentities.validations.OwnerValidator;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.logging.Log;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OwnerServiceImpl implements OwnerService {
     private final OwnerRepository ownerRepository;
     private final AdminRepository adminRepository;
     private final NotificationAdminRepository notificationAdminRepository;
     private final OwnerMapper ownerMapper;
+    private final GroundMapper groundMapper;
+    private final MatchMapper matchMapper;
     private final OwnerValidator ownerValidator;
+    private final GroundValidator groundValidator;
+    private final GroundRepository groundRepository;
+    private final MatchRepository matchRepository;
 
     @Override
     public void save(OwnerDto ownerDto) {
         ownerValidator.validateCreation(ownerDto);
-        Owner owner=ownerMapper.toBo(ownerDto);
+        Owner owner = ownerMapper.toBo(ownerDto);
         ownerRepository.save(owner);
         List<Admin> adminList = adminRepository.findFirstAdmin();
-        Admin admin=adminList.get(0);
+        Admin admin = adminList.get(0);
         admin.getOwners().add(owner);
         adminRepository.save(admin);
-        // call admin
-       // adminRepository.saveOwner(admin.get(0).getId(), ownerMapper.toBo(ownerDto).getId());
-        // comes the notification
-        // we should create the notification
         NotificationAdmin notificationAdmin = new NotificationAdmin();
         notificationAdmin.setDelivered(true);
         notificationAdmin.setUserFrom(admin);
@@ -49,12 +53,82 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public List<OwnerDto> getOwners() {
-        var list = ownerRepository.findAll();
-        List<OwnerDto> liste = new ArrayList<>();
-        for (Owner owner : list) {
-            liste.add(ownerMapper.toDto(owner));
+        var listBoOwners = ownerRepository.findAll();
+        List<OwnerDto> listDtoOwners = new ArrayList<>();
+        for (Owner owner : listBoOwners) {
+            listDtoOwners.add(ownerMapper.toDto(owner));
         }
-        return liste;
+        return listDtoOwners;
     }
+
+    @Override
+    public void saveGround(GroundDto groundDto) {
+        Optional<Ground> optionalGround = groundRepository.findByName(groundDto.getName());
+
+        if (optionalGround.isPresent()) {
+            throw new IllegalArgumentException("Name Ground already existing !");
+        }
+
+        Ground ground = groundMapper.toBo(groundDto);
+        groundRepository.save(ground);
+
+        Optional<Owner> ownerOptional = ownerRepository.findById(groundDto.getOwner_id());
+        if (ownerOptional.isEmpty()) {
+            throw new IllegalArgumentException("owner not existing !");
+        }
+
+        Owner owner = ownerOptional.get();
+        owner.getGrounds().add(ground);
+        ownerRepository.save(owner);
+    }
+
+    @Override
+    public List<GroundDto> getGrounds(String owner_id) {
+        Optional<Owner> ownerOptional = ownerRepository.findById(owner_id);
+        if (ownerOptional.isEmpty()) {
+            throw new IllegalArgumentException("owner not existing !");
+        }
+        Owner owner = ownerOptional.get();
+        return owner.getGrounds().stream().map(groundMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MatchDto> getMatchesGround(String ground_id) {
+        Optional<Ground> groundOptional = groundRepository.findById(ground_id);
+        if (groundOptional.isEmpty()) {
+            throw new IllegalArgumentException("owner not existing !");
+        }
+        Ground ground = groundOptional.get();
+        return ground.getMatches().stream().map(matchMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateGround(GroundDto groundDto) {
+        groundValidator.validateUpdateGround(groundDto);
+        groundRepository.save(groundMapper.toBo(groundDto));
+        log.info("ground updated !");
+    }
+
+    @Override
+    public void deleteMatch(MatchDto matchDto) {
+        Optional<Match> matchOptional = matchRepository.findById(matchDto.getId());
+        if (matchOptional.isEmpty()) {
+            throw new IllegalArgumentException("match not existing !");
+        }
+        Match match = matchOptional.get();
+
+        Optional<Ground> groundOptional = groundRepository.findByName(matchDto.getGroundName());
+        if (groundOptional.isEmpty()) {
+            throw new IllegalArgumentException("owner not existing !");
+        }
+        Ground ground = groundOptional.get();
+        ground.setMatches(ground.getMatches().stream().filter(match1
+                        -> match1.getId().equals(matchDto.getId()))
+                .collect(Collectors.toList()));
+
+        matchRepository.delete(match);
+        log.info("match deleted !");
+    }
+
 
 }

@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -26,10 +28,11 @@ public abstract class AbstractEntity implements Serializable {
     String id;
 
     @CreatedDate
-    Instant createdAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDateTime createdAt;
 
     @LastModifiedDate
-    Instant updatedAt;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDateTime updatedAt;
 
 }
