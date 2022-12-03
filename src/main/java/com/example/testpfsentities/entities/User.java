@@ -27,10 +27,10 @@ public class User extends AbstractEntity {
     // the user should connect with his phoneNumber !
     private String phoneNumber;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String roleName;
 //
     @Transient

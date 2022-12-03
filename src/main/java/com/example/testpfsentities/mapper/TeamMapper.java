@@ -24,4 +24,8 @@ public class TeamMapper {
                 .map(element -> modelMapper.map(element, Team.class))
                 .collect(Collectors.toList());
     }
+
+    public Team toBo(TeamDto teamDto) {
+        return modelMapper.map(teamDto, Team.class);
+    }
 }

@@ -17,4 +17,5 @@ public class PlayerDto {
     private String phoneNumber;
     private String email;
     private String roleName;
+    private String team_id;
 }

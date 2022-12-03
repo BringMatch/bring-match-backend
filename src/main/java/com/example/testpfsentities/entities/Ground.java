@@ -17,8 +17,11 @@ public class Ground extends AbstractEntity {
     @OneToMany(mappedBy = "ground")
     private List<Match> matches;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Reservation> reservations;
+    @ManyToOne
+    private Owner owner;
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    private List<Reservation> reservations;
 
     private String name;
 

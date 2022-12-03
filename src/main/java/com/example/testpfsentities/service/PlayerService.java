@@ -20,9 +20,9 @@ public interface PlayerService {
 
     void createMatch(MatchDto matchDto);
 
-    void joinMatchAsPlayer(TeamDto teamDto);
+    void joinMatchAsPlayer(PlayerDto playerDto);
 
-    void joinMatchAsTeam(PlayerDto playerDto);
+    void joinMatchAsTeam(TeamDto teamDto);
 
     List<MatchDto> getMatches();
 

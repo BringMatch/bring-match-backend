@@ -14,15 +14,19 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties(value = {"match","players"},allowSetters = true)
+@JsonIgnoreProperties(value = {"match"}, allowSetters = true)
 public class Team extends AbstractEntity {
-    @ManyToMany(mappedBy = "teams")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "players_teams",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "player_id")
+    )
     private List<Player> players;
 
-    @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    @JoinTable(name = "match_teams")
-    private Match match;
+//    @ManyToOne
+//    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+//    @JoinTable(name = "match_teams", joinColumns = @JoinColumn(name = "team_id"), inverseJoinColumns = @JoinColumn(name = "match_id"))
+//    private Match match;
 
     private String name;
 }

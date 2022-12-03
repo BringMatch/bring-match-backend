@@ -10,12 +10,8 @@ import java.util.List;
 @Getter
 @Setter
 public class Player extends User {
-    @ManyToMany
-    @JoinTable(name = "players_teams",
-            joinColumns = @JoinColumn(name = "player_id"),
-            inverseJoinColumns = @JoinColumn(name = "team_id")
-    )
-    private List<Team> teams;
+//    @ManyToMany(mappedBy = "")
+//    private List<Team> teams;
 
     @OneToMany(mappedBy = "player")
     private List<PlayerStats> playerStats;

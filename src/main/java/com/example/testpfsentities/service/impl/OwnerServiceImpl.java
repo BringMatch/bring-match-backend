@@ -68,22 +68,16 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     public void saveGround(GroundDto groundDto) {
         Optional<Ground> optionalGround = groundRepository.findByName(groundDto.getName());
-
         if (optionalGround.isPresent()) {
             throw new IllegalArgumentException("Name Ground already existing !");
         }
-
         Ground ground = groundMapper.toBo(groundDto);
-        groundRepository.save(ground);
-
         Optional<Owner> ownerOptional = ownerRepository.findById(groundDto.getOwner_id());
         if (ownerOptional.isEmpty()) {
             throw new IllegalArgumentException("owner not existing !");
         }
-
-        Owner owner = ownerOptional.get();
-        owner.getGrounds().add(ground);
-        ownerRepository.save(owner);
+        ground.setOwner(ownerOptional.get());
+        groundRepository.save(ground);
     }
 
     @Override
@@ -133,6 +127,5 @@ public class OwnerServiceImpl implements OwnerService {
         matchRepository.delete(match);
         log.info("match deleted !");
     }
-
 
 }

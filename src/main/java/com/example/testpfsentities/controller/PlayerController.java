@@ -57,13 +57,13 @@ public class PlayerController {
     }
 
     @PutMapping(ApiPaths.JOIN_MATCH_AS_PLAYER)
-    public void joinMatchAsPlayer(@RequestBody @Validated TeamDto teamDto) {
-        playerService.joinMatchAsPlayer(teamDto);
+    public void joinMatchAsPlayer(@RequestBody @Validated PlayerDto playerDto) {
+        playerService.joinMatchAsPlayer(playerDto);
     }
 
     @PutMapping(ApiPaths.JOIN_MATCH_AS_TEAM)
-    public void joinMatchAsTeam(@RequestBody @Validated PlayerDto playerDto) {
-        playerService.joinMatchAsTeam(playerDto);
+    public void joinMatchAsTeam(@RequestBody @Validated TeamDto teamDto) {
+        playerService.joinMatchAsTeam(teamDto);
     }
 
     @GetMapping(ApiPaths.GET_MATCHES)

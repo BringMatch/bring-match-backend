@@ -12,7 +12,7 @@ import javax.persistence.*;
 @JsonIgnoreProperties(value = "{ground , notificationOwner}")
 public class Reservation extends AbstractEntity {
 
-    @ManyToOne
+    @ManyToOne(cascade =CascadeType.ALL)
     private Ground ground;
 
     @OneToOne(mappedBy = "reservation")

@@ -20,9 +20,12 @@ public class Match extends AbstractEntity {
     @ManyToOne
     private Ground ground;
 
-    @OneToMany(mappedBy = "match", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Team> teams;
 
     private Boolean privateMatch;
+
+
+    private String matchCode;
 
 }

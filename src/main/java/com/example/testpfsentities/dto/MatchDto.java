@@ -13,12 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 public class MatchDto {
     private String id;
-    private String creator_id;
     private String date;
     private List<TeamDto> teams;
-    private String positionPlayer;
     private String hour;
     private Boolean privateMatch;
     private String matchType;
     private String groundName;
+    private String matchCode;
 }

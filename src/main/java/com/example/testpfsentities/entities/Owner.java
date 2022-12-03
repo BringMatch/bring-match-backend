@@ -16,11 +16,10 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@JsonIgnoreProperties(allowSetters = true)
+@JsonIgnoreProperties(value = {"grounds"},allowSetters = true)
 public class Owner extends User {
 
-    @OneToMany(cascade = CascadeType.ALL, targetEntity = Ground.class)
-    @JoinTable(name = "owners_grounds" , inverseJoinColumns = @JoinColumn(name = "ground_id"))
+    @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL, targetEntity = Ground.class)
     private List<Ground> grounds;
 
     @OneToMany(mappedBy = "owner")

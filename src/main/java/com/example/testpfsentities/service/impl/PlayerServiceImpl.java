@@ -6,12 +6,16 @@ import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.entities.*;
 import com.example.testpfsentities.mapper.MatchMapper;
 import com.example.testpfsentities.mapper.PlayerMapper;
+import com.example.testpfsentities.mapper.TeamMapper;
 import com.example.testpfsentities.repository.*;
 import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.service.ReservationRepository;
+import com.example.testpfsentities.utils.SecurityUtils;
+import com.example.testpfsentities.utils.StringUtils;
 import com.example.testpfsentities.validations.MatchValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,6 +35,7 @@ public class PlayerServiceImpl implements PlayerService {
     private final PlayerMapper playerMapper;
     private final MatchValidator matchValidator;
     private final MatchMapper matchMapper;
+    private final TeamMapper teamMapper;
     private final MatchRepository matchRepository;
     private final GroundRepository groundRepository;
     private final ReservationRepository reservationRepository;
@@ -48,7 +53,7 @@ public class PlayerServiceImpl implements PlayerService {
         player.setRoleName("player");
         player.setCreatedAt(LocalDateTime.now());
         player.setMatch_owner(true);
-        player.setTeams(null);
+//        player.setTeams(null);
         player.setNotificationPlayer(null);
         playerRepository.save(player);
     }
@@ -78,89 +83,54 @@ public class PlayerServiceImpl implements PlayerService {
         if (groundOptional.isEmpty()) {
             throw new IllegalArgumentException("ground not existing !");
         }
+
         Ground ground = groundOptional.get();
         Match match = matchMapper.toBo(matchDto);
 
-
-        /**
-         this is for creating the reservation !
-         */
-
         Reservation reservation = new Reservation();
-        reservation.setTeam_one_creator_id(matchDto.getCreator_id());
+        reservation.setTeam_one_creator_id(matchDto.getTeams().get(0).getPlayers().get(0));
         reservation.setTeam_two_creator_id(null);
         reservation.setStatus(false);
         reservation.setGround(ground);
 
+        List<TeamDto> teamDtoList = matchDto.getTeams();
 
-        /**
-         this is for creating the player !
-         */
 
-        Optional<Player> playerOptional = playerRepository.findById(matchDto.getCreator_id());
-        if (groundOptional.isEmpty()) {
-            throw new IllegalArgumentException("player not existing !");
+        teamDtoList.forEach((teamDto) -> {
+            List<Player> players = new ArrayList<>();
+            Team team = teamMapper.toBo(teamDto);
+            teamDto.getPlayers()
+                    .forEach(player_id -> {
+                        var player = playerRepository.findById(player_id).get();
+                        players.add(player);
+                    });
+            team.setPlayers(players);
+            teamRepository.save(team);
+        });
+
+        if (matchDto.getPrivateMatch() == true) {
+            match.setMatchCode(StringUtils.getRandomNumberString());
         }
-
-        Player player = playerOptional.get();
-        player.setMatch_owner(true);
-
-//        Team team = new Team();
-//        team.setMatch(match);
-//
-//        List<Player> playerList = new ArrayList<>();
-//        playerList.add(player);
-//        team.setPlayers(playerList);
-//        team.setName(matchDto.getTeamName());
-//        team.setCreatedAt(LocalDateTime.now());
-
-
-//        List<Team> listTeams = new ArrayList<>();
-//        listTeams.add(team);
-//        match.setTeams(listTeams);
-//
-//        List<Team> listTeamsOfPlayer = new ArrayList<>();
-//        listTeams.add(team);
-//        player.setTeams(listTeamsOfPlayer);
-
-//        teamRepository.save(team);
         match.setGround(ground);
         matchRepository.save(match);
-        playerRepository.save(player);
         reservationRepository.save(reservation);
 
-        /**
-         this is for notifying the owner that a match has been created !
-         */
         NotificationOwner notificationOwner = new NotificationOwner();
         notificationOwner.setCreatedAt(LocalDateTime.now());
         notificationOwner.setReservation(reservation);
+        notificationOwner.setOwner(ground.getOwner());
         notificationOwnerRepository.save(notificationOwner);
 
     }
 
     @Override
-    public void joinMatchAsPlayer(TeamDto teamDto) {
-        Optional<Team> teamOptional = teamRepository.findById(teamDto.getId());
-        Optional<Player> playerOptional = playerRepository.findById(teamDto.getPlayer_id());
-        if (teamOptional.isEmpty()) {
-            throw new IllegalArgumentException("team not found");
-        }
-        if (playerOptional.isEmpty()) {
-            throw new IllegalArgumentException("player not found ");
-        }
-        Team team = teamOptional.get();
-        Player player = playerOptional.get();
-        List<Player> listPlayers = team.getPlayers();
-        listPlayers.add(player);
-        team.setPlayers(listPlayers);
-        teamRepository.save(team);
+    public void joinMatchAsPlayer(PlayerDto playerDto) {
 
     }
 
     @Override
-    public void joinMatchAsTeam(PlayerDto playerDto) {
-
+    public void joinMatchAsTeam(TeamDto teamDto) {
+        Team team = teamMapper.toBo(teamDto);
     }
 
     @Override
