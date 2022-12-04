@@ -1,7 +1,49 @@
 package com.example.testpfsentities.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.example.testpfsentities.dto.MatchDto;
+import com.example.testpfsentities.dto.TeamDto;
+import com.example.testpfsentities.entities.Match;
+import com.example.testpfsentities.service.MatchService;
+import com.example.testpfsentities.utils.consts.ApiPaths;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping(ApiPaths.MATCHES)
+@RequiredArgsConstructor
 public class MatchController {
+    private final MatchService matchService;
+    @PostMapping(ApiPaths.CREATE_MATCH)
+    public void createMatch(@RequestBody @Validated MatchDto matchDto) {
+        matchService.createMatch(matchDto);
+    }
+
+    @GetMapping(ApiPaths.GET_MATCHES)
+    public ResponseEntity<List<Match>> getMatches() {
+        return ResponseEntity.ok().body(matchService.getMatches());
+    }
+
+    @PostMapping(ApiPaths.EVALUATE_MATCH)
+    public void evaluateMatch(@RequestBody @Validated MatchDto matchDto) {
+        matchService.evaluateMatch(matchDto);
+    }
+
+    @PostMapping(ApiPaths.JOIN_MATCH_AS_TEAM)
+    public void joinMatchAsTeam(@RequestBody @Validated MatchDto matchDto) {
+        matchService.joinMatchAsTeam(matchDto);
+    }
+
+    @DeleteMapping(ApiPaths.DELETE_MATCH)
+    public void deleteMatch(@RequestBody() MatchDto matchDto){
+        matchService.deleteMatch(matchDto);
+    }
+
+    @GetMapping(ApiPaths.GET_MATCHES + "/{ground_id}")
+    public ResponseEntity<List<MatchDto>> getMatchesGround(@PathVariable(name = "ground_id") String ground_id) {
+        return ResponseEntity.ok().body(matchService.getMatchesGround(ground_id));
+    }
 }

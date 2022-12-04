@@ -1,28 +1,20 @@
 package com.example.testpfsentities.service.impl;
 
-import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.dto.PlayerDto;
-import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.entities.*;
-import com.example.testpfsentities.mapper.MatchMapper;
+import com.example.testpfsentities.entities.composite.TeamPlayerKey;
 import com.example.testpfsentities.mapper.PlayerMapper;
-import com.example.testpfsentities.mapper.TeamMapper;
 import com.example.testpfsentities.repository.*;
 import com.example.testpfsentities.service.PlayerService;
-import com.example.testpfsentities.service.ReservationRepository;
-import com.example.testpfsentities.utils.SecurityUtils;
-import com.example.testpfsentities.utils.StringUtils;
-import com.example.testpfsentities.validations.MatchValidator;
+import com.example.testpfsentities.service.TeamPlayerService;
+import com.example.testpfsentities.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.security.SecurityUtil;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,15 +23,10 @@ import java.util.stream.Collectors;
 public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository playerRepository;
-    private final TeamRepository teamRepository;
+    @Lazy
+    private final TeamPlayerService teamPlayerService;
+//    private final TeamService teamService;
     private final PlayerMapper playerMapper;
-    private final MatchValidator matchValidator;
-    private final MatchMapper matchMapper;
-    private final TeamMapper teamMapper;
-    private final MatchRepository matchRepository;
-    private final GroundRepository groundRepository;
-    private final ReservationRepository reservationRepository;
-    private final NotificationOwnerRepository notificationOwnerRepository;
 
     @Override
     public void createPlayer() {
@@ -52,8 +39,6 @@ public class PlayerServiceImpl implements PlayerService {
         player.setPhoneNumber("45454");
         player.setRoleName("player");
         player.setCreatedAt(LocalDateTime.now());
-        player.setMatch_owner(true);
-//        player.setTeams(null);
         player.setNotificationPlayer(null);
         playerRepository.save(player);
     }
@@ -69,78 +54,58 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public void createTeam(TeamDto teamDto) {
-
+    public Player findPlayerById(String player_id) {
+        Optional<Player> optionalPlayer = playerRepository.findById(player_id);
+        if (optionalPlayer.isEmpty()) {
+            throw new IllegalArgumentException("player not found !");
+        }
+        return optionalPlayer.get();
     }
 
-    @Override
-    public void createMatch(MatchDto matchDto) {
-
-        matchValidator.validateCreation(matchDto);
-
-        String ground_name = matchDto.getGroundName();
-        Optional<Ground> groundOptional = groundRepository.findByName(ground_name);
-        if (groundOptional.isEmpty()) {
-            throw new IllegalArgumentException("ground not existing !");
-        }
-
-        Ground ground = groundOptional.get();
-        Match match = matchMapper.toBo(matchDto);
-
-        Reservation reservation = new Reservation();
-        reservation.setTeam_one_creator_id(matchDto.getTeams().get(0).getPlayers().get(0));
-        reservation.setTeam_two_creator_id(null);
-        reservation.setStatus(false);
-        reservation.setGround(ground);
-
-        List<TeamDto> teamDtoList = matchDto.getTeams();
-
-
-        teamDtoList.forEach((teamDto) -> {
-            List<Player> players = new ArrayList<>();
-            Team team = teamMapper.toBo(teamDto);
-            teamDto.getPlayers()
-                    .forEach(player_id -> {
-                        var player = playerRepository.findById(player_id).get();
-                        players.add(player);
-                    });
-            team.setPlayers(players);
-            teamRepository.save(team);
-        });
-
-        if (matchDto.getPrivateMatch() == true) {
-            match.setMatchCode(StringUtils.getRandomNumberString());
-        }
-        match.setGround(ground);
-        matchRepository.save(match);
-        reservationRepository.save(reservation);
-
-        NotificationOwner notificationOwner = new NotificationOwner();
-        notificationOwner.setCreatedAt(LocalDateTime.now());
-        notificationOwner.setReservation(reservation);
-        notificationOwner.setOwner(ground.getOwner());
-        notificationOwnerRepository.save(notificationOwner);
-
-    }
 
     @Override
     public void joinMatchAsPlayer(PlayerDto playerDto) {
 
+//        String team_id = playerDto.getTeam_id();
+//        Team team = teamService.getTeamById(team_id);
+//
+//        String player_id = playerDto.getId();
+//        Optional<Player> playerOptional = playerRepository.findById(player_id);
+//        if (playerOptional.isEmpty()) {
+//            throw new IllegalArgumentException("player not existing !");
+//        }
+//        Player player = playerOptional.get();
+//
+//        TeamPlayerKey teamPlayerKey = new TeamPlayerKey();
+//        teamPlayerKey.setPlayer_id(player_id);
+//        teamPlayerKey.setTeam_id(team_id);
+//        TeamPlayer teamPlayer = new TeamPlayer();
+//        teamPlayer.setTeamPlayerKey(teamPlayerKey);
+//        teamPlayer.setTeam(team);
+//        teamPlayer.setPlayer(player);
+//        teamPlayer.setTeam_owner(false);
+//        teamPlayer.setMatch_owner(false);
+
+//        Set<TeamPlayer> teamPlayers = team.getPlayersTeams();
+//        teamPlayers.add(teamPlayer);
+//        team.setPlayersTeams(Set.of(teamPlayer));
+//
+//        teamPlayerService.save(teamPlayer);
+//        teamService.save(team);
+
     }
 
     @Override
-    public void joinMatchAsTeam(TeamDto teamDto) {
-        Team team = teamMapper.toBo(teamDto);
+    public Team assignPlayersWithTeams(Team team, List<String> players) {
+//        List<TeamPlayer> teamPlayers = new ArrayList<>();
+//        players.forEach(player_id -> {
+//            Player player = this.findPlayerById(player_id);
+//            TeamPlayer teamPlayer = teamPlayerService.createTeamPlayer(team, player);
+//            teamPlayers.add(teamPlayer);
+//        });
+//        team.setPlayersTeams(teamPlayers);
+        return null;
     }
 
-    @Override
-    public List<MatchDto> getMatches() {
-        return matchRepository.findAll().stream().map(matchMapper::toDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public void evaluateMatch(MatchDto matchDto) {
-
-    }
 
 }

@@ -5,9 +5,8 @@ import com.example.testpfsentities.service.GroundService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,4 +19,19 @@ public class GroundController {
     public ResponseEntity<List<GroundDto>> getGrounds(){
         return ResponseEntity.ok().body(groundService.getGrounds());
     }
+    @PutMapping(ApiPaths.UPDATE_GROUND)
+    public void updateGround(@RequestBody @Validated GroundDto groundDto){
+        groundService.updateGround(groundDto);
+    }
+
+    @PostMapping(ApiPaths.SAVE_GROUND)
+    public void save(@RequestBody @Validated GroundDto groundDto) {
+        groundService.saveGround(groundDto);
+    }
+
+    @GetMapping(ApiPaths.GET_GROUNDS + "{owner_id}")
+    public ResponseEntity<List<GroundDto>> getAllGrounds(@PathVariable(name = "owner_id") String owner_id) {
+        return ResponseEntity.ok().body(groundService.getOwnerGrounds(owner_id));
+    }
+
 }

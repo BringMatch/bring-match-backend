@@ -14,7 +14,6 @@ import java.util.List;
 public class TeamDto {
     private String id;
     private String name;
-    private List<String> players;
+    private List<TeamPlayerDto> playersTeams;
     private String match_id;
-    private String positionPlayer;
 }

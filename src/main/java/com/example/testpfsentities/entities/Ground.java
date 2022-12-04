@@ -1,5 +1,6 @@
 package com.example.testpfsentities.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties(value = {"matches"},allowSetters = true)
 public class Ground extends AbstractEntity {
 
     @OneToMany(mappedBy = "ground")

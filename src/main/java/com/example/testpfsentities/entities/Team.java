@@ -3,10 +3,10 @@ package com.example.testpfsentities.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,14 +14,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties(value = {"match"}, allowSetters = true)
+@JsonIgnoreProperties(value = {"playersTeams"},allowGetters = true)
 public class Team extends AbstractEntity {
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "players_teams",
-            joinColumns = @JoinColumn(name = "team_id"),
-            inverseJoinColumns = @JoinColumn(name = "player_id")
-    )
-    private List<Player> players;
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "players_teams",
+//            joinColumns = @JoinColumn(name = "team_id"),
+//            inverseJoinColumns = @JoinColumn(name = "player_id")
+//    )
+//    private List<Player> players;
+
+    @OneToMany(mappedBy = "team",cascade = CascadeType.ALL)
+    List<TeamPlayer> playersTeams;
 
 //    @ManyToOne
 //    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)

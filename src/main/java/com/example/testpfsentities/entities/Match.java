@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@JsonIgnoreProperties(value = {"ground"}, allowSetters = true)
+@JsonIgnoreProperties(value = {"ground"},allowGetters = true)
 public class Match extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private MatchType matchType;

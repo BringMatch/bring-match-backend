@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+
 public class PlayerStats {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

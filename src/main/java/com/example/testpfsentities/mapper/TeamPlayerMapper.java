@@ -1,9 +1,9 @@
 package com.example.testpfsentities.mapper;
 
-import com.example.testpfsentities.dto.GroundDto;
 import com.example.testpfsentities.dto.TeamDto;
-import com.example.testpfsentities.entities.Ground;
+import com.example.testpfsentities.dto.TeamPlayerDto;
 import com.example.testpfsentities.entities.Team;
+import com.example.testpfsentities.entities.TeamPlayer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -15,23 +15,20 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class TeamMapper {
-    private final ModelMapper modelMapper;
+public class TeamPlayerMapper {
+private final ModelMapper modelMapper;
 
-    public List<Team> toBo(List<TeamDto> teamDto) {
-        return teamDto
+    public List<TeamPlayerDto> toDto(List<TeamPlayer> teamPlayers) {
+        return teamPlayers
                 .stream()
-                .map(element -> modelMapper.map(element, Team.class))
-                .collect(Collectors.toList());
-    }
-    public List<TeamDto> toDto(List<Team> teams) {
-        return teams
-                .stream()
-                .map(element -> modelMapper.map(element, TeamDto.class))
+                .map(element -> modelMapper.map(element, TeamPlayerDto.class))
                 .collect(Collectors.toList());
     }
 
-    public Team toBo(TeamDto teamDto) {
-        return modelMapper.map(teamDto, Team.class);
+    public List<TeamPlayer> toBo(List<TeamPlayerDto> teamPlayerDtos) {
+        return teamPlayerDtos
+                .stream()
+                .map(element -> modelMapper.map(element, TeamPlayer.class))
+                .collect(Collectors.toList());
     }
 }

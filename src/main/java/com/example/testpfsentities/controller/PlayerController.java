@@ -46,35 +46,9 @@ public class PlayerController {
         playerService.save(playerDto);
     }
 
-    @PostMapping(ApiPaths.CREATE_TEAM)
-    public void createTeam(@RequestBody @Validated TeamDto teamDto) {
-        playerService.createTeam(teamDto);
-    }
-
-    @PostMapping(ApiPaths.CREATE_MATCH)
-    public void createMatch(@RequestBody @Validated MatchDto matchDto) {
-        playerService.createMatch(matchDto);
-    }
-
-    @PutMapping(ApiPaths.JOIN_MATCH_AS_PLAYER)
+    @PostMapping(ApiPaths.JOIN_MATCH_AS_PLAYER)
     public void joinMatchAsPlayer(@RequestBody @Validated PlayerDto playerDto) {
         playerService.joinMatchAsPlayer(playerDto);
     }
-
-    @PutMapping(ApiPaths.JOIN_MATCH_AS_TEAM)
-    public void joinMatchAsTeam(@RequestBody @Validated TeamDto teamDto) {
-        playerService.joinMatchAsTeam(teamDto);
-    }
-
-    @GetMapping(ApiPaths.GET_MATCHES)
-    public ResponseEntity<List<MatchDto>> getMatches() {
-        return ResponseEntity.ok().body(playerService.getMatches());
-    }
-
-    @PostMapping(ApiPaths.EVALUATE_MATCH)
-    public void evaluateMatch(@RequestBody @Validated MatchDto matchDto) {
-        playerService.evaluateMatch(matchDto);
-    }
-
 
 }

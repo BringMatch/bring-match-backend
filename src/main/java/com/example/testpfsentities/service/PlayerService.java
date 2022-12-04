@@ -16,16 +16,11 @@ public interface PlayerService {
     List<PlayerDto> getPlayers();
     void save(PlayerDto playerDto);
 
-    void createTeam(TeamDto teamDto);
+    Player findPlayerById(String player_id);
 
-    void createMatch(MatchDto matchDto);
 
     void joinMatchAsPlayer(PlayerDto playerDto);
 
-    void joinMatchAsTeam(TeamDto teamDto);
 
-    List<MatchDto> getMatches();
-
-    void evaluateMatch(MatchDto matchDto);
-
+    Team assignPlayersWithTeams(Team team, List<String> players);
 }

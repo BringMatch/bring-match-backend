@@ -34,4 +34,10 @@ public class PlayerMapper {
                 .map(element -> modelMapper.map(element, Player.class))
                 .collect(Collectors.toList());
     }
+    public List<PlayerDto> toDto(List<Player> players) {
+        return players
+                .stream()
+                .map(element -> modelMapper.map(element, PlayerDto.class))
+                .collect(Collectors.toList());
+    }
 }

@@ -7,4 +7,12 @@ import java.util.List;
 
 public interface GroundService {
     List<GroundDto> getGrounds();
+
+    Ground findByName(String ground_name);
+
+    void updateGround(GroundDto groundDto);
+
+    void saveGround(GroundDto groundDto);
+
+    List<GroundDto> getOwnerGrounds(String owner_id);
 }
