@@ -24,6 +24,7 @@ public class TeamServiceImpl implements TeamService {
     private final TeamMapper teamMapper;
 
     private final TeamPlayerService teamPlayerService;
+
     @Override
     public Team createTeam(TeamDto teamDto) {
         return teamMapper.toBo(teamDto);
@@ -45,14 +46,12 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void assignPlayersWithTeams(List<Team> teamList) {
-
-
         teamList.forEach(team -> {
+            log.info("team added {}", team);
             team.getPlayersTeams().forEach(teamPlayer -> {
-                teamPlayerService.createTeamPlayer(teamPlayer,team );
+                teamPlayerService.createTeamPlayer(teamPlayer, team);
             });
         });
-
     }
 //        List<Team> list = new ArrayList<>();
 //        teamDtoList.forEach(teamDto -> {
@@ -65,8 +64,6 @@ public class TeamServiceImpl implements TeamService {
 //            log.info("this is the team number {} ", newTeam);
 //            teamRepository.save(newTeam);
 //        });
-
-
 
 
 }

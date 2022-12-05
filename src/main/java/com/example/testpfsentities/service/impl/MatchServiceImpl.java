@@ -1,6 +1,7 @@
 package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.MatchDto;
+import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.entities.*;
 import com.example.testpfsentities.mapper.MatchMapper;
@@ -9,6 +10,7 @@ import com.example.testpfsentities.service.*;
 import com.example.testpfsentities.utils.StringUtils;
 import com.example.testpfsentities.validations.MatchValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MatchServiceImpl implements MatchService {
     private final MatchRepository matchRepository;
     private final MatchMapper matchMapper;
@@ -24,6 +27,7 @@ public class MatchServiceImpl implements MatchService {
     private final ReservationService reservationService;
     private final NotificationOwnerService notificationOwnerService;
     private final TeamService teamService;
+//    private final NotificationPlayerService notificationPlayerService;
 
     @Override
     public void createMatch(MatchDto matchDto) {
@@ -61,12 +65,12 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Match findMatchById(String match_id) {
-        Optional<Match> optionalMatch = matchRepository.findById(match_id);
+    public Match findMatchById(MatchDto matchDto) {
+        Optional<Match> optionalMatch = matchRepository.findById(matchDto.getId());
         if (optionalMatch.isEmpty()) {
             throw new IllegalArgumentException("match not found !");
         }
-        return optionalMatch.get();
+        return matchMapper.toBo(matchDto);
     }
 
     @Override
@@ -84,13 +88,23 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public void joinMatchAsTeam(MatchDto matchDto) {
-        TeamDto teamDto = matchDto.getTeams().get(0);
-        String match_id = matchDto.getId();
-        Match match = this.findMatchById(match_id);
-        Team team = teamService.createTeam(teamDto);
-        teamService.save(team);
-        Match match1 = this.setTeams(match, team);
-        matchRepository.save(match1);
+        Match match = findMatchById(matchDto);
+        Match matchSaved = matchRepository.save(match);
+        matchSaved.getTeams().forEach(team -> log.info("hahahahhaa"));
+        teamService.assignPlayersWithTeams(matchSaved.getTeams());
+
+//        notificationPlayerService.create();
+//        NotificationPlayer notificationPlayer = new NotificationPlayer();
+//        notificationPlayer.setCurrentMatchId(matchSaved.getId());
+//        notificationPlayer.set
+//        notificationPlayer.setOwner_match();
+    }
+
+    @Override
+    public void joinMatchAsPlayer(MatchDto matchDto) {
+        Match match = findMatchById(matchDto);
+        Match matchSaved = matchRepository.save(match);
+        teamService.assignPlayersWithTeams(matchSaved.getTeams());
     }
 
     @Override

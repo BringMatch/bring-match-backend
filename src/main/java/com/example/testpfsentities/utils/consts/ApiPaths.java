@@ -22,14 +22,12 @@ public final class ApiPaths {
 
 
     public final static String MATCHES = "/matches";
-    public final static String GET_MATCHES = MATCHES;
+    public final static String GET_MATCHES = MATCHES + SLASH;
     public final static String CREATE_MATCH = "/create-match";
-    public final static String JOIN_MATCH_AS_PLAYER = MATCHES + "/join-match-player";
-    public final static String JOIN_MATCH_AS_TEAM = MATCHES + "/join-match-team";
+    public final static String JOIN_MATCH_AS_PLAYER = "/join-match-player";
+    public final static String JOIN_MATCH_AS_TEAM = "/join-match-team";
     public static final String DELETE_MATCH = MATCHES + "/delete-match";
     public static final String EVALUATE_MATCH = MATCHES + "/evaluate-match";
-
-
 
 
     public final static String TEAMS = "/teams";

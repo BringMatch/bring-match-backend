@@ -17,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MatchController {
     private final MatchService matchService;
+
     @PostMapping(ApiPaths.CREATE_MATCH)
     public void createMatch(@RequestBody @Validated MatchDto matchDto) {
         matchService.createMatch(matchDto);
@@ -37,8 +38,13 @@ public class MatchController {
         matchService.joinMatchAsTeam(matchDto);
     }
 
+    @PostMapping(ApiPaths.JOIN_MATCH_AS_PLAYER)
+    public void joinMatchAsPlayer(@RequestBody @Validated MatchDto matchDto) {
+        matchService.joinMatchAsPlayer(matchDto);
+    }
+
     @DeleteMapping(ApiPaths.DELETE_MATCH)
-    public void deleteMatch(@RequestBody() MatchDto matchDto){
+    public void deleteMatch(@RequestBody() MatchDto matchDto) {
         matchService.deleteMatch(matchDto);
     }
 

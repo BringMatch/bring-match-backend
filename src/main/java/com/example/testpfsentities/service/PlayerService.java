@@ -19,8 +19,5 @@ public interface PlayerService {
     Player findPlayerById(String player_id);
 
 
-    void joinMatchAsPlayer(PlayerDto playerDto);
-
-
     Team assignPlayersWithTeams(Team team, List<String> players);
 }

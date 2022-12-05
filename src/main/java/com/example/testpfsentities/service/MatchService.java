@@ -2,12 +2,18 @@ package com.example.testpfsentities.service;
 
 import com.example.testpfsentities.dto.GroundDto;
 import com.example.testpfsentities.dto.MatchDto;
+import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.entities.Match;
+import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
+import com.example.testpfsentities.entities.TeamPlayer;
+import com.example.testpfsentities.entities.composite.TeamPlayerKey;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public interface MatchService {
@@ -17,13 +23,15 @@ public interface MatchService {
 
     void evaluateMatch(MatchDto matchDto);
 
-    Match findMatchById(String match_id);
+    Match findMatchById(MatchDto matchDto);
 
     void save(Match match);
 
     Match setTeams(Match match , Team team);
 
-    public void joinMatchAsTeam(MatchDto matchDto);
+    void joinMatchAsTeam(MatchDto matchDto);
+
+    void joinMatchAsPlayer(MatchDto matchDto);
 
     void deleteMatch(MatchDto matchDto);
 
