@@ -15,7 +15,6 @@ public class MatchDto {
     private String id;
     private String date;
     private List<TeamDto> teams;
-    private String hour;
     private Boolean privateMatch;
     private String matchType;
     private String groundName;

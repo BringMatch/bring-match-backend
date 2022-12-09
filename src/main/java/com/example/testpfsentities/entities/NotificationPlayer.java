@@ -21,7 +21,7 @@ public class NotificationPlayer extends Notification {
     @JoinColumn(name = "player_id")
     private Player player;
 
-    private Long currentMatchId;
+    private String currentMatchId;
 
 
 

@@ -1,11 +1,14 @@
 package com.example.testpfsentities.service.impl;
 
+import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.entities.Admin;
 import com.example.testpfsentities.entities.NotificationAdmin;
 import com.example.testpfsentities.entities.Owner;
+import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.repository.AdminRepository;
 import com.example.testpfsentities.repository.NotificationAdminRepository;
 import com.example.testpfsentities.repository.OwnerRepository;
+import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final OwnerRepository ownerRepository;
     private final NotificationAdminRepository notificationAdminRepository;
+    private final PlayerRepository playerRepository;
 
     @Override
     public void initAdmin() {
@@ -73,5 +77,6 @@ public class AdminServiceImpl implements AdminService {
         owner.get().setActive(false);
         ownerRepository.save(owner.get());
     }
+
 
 }

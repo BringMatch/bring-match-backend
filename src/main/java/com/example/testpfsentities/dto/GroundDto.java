@@ -11,4 +11,5 @@ public class GroundDto {
     private String name;
     private String address;
     private String owner_id;
+    private String match_id;
 }

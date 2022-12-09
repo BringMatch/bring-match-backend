@@ -3,6 +3,7 @@ package com.example.testpfsentities.service.impl;
 import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.entities.*;
+import com.example.testpfsentities.mapper.GlobalStatsMapper;
 import com.example.testpfsentities.mapper.MatchMapper;
 import com.example.testpfsentities.repository.MatchRepository;
 import com.example.testpfsentities.service.*;
@@ -20,10 +21,14 @@ public class MatchServiceImpl implements MatchService {
     private final MatchRepository matchRepository;
     private final MatchMapper matchMapper;
     private final MatchValidator matchValidator;
+    private final GlobalStatsMapper globalStatsMapper;
     private final GroundService groundService;
     private final ReservationService reservationService;
     private final NotificationOwnerService notificationOwnerService;
+    private final GlobalStatsService globalStatsService;
     private final TeamService teamService;
+    private final TeamPlayerService teamPlayerService;
+    private final NotificationPlayerService notificationPlayerService;
 
     @Override
     public void createMatch(MatchDto matchDto) {
@@ -51,13 +56,26 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public List<Match> getMatches() {
-        //return matchRepository.findAll().stream().map(matchMapper::toDto).collect(Collectors.toList());
-        return matchRepository.findAll();
+       return matchRepository.findAll();
     }
 
     @Override
     public void evaluateMatch(MatchDto matchDto) {
+        Optional<Match> optionalMatch = matchRepository.findById(matchDto.getId());
+        if (optionalMatch.isEmpty()){
+            throw new IllegalArgumentException("match not found");
+        }
+        String match_id=matchMapper.toBo(matchDto).getId();
 
+        Team team=matchMapper.toBo(matchDto).getTeams().get(0);
+        TeamPlayer teamPlayer=teamPlayerService.getTeamPlayer();
+
+        Player palyer=teamPlayer.getPlayer();
+        NotificationPlayer notificationPlayer=notificationPlayerService.create(match_id,palyer);
+        notificationPlayerService.save(notificationPlayer);
+
+        GlobalStats globalStats=new GlobalStats();
+        globalStatsService.saveStats(globalStatsMapper.toDto(globalStats));
     }
 
     @Override
@@ -81,7 +99,6 @@ public class MatchServiceImpl implements MatchService {
         match.setTeams(teamList);
         return match;
     }
-
     @Override
     public void joinMatchAsTeam(MatchDto matchDto) {
         TeamDto teamDto = matchDto.getTeams().get(0);

@@ -5,6 +5,7 @@ import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.entities.TeamPlayer;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +18,10 @@ public interface TeamPlayerService {
     void saveAll(Set<TeamPlayer> playersTeams);
 
     TeamPlayer createTeamPlayer(TeamPlayer teamPlayer,Team team);
+    TeamPlayer getTeamPlayer();
 
     void assignPlayersWithTeamsExisted(List<String> teams_id, List<PlayerDto> playerDtoList);
 
     void assignPlayersWithTeamsNotExisted(List<TeamDto> teamDtoList, List<PlayerDto> playerDtoList);
+
 }

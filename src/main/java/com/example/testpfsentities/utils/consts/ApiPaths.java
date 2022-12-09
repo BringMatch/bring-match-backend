@@ -51,4 +51,6 @@ public final class ApiPaths {
     public final static String GET_GROUNDS = SLASH;
     public final static String UPDATE_GROUND = "/update-ground";
 
+    public static final String GlobalStats = "/globalStats";
+    public static final String Save_GlobalStats ="/save";
 }

@@ -25,6 +25,8 @@ public class GlobalStats {
 
     private LocalDateTime date;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private  Match match;
 //    @OneToOne
 //    private Player MOTM;
 

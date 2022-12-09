@@ -40,6 +40,11 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
     }
 
     @Override
+    public TeamPlayer getTeamPlayer() {
+        return teamPlayerRepository.getTeamPlayer();
+    }
+
+    @Override
     public void assignPlayersWithTeamsExisted(List<String> teams_id, List<PlayerDto> playerDtoList) {
 
     }
