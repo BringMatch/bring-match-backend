@@ -1,9 +1,6 @@
 package com.example.testpfsentities.service;
 
-import com.example.testpfsentities.dto.GroundDto;
-import com.example.testpfsentities.dto.MatchDto;
-import com.example.testpfsentities.dto.PlayerDto;
-import com.example.testpfsentities.dto.TeamDto;
+import com.example.testpfsentities.dto.*;
 import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
@@ -36,4 +33,6 @@ public interface MatchService {
     void deleteMatch(MatchDto matchDto);
 
     List<MatchDto> getMatchesGround(String ground_id);
+
+    Integer countNumberTeams(String match_id);
 }

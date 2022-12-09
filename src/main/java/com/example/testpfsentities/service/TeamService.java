@@ -1,6 +1,8 @@
 package com.example.testpfsentities.service;
 
+import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.dto.TeamDto;
+import com.example.testpfsentities.dto.TeamPlayerDto;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.entities.TeamPlayer;
 import org.springframework.stereotype.Service;
@@ -12,11 +14,12 @@ public interface TeamService {
     Team createTeam(TeamDto teamDto);
 
 
-    Team getTeamById(String team_id);
+    Team getTeamById(MatchDto matchDto);
 
     void save(Team team);
 
     void assignPlayersWithTeams(List<Team> teamDtoList);
 
+    void assignNewPlayerToTeam(Team team, List<TeamPlayerDto> listDto);
 }
 

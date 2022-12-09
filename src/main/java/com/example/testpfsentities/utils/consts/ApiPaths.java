@@ -28,6 +28,7 @@ public final class ApiPaths {
     public final static String JOIN_MATCH_AS_TEAM = "/join-match-team";
     public static final String DELETE_MATCH = MATCHES + "/delete-match";
     public static final String EVALUATE_MATCH = MATCHES + "/evaluate-match";
+    public static final String GET_CURRENT_NUMBER_TEAMS = "/number-teams";
 
 
     public final static String TEAMS = "/teams";
@@ -46,7 +47,7 @@ public final class ApiPaths {
     public static final String SAVE_OWNER = "/save";
     public static final String SAVE_GROUND = "/save-ground";
     public final static String GET_OWNERS = OWNERS + SLASH;
-    public final static String GET_GROUNDS = SLASH;
+    public final static String GET_GROUNDS = GROUNDS + SLASH;
     public final static String UPDATE_GROUND = "/update-ground";
 
 }

@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,20 +26,20 @@ public class PlayerServiceImpl implements PlayerService {
     private final PlayerRepository playerRepository;
     @Lazy
     private final TeamPlayerService teamPlayerService;
-//    private final TeamService teamService;
+    //    private final TeamService teamService;
     private final PlayerMapper playerMapper;
 
     @Override
     public void createPlayer() {
         Player player = new Player();
         player.setEmail("yessinejawa@gmail.com");
-        player.setUpdatedAt(LocalDateTime.now());
+        player.setUpdatedAt(Date.from(Instant.now()));
         player.setPassword("yessine");
         player.setFirstName("ajaoua");
         player.setLastName("ajaqsdfoua");
         player.setPhoneNumber("45454");
         player.setRoleName("player");
-        player.setCreatedAt(LocalDateTime.now());
+        player.setCreatedAt(Date.from(Instant.now()));
         player.setNotificationPlayer(null);
         playerRepository.save(player);
     }
@@ -61,7 +62,6 @@ public class PlayerServiceImpl implements PlayerService {
         }
         return optionalPlayer.get();
     }
-
 
 
     @Override

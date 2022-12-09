@@ -1,7 +1,6 @@
 package com.example.testpfsentities.controller;
 
 import com.example.testpfsentities.dto.MatchDto;
-import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.service.MatchService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
@@ -48,8 +47,15 @@ public class MatchController {
         matchService.deleteMatch(matchDto);
     }
 
-    @GetMapping(ApiPaths.GET_MATCHES + "/{ground_id}")
-    public ResponseEntity<List<MatchDto>> getMatchesGround(@PathVariable(name = "ground_id") String ground_id) {
+    @GetMapping(ApiPaths.GET_MATCHES + "/{ground_name}")
+    public ResponseEntity<List<MatchDto>> getMatchesGround(@PathVariable(name = "ground_name") String ground_id) {
         return ResponseEntity.ok().body(matchService.getMatchesGround(ground_id));
     }
+
+    @GetMapping(ApiPaths.GET_CURRENT_NUMBER_TEAMS + "/{match_id}")
+    public ResponseEntity<Integer> getCurrentNumberTeams(@PathVariable(name = "match_id") String match_id) {
+        return ResponseEntity.ok().body(matchService.countNumberTeams(match_id));
+    }
+
+
 }

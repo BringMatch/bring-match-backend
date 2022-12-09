@@ -1,6 +1,8 @@
 package com.example.testpfsentities.service.impl;
 
+import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.dto.TeamDto;
+import com.example.testpfsentities.dto.TeamPlayerDto;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.mapper.TeamMapper;
 import com.example.testpfsentities.repository.TeamRepository;
@@ -31,7 +33,8 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team getTeamById(String team_id) {
+    public Team getTeamById(MatchDto matchDto) {
+        String team_id = matchDto.getTeams().get(0).getId();
         Optional<Team> teamOptional = teamRepository.findById(team_id);
         if (teamOptional.isEmpty()) {
             throw new IllegalArgumentException("team not found !");
@@ -45,11 +48,17 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public void assignNewPlayerToTeam(Team team, List<TeamPlayerDto> teamPlayerDtos) {
+        var list = teamPlayerService.map(teamPlayerDtos);
+        team.getPlayersTeams().addAll(list);
+    }
+
+    @Override
     public void assignPlayersWithTeams(List<Team> teamList) {
         teamList.forEach(team -> {
             log.info("team added {}", team);
             team.getPlayersTeams().forEach(teamPlayer -> {
-                teamPlayerService.createTeamPlayer(teamPlayer, team);
+                teamPlayerService.saveTeamPlayer(teamPlayer, team);
             });
         });
     }

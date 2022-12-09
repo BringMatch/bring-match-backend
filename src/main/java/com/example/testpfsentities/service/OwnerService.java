@@ -22,4 +22,6 @@ public interface OwnerService {
     void updateGround(GroundDto groundDto);
 
     void deleteMatch(MatchDto matchDto);
+
+    boolean checkOwnerExists(String owner_id);
 }
