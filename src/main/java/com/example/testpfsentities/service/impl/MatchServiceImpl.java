@@ -60,22 +60,20 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public void evaluateMatch(MatchDto matchDto) {
-        Optional<Match> optionalMatch = matchRepository.findById(matchDto.getId());
+    public void evaluateMatch(Match match) {
+        Optional<Match> optionalMatch = matchRepository.findById(match.getId());
         if (optionalMatch.isEmpty()){
             throw new IllegalArgumentException("match not found");
         }
-        String match_id=matchMapper.toBo(matchDto).getId();
+        String match_id=match.getId();
 
-        Team team=matchMapper.toBo(matchDto).getTeams().get(0);
-        TeamPlayer teamPlayer=teamPlayerService.getTeamPlayer();
+        Player p=match.getTeams().get(0).getPlayersTeams().get(0).getPlayer();
+//        TeamPlayer teamPlayer=teamPlayerService.getTeamPlayer();
 
-        Player palyer=teamPlayer.getPlayer();
-        NotificationPlayer notificationPlayer=notificationPlayerService.create(match_id,palyer);
+//        Player palyer=teamPlayer.getPlayer();
+        NotificationPlayer notificationPlayer=notificationPlayerService.create(match_id,p);
         notificationPlayerService.save(notificationPlayer);
 
-        GlobalStats globalStats=new GlobalStats();
-        globalStatsService.saveStats(globalStatsMapper.toDto(globalStats));
     }
 
     @Override
@@ -85,6 +83,12 @@ public class MatchServiceImpl implements MatchService {
             throw new IllegalArgumentException("match not found !");
         }
         return optionalMatch.get();
+    }
+
+    @Override
+    public List<Match> getMatchByDate(Date date) {
+
+        return  matchRepository.findByDate(date);
     }
 
     @Override

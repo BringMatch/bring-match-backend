@@ -7,6 +7,7 @@ import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.Team;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -15,9 +16,10 @@ public interface MatchService {
 
     List<Match> getMatches();
 
-   void evaluateMatch(MatchDto matchDto);
+   void evaluateMatch(Match match);
 
     Match findMatchById(String match_id);
+   List<Match> getMatchByDate(Date date);
 
     void save(Match match);
 
