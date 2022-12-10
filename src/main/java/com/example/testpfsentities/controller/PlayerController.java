@@ -46,9 +46,5 @@ public class PlayerController {
         playerService.save(playerDto);
     }
 
-    @PostMapping(ApiPaths.JOIN_MATCH_AS_PLAYER)
-    public void joinMatchAsPlayer(@RequestBody @Validated PlayerDto playerDto) {
-        playerService.joinMatchAsPlayer(playerDto);
-    }
 
 }

@@ -16,18 +16,22 @@ public interface MatchService {
 
     List<Match> getMatches();
 
-   void evaluateMatch(Match match);
+    void evaluateMatch(MatchDto matchDto);
 
     Match findMatchById(String match_id);
-   List<Match> getMatchByDate(Date date);
+    List<Match> getMatchByDate(Date date);
+
 
     void save(Match match);
 
     Match setTeams(Match match , Team team);
 
     public void joinMatchAsTeam(MatchDto matchDto);
+    void joinMatchAsPlayer(MatchDto matchDto);
 
     void deleteMatch(MatchDto matchDto);
 
     List<MatchDto> getMatchesGround(String ground_id);
+
+    Integer countNumberTeams(String match_id);
 }

@@ -8,7 +8,9 @@ import com.example.testpfsentities.service.NotificationOwnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class NotificationOwnerServiceImpl implements NotificationOwnerService {
     @Override
     public NotificationOwner create(Reservation reservation , Ground ground) {
         NotificationOwner notificationOwner = new NotificationOwner();
-        notificationOwner.setCreatedAt(LocalDateTime.now());
+        notificationOwner.setCreatedAt(Date.from(Instant.now()));
         notificationOwner.setReservation(reservation);
         notificationOwner.setOwner(ground.getOwner());
         return  notificationOwner;

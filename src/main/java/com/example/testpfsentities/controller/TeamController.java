@@ -19,5 +19,4 @@ public class TeamController {
     public void createTeam(@RequestBody @Validated TeamDto teamDto) {
         teamService.createTeam(teamDto);
     }
-
 }

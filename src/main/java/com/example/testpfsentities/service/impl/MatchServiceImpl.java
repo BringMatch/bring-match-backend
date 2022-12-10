@@ -1,23 +1,25 @@
 package com.example.testpfsentities.service.impl;
 
-import com.example.testpfsentities.dto.MatchDto;
-import com.example.testpfsentities.dto.TeamDto;
+import com.example.testpfsentities.dto.*;
 import com.example.testpfsentities.entities.*;
 import com.example.testpfsentities.mapper.GlobalStatsMapper;
 import com.example.testpfsentities.mapper.MatchMapper;
+import com.example.testpfsentities.mapper.TeamMapper;
 import com.example.testpfsentities.repository.MatchRepository;
 import com.example.testpfsentities.service.*;
 import com.example.testpfsentities.utils.StringUtils;
 import com.example.testpfsentities.validations.MatchValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MatchServiceImpl implements MatchService {
+    private final TeamMapper teamMapper;
     private final MatchRepository matchRepository;
     private final MatchMapper matchMapper;
     private final MatchValidator matchValidator;
@@ -37,7 +39,6 @@ public class MatchServiceImpl implements MatchService {
         Ground ground = groundService.findByName(ground_name);
         Match match = matchMapper.toBo(matchDto);
         Reservation reservation = reservationService.create(matchDto, ground);
-
 
         if (matchDto.getPrivateMatch() == true) {
             match.setMatchCode(StringUtils.getRandomNumberString());
@@ -77,12 +78,12 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Match findMatchById(String match_id) {
-        Optional<Match> optionalMatch = matchRepository.findById(match_id);
+    public Match findMatchById(MatchDto matchDto) {
+        Optional<Match> optionalMatch = matchRepository.findById(matchDto.getId());
         if (optionalMatch.isEmpty()) {
             throw new IllegalArgumentException("match not found !");
         }
-        return optionalMatch.get();
+        return matchMapper.toBo(matchDto);
     }
 
     @Override
@@ -105,13 +106,25 @@ public class MatchServiceImpl implements MatchService {
     }
     @Override
     public void joinMatchAsTeam(MatchDto matchDto) {
-        TeamDto teamDto = matchDto.getTeams().get(0);
-        String match_id = matchDto.getId();
-        Match match = this.findMatchById(match_id);
-        Team team = teamService.createTeam(teamDto);
-        teamService.save(team);
-        Match match1 = this.setTeams(match, team);
-        matchRepository.save(match1);
+        Match match = this.findMatchById(matchDto);
+        match.getTeams().addAll(teamMapper.toBo(matchDto.getTeams()));
+        Match matchSaved = matchRepository.save(match);
+
+        teamService.assignPlayersWithTeams(matchSaved.getTeams());
+//        notificationPlayerService.create();
+//        NotificationPlayer notificationPlayer = new NotificationPlayer();
+//        notificationPlayer.setCurrentMatchId(matchSaved.getId());
+//        notificationPlayer.set
+//        notificationPlayer.setOwner_match();
+    }
+
+    @Override
+    public void joinMatchAsPlayer(MatchDto matchDto) {
+        Match match = this.findMatchById(matchDto);
+        Team team = teamService.getTeamById(matchDto);
+        teamService.assignNewPlayerToTeam(team, matchDto.getTeams().get(0).getPlayersTeams());
+        Match matchSaved = matchRepository.save(match);
+        teamService.assignPlayersWithTeams(matchSaved.getTeams());
     }
 
     @Override
@@ -120,8 +133,13 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<MatchDto> getMatchesGround(String ground_id) {
-        return null;
+    public List<MatchDto> getMatchesGround(String ground_name) {
+        return matchRepository.findByGroundName(ground_name);
+    }
+
+    @Override
+    public Integer countNumberTeams(String match_id) {
+        return 0;
     }
 
 

@@ -5,6 +5,7 @@ import com.example.testpfsentities.entities.Ground;
 import com.example.testpfsentities.mapper.GroundMapper;
 import com.example.testpfsentities.repository.GroundRepository;
 import com.example.testpfsentities.service.GroundService;
+import com.example.testpfsentities.service.OwnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class GroundServiceImpl implements GroundService {
     private final GroundRepository groundRepository;
     private final GroundMapper groundMapper;
+    private final OwnerService ownerService;
 
     @Override
     public List<GroundDto> getGrounds() {
@@ -40,11 +42,17 @@ public class GroundServiceImpl implements GroundService {
 
     @Override
     public void saveGround(GroundDto groundDto) {
-        groundRepository.save(groundMapper.toBo(groundDto));
+        String owner_id = groundDto.getOwner().getId();
+        if (ownerService.checkOwnerExists(owner_id)) {
+            groundRepository.save(groundMapper.toBo(groundDto));
+        } else {
+            throw new IllegalArgumentException("owner not existing !");
+        }
     }
 
     @Override
     public List<GroundDto> getOwnerGrounds(String owner_id) {
-        return null;
+        return groundRepository.findByOwner_Id(owner_id).stream().map((ground -> groundMapper.toDto(ground)))
+                .collect(Collectors.toList());
     }
 }

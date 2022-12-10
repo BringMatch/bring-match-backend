@@ -1,7 +1,6 @@
 package com.example.testpfsentities.controller;
 
 import com.example.testpfsentities.dto.MatchDto;
-import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.service.MatchService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
@@ -17,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MatchController {
     private final MatchService matchService;
+
     @PostMapping(ApiPaths.CREATE_MATCH)
     public void createMatch(@RequestBody @Validated MatchDto matchDto) {
         matchService.createMatch(matchDto);
@@ -37,13 +37,25 @@ public class MatchController {
         matchService.joinMatchAsTeam(matchDto);
     }
 
+    @PostMapping(ApiPaths.JOIN_MATCH_AS_PLAYER)
+    public void joinMatchAsPlayer(@RequestBody @Validated MatchDto matchDto) {
+        matchService.joinMatchAsPlayer(matchDto);
+    }
+
     @DeleteMapping(ApiPaths.DELETE_MATCH)
-    public void deleteMatch(@RequestBody() MatchDto matchDto){
+    public void deleteMatch(@RequestBody() MatchDto matchDto) {
         matchService.deleteMatch(matchDto);
     }
 
-    @GetMapping(ApiPaths.GET_MATCHES + "/{ground_id}")
-    public ResponseEntity<List<MatchDto>> getMatchesGround(@PathVariable(name = "ground_id") String ground_id) {
+    @GetMapping(ApiPaths.GET_MATCHES + "/{ground_name}")
+    public ResponseEntity<List<MatchDto>> getMatchesGround(@PathVariable(name = "ground_name") String ground_id) {
         return ResponseEntity.ok().body(matchService.getMatchesGround(ground_id));
     }
+
+    @GetMapping(ApiPaths.GET_CURRENT_NUMBER_TEAMS + "/{match_id}")
+    public ResponseEntity<Integer> getCurrentNumberTeams(@PathVariable(name = "match_id") String match_id) {
+        return ResponseEntity.ok().body(matchService.countNumberTeams(match_id));
+    }
+
+
 }

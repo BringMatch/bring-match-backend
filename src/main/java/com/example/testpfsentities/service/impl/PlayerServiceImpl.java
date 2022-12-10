@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,20 +26,20 @@ public class PlayerServiceImpl implements PlayerService {
     private final PlayerRepository playerRepository;
     @Lazy
     private final TeamPlayerService teamPlayerService;
-//    private final TeamService teamService;
+    //    private final TeamService teamService;
     private final PlayerMapper playerMapper;
 
     @Override
     public void createPlayer() {
         Player player = new Player();
         player.setEmail("yessinejawa@gmail.com");
-        player.setUpdatedAt(LocalDateTime.now());
+        player.setUpdatedAt(Date.from(Instant.now()));
         player.setPassword("yessine");
         player.setFirstName("ajaoua");
         player.setLastName("ajaqsdfoua");
         player.setPhoneNumber("45454");
         player.setRoleName("player");
-        player.setCreatedAt(LocalDateTime.now());
+        player.setCreatedAt(Date.from(Instant.now()));
         player.setNotificationPlayer(null);
         playerRepository.save(player);
     }
@@ -62,38 +63,6 @@ public class PlayerServiceImpl implements PlayerService {
         return optionalPlayer.get();
     }
 
-
-    @Override
-    public void joinMatchAsPlayer(PlayerDto playerDto) {
-
-//        String team_id = playerDto.getTeam_id();
-//        Team team = teamService.getTeamById(team_id);
-//
-//        String player_id = playerDto.getId();
-//        Optional<Player> playerOptional = playerRepository.findById(player_id);
-//        if (playerOptional.isEmpty()) {
-//            throw new IllegalArgumentException("player not existing !");
-//        }
-//        Player player = playerOptional.get();
-//
-//        TeamPlayerKey teamPlayerKey = new TeamPlayerKey();
-//        teamPlayerKey.setPlayer_id(player_id);
-//        teamPlayerKey.setTeam_id(team_id);
-//        TeamPlayer teamPlayer = new TeamPlayer();
-//        teamPlayer.setTeamPlayerKey(teamPlayerKey);
-//        teamPlayer.setTeam(team);
-//        teamPlayer.setPlayer(player);
-//        teamPlayer.setTeam_owner(false);
-//        teamPlayer.setMatch_owner(false);
-
-//        Set<TeamPlayer> teamPlayers = team.getPlayersTeams();
-//        teamPlayers.add(teamPlayer);
-//        team.setPlayersTeams(Set.of(teamPlayer));
-//
-//        teamPlayerService.save(teamPlayer);
-//        teamService.save(team);
-
-    }
 
     @Override
     public Team assignPlayersWithTeams(Team team, List<String> players) {

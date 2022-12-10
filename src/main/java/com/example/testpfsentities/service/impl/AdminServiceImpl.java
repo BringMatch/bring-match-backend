@@ -32,13 +32,13 @@ public class AdminServiceImpl implements AdminService {
     public void initAdmin() {
         Admin admin = new Admin();
         admin.setEmail("yessinejawa@gmail.com");
-        admin.setUpdatedAt(LocalDateTime.now());
+        admin.setUpdatedAt(Date.from(Instant.now()));
         admin.setPassword("yessine");
         admin.setFirstName("ajaoua");
         admin.setLastName("ajaqsdfoua");
         admin.setPhoneNumber("45454");
         admin.setRoleName("admin");
-        admin.setCreatedAt(LocalDateTime.now());
+        admin.setCreatedAt(Date.from(Instant.now()));
         adminRepository.save(admin);
     }
 

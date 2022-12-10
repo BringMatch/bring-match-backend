@@ -22,7 +22,7 @@ public class Player extends User {
     @OneToMany(mappedBy = "player")
     private List<PlayerStats> playerStats;
 
-    @OneToMany(mappedBy = "player")
+    @OneToMany(mappedBy = "owner_match")
     private List<NotificationPlayer> notificationPlayer;
 
 }
