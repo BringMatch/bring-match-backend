@@ -16,9 +16,9 @@ public interface MatchService {
 
     List<Match> getMatches();
 
-    void evaluateMatch(MatchDto matchDto);
+    void evaluateMatch(Match match);
 
-    Match findMatchById(String match_id);
+    Match findMatchById(MatchDto matchDto);
     List<Match> getMatchByDate(Date date);
 
 
