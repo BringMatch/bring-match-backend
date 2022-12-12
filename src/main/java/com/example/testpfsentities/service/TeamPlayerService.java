@@ -27,8 +27,6 @@ public interface TeamPlayerService {
     Collection<? extends TeamPlayer> map(List<TeamPlayerDto> teamPlayerDtos);
 
     void checksPlayerExist(PlayerDto player , Team team);
-
-
     void assignTeamsPlayersToTeam(Team team, List<TeamPlayerDto> teamPlayerDtoList);
 
 }
