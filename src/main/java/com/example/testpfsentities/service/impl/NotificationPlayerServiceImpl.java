@@ -23,8 +23,8 @@ public class NotificationPlayerServiceImpl implements NotificationPlayerService 
     @Override
     public NotificationPlayer create(String match_id, Player player) {
         NotificationPlayer notificationPlayer=new NotificationPlayer();
-        notificationPlayer.setPlayer(player);
-        notificationPlayer.setCreatedAt(LocalDateTime.now());
+        notificationPlayer.setOwner_match(player);
+       // notificationPlayer.setCreatedAt(LocalDateTime.now());
         notificationPlayer.setCurrentMatchId(match_id);
         return notificationPlayer;
     }

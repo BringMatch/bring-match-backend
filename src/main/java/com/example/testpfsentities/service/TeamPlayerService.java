@@ -17,9 +17,10 @@ public interface TeamPlayerService {
     void save(TeamPlayer teamPlayer);
 
     void saveAll(Set<TeamPlayer> playersTeams);
+    TeamPlayer saveTeamPlayer(TeamPlayer teamPlayer,Team team);
 
-    TeamPlayer createTeamPlayer(TeamPlayer teamPlayer,Team team);
     TeamPlayer getTeamPlayer();
+
     void assignPlayersWithTeamsExisted(List<String> teams_id, List<PlayerDto> playerDtoList);
 
     void assignPlayersWithTeamsNotExisted(List<TeamDto> teamDtoList, List<PlayerDto> playerDtoList);

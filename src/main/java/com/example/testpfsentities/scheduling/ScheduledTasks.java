@@ -46,6 +46,7 @@ public class ScheduledTasks {
             List<Match> matches=matchService.getMatchByDate(Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant()));
             for (Match match :matches){
                 matchService.evaluateMatch(match);
+                System.out.println("done");
             }
         }catch (Exception e){
             System.out.println("no match has selected");

@@ -31,6 +31,7 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
         teamPlayerRepository.save(teamPlayer);
     }
 
+
     @Override
     public void saveAll(Set<TeamPlayer> playersTeams) {
         teamPlayerRepository.saveAll(playersTeams);
@@ -41,6 +42,7 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
         teamPlayer.setTeam(team);
         return teamPlayerRepository.save(teamPlayer);
     }
+
 
     @Override
     public TeamPlayer getTeamPlayer() {
