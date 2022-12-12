@@ -10,7 +10,7 @@ public class GroundDto {
     private String id;
     private String name;
     private String address;
-    private String owner_id;
-    private String match_id;
+
+    private boolean status;
     private OwnerDto owner;
 }

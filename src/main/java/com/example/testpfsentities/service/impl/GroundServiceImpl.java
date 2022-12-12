@@ -7,6 +7,7 @@ import com.example.testpfsentities.repository.GroundRepository;
 import com.example.testpfsentities.service.GroundService;
 import com.example.testpfsentities.service.OwnerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GroundServiceImpl implements GroundService {
     private final GroundRepository groundRepository;
     private final GroundMapper groundMapper;
@@ -35,6 +37,14 @@ public class GroundServiceImpl implements GroundService {
         return groundOptional.get();
     }
 
+    public Ground findById(String ground_id) {
+        Optional<Ground> groundOptional = groundRepository.findById(ground_id);
+        if (groundOptional.isEmpty()) {
+            throw new IllegalArgumentException("ground not found !");
+        }
+        return groundOptional.get();
+    }
+
     @Override
     public void updateGround(GroundDto groundDto) {
 
@@ -52,7 +62,53 @@ public class GroundServiceImpl implements GroundService {
 
     @Override
     public List<GroundDto> getOwnerGrounds(String owner_id) {
-        return groundRepository.findByOwner_Id(owner_id).stream().map((ground -> groundMapper.toDto(ground)))
+        return groundRepository.findByOwner_Id(owner_id).stream().map((groundMapper::toDto))
                 .collect(Collectors.toList());
+    }
+
+    public List<Ground> getOwnerGroundsBo(String owner_id) {
+        return groundRepository.findByOwner_Id(owner_id);
+    }
+
+    @Override
+    public void updateStatusGround(GroundDto groundDto) {
+        Ground ground = findById(groundDto.getId());
+        ground.setStatus(groundDto.isStatus());
+        groundRepository.save(ground);
+    }
+
+    @Override
+    public void deleteGround(String ground_id) {
+        Ground ground = findById(ground_id);
+        groundRepository.delete(ground);
+    }
+
+    @Override
+    public Integer getNumberOwnerGrounds(String owner_id) {
+        log.info(String.valueOf(groundRepository.findByOwner_Id(owner_id).size()));
+        boolean ownerExists = ownerService.checkOwnerExists(owner_id);
+        if (!ownerExists) {
+            throw new IllegalArgumentException("owner not existing ");
+        }
+        return groundRepository.findByOwner_Id(owner_id).size();
+    }
+
+    @Override
+    public Integer getNumberGroundsOpen(String owner_id) {
+        boolean ownerExists = ownerService.checkOwnerExists(owner_id);
+        if (!ownerExists) {
+            throw new IllegalArgumentException("owner not existing ");
+        }
+        return groundRepository.findByOwner_Id(owner_id).stream().filter(Ground::isStatus).toList().size();
+    }
+
+    @Override
+    public Integer getNumberGroundsClosed(String owner_id) {
+        boolean ownerExists = ownerService.checkOwnerExists(owner_id);
+        if (!ownerExists) {
+            throw new IllegalArgumentException("owner not existing ");
+        }
+        return groundRepository.findByOwner_Id(owner_id).stream().filter(ground ->
+                !ground.isStatus()).toList().size();
     }
 }

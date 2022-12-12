@@ -20,4 +20,6 @@ public interface PlayerService {
 
 
     Team assignPlayersWithTeams(Team team, List<String> players);
+
+    void checksPlayerExist(PlayerDto player);
 }

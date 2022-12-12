@@ -12,16 +12,8 @@ public interface OwnerService {
     void save(OwnerDto ownerDto);
     List<OwnerDto> getOwners();
 
-
-    void saveGround(GroundDto groundDto);
-
     List<GroundDto> getGrounds(String owner_id);
 
-    List<MatchDto> getMatchesGround(String ground_id);
-
-    void updateGround(GroundDto groundDto);
-
-    void deleteMatch(MatchDto matchDto);
-
     boolean checkOwnerExists(String owner_id);
+
 }

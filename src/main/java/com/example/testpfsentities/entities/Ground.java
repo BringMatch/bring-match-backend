@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties(value = {"matches"},allowSetters = true)
+@JsonIgnoreProperties(value = {"matches"}, allowSetters = true)
 public class Ground extends AbstractEntity {
 
     @OneToMany(mappedBy = "ground")
@@ -25,12 +25,14 @@ public class Ground extends AbstractEntity {
 //    @OneToMany(cascade = CascadeType.ALL)
 //    private List<Reservation> reservations;
 
+    @Column(nullable = false, unique = true)
     private String name;
 
     @OneToMany(mappedBy = "ground")
     List<Image> images;
 
     private String address;
+    private boolean status;
 
 
 }

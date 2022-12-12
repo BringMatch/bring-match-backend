@@ -16,4 +16,5 @@ public class TeamDto {
     private String name;
     private List<TeamPlayerDto> playersTeams;
     private String match_id;
+    private int length;
 }

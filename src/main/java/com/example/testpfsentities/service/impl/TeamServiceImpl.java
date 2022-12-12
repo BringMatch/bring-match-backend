@@ -3,6 +3,7 @@ package com.example.testpfsentities.service.impl;
 import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.dto.TeamPlayerDto;
+import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.mapper.TeamMapper;
 import com.example.testpfsentities.repository.TeamRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,19 +50,30 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void assignNewPlayerToTeam(Team team, List<TeamPlayerDto> teamPlayerDtos) {
-        var list = teamPlayerService.map(teamPlayerDtos);
-        team.getPlayersTeams().addAll(list);
+    public void checkPlayersExist(Team team, List<TeamPlayerDto> teamPlayerDtos) {
+        teamPlayerDtos.forEach(teamPlayerDto -> {
+            teamPlayerService.checksPlayerExist(teamPlayerDto.getPlayer(), team);
+        });
     }
 
     @Override
-    public void assignPlayersWithTeams(List<Team> teamList) {
-        teamList.forEach(team -> {
-            log.info("team added {}", team);
-            team.getPlayersTeams().forEach(teamPlayer -> {
-                teamPlayerService.saveTeamPlayer(teamPlayer, team);
-            });
-        });
+    public Team getTeamByName(String name) {
+        Optional<Team> teamOptional = teamRepository.findByName(name);
+        if (teamOptional.isEmpty()) {
+            throw new IllegalArgumentException("team not found !");
+        }
+        return teamOptional.get();
+    }
+
+    @Override
+    public void assignTeamsPlayersToTeam(Team team, List<TeamPlayerDto> teamPlayerDtoList) {
+        teamPlayerService.assignTeamsPlayersToTeam(team, teamPlayerDtoList);
+    }
+
+    @Override
+    public void assignPlayersWithTeams(List<Team> teams, TeamDto teamDto) {
+        Team team = teams.stream().filter(teamElement -> teamElement.getName().equals(teamDto.getName())).toList().get(0);
+        team.getPlayersTeams().forEach(teamPlayer -> teamPlayerService.saveTeamPlayer(teamPlayer, team));
     }
 //        List<Team> list = new ArrayList<>();
 //        teamDtoList.forEach(teamDto -> {
