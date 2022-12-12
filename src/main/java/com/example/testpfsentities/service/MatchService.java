@@ -18,7 +18,7 @@ public interface MatchService {
 
     void evaluateMatch(Match match);
 
-    Match findMatchById(MatchDto matchDto);
+    Match findMatchById(String match_id);
     List<Match> getMatchByDate(Date date);
 
 
@@ -39,4 +39,8 @@ public interface MatchService {
     List<MatchDto> getMatchesGround(String ground_name);
 
     Integer getNumberOwnerMatches(String owner_id);
+
+    List<MatchDto> getMatchesOfOwnerGrounds(MatchDto matchDto);
+
+    String getMatchCode(String match_id);
 }

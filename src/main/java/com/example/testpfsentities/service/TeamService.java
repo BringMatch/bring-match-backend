@@ -14,17 +14,17 @@ public interface TeamService {
     Team createTeam(TeamDto teamDto);
 
 
-    Team getTeamById(MatchDto matchDto);
-
     void save(Team team);
 
-    void assignPlayersWithTeams(List<Team> team , TeamDto teamDto);
+    void assignPlayersWithTeams(List<Team> team, TeamDto teamDto);
 
-    void checkPlayersExist(Team team, List<TeamPlayerDto> listDto);
+    void validateInsertionPlayer(Team team, List<TeamPlayerDto> listDto);
 
     Team getTeamByName(String name);
 
     void assignTeamsPlayersToTeam(Team team, List<TeamPlayerDto> teamPlayerDtoList);
 
+
+    List<String> getFreePositions(String team_id);
 }
 

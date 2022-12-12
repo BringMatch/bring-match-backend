@@ -21,12 +21,10 @@ public interface TeamPlayerService {
 
     TeamPlayer getTeamPlayer();
 
-    void assignPlayersWithTeamsExisted(List<String> teams_id, List<PlayerDto> playerDtoList);
-
-    void assignPlayersWithTeamsNotExisted(List<TeamDto> teamDtoList, List<PlayerDto> playerDtoList);
 
     Collection<? extends TeamPlayer> map(List<TeamPlayerDto> teamPlayerDtos);
-    void checksPlayerExist(PlayerDto player , Team team);
+    void validateTeamPlayer(PlayerDto player , Team team , TeamPlayerDto teamPlayerDto);
     void assignTeamsPlayersToTeam(Team team, List<TeamPlayerDto> teamPlayerDtoList);
 
+    List<String> getCurrentTeamPositions();
 }

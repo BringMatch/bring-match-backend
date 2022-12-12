@@ -1,6 +1,7 @@
 package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.PlayerDto;
+import com.example.testpfsentities.dto.PlayerSearchDto;
 import com.example.testpfsentities.entities.*;
 import com.example.testpfsentities.entities.composite.TeamPlayerKey;
 import com.example.testpfsentities.mapper.PlayerMapper;
@@ -36,6 +37,8 @@ public class PlayerServiceImpl implements PlayerService {
         player.setLastName("ajaqsdfoua");
         player.setPhoneNumber("45454");
         player.setRoleName("player");
+        player.setTown("kech");
+        player.setRegion("ensa");
         player.setCreatedAt(Date.from(Instant.now()));
         player.setNotificationPlayer(null);
         playerRepository.save(player);
@@ -79,6 +82,16 @@ public class PlayerServiceImpl implements PlayerService {
         if (optionalPlayer.isEmpty()) {
             throw new IllegalArgumentException("player not found !");
         }
+    }
+
+    @Override
+    public List<PlayerDto> getPlayers(PlayerSearchDto playerSearchDto) {
+        return playerMapper.toDto(playerRepository.findByFirstNameAndTownAndRegionAndLastName(
+                playerSearchDto.getFirstName(),
+                playerSearchDto.getLastName(),
+                playerSearchDto.getTown(),
+                playerSearchDto.getRegion())
+        );
     }
 
 

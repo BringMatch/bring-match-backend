@@ -17,6 +17,8 @@ public class PlayerDto {
     private String phoneNumber;
     private String email;
     private String roleName;
+    private String town;
+    private String region;
     private String team_id;
 //    private String match_id;
 }

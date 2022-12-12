@@ -31,4 +31,6 @@ public class TeamPlayer extends AbstractEntity {
     @Column(columnDefinition = "boolean default false")
     private boolean team_owner;
 
+    private String position;
+
 }

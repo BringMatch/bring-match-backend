@@ -28,4 +28,6 @@ public interface GroundService {
     Integer getNumberGroundsOpen(String owner_id);
 
     Integer getNumberGroundsClosed(String owner_id);
+
+    boolean getGroundStatusById(Ground ground);
 }

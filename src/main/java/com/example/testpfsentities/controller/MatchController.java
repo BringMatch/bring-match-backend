@@ -59,8 +59,18 @@ public class MatchController {
     }
 
     @GetMapping(ApiPaths.GET_NUMBER_OWNER_MATCHES + "/{owner_id}")
-    public ResponseEntity<Integer> getNumberOwnerMatches(@PathVariable(name = "owner_id") String owner_id){
+    public ResponseEntity<Integer> getNumberOwnerMatches(@PathVariable(name = "owner_id") String owner_id) {
         return ResponseEntity.ok().body(matchService.getNumberOwnerMatches(owner_id));
+    }
+
+    @GetMapping(ApiPaths.GET_MATCHES_OF_OWNER_GROUNDS)
+    public ResponseEntity<List<MatchDto>> getMatchesOfOwnerGrounds(@RequestBody @Validated MatchDto matchDto) {
+        return ResponseEntity.ok().body(matchService.getMatchesOfOwnerGrounds(matchDto));
+    }
+
+    @GetMapping(ApiPaths.GET_MATCH_CODE_IF_PRIVATE + "/{match_id}")
+    public ResponseEntity<String> getMatchCodeIfPrivate(@PathVariable(name = "match_id") String match_id) {
+        return ResponseEntity.ok().body(matchService.getMatchCode(match_id));
     }
 
 }

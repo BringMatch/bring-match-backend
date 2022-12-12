@@ -25,4 +25,7 @@ public class Player extends User {
     @OneToMany(mappedBy = "owner_match")
     private List<NotificationPlayer> notificationPlayer;
 
+    private String town;
+    private String region;
+
 }

@@ -111,4 +111,9 @@ public class GroundServiceImpl implements GroundService {
         return groundRepository.findByOwner_Id(owner_id).stream().filter(ground ->
                 !ground.isStatus()).toList().size();
     }
+
+    @Override
+    public boolean getGroundStatusById(Ground ground) {
+        return ground.isStatus();
+    }
 }

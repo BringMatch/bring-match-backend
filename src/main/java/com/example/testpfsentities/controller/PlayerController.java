@@ -1,8 +1,7 @@
 package com.example.testpfsentities.controller;
 
-import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.dto.PlayerDto;
-import com.example.testpfsentities.dto.TeamDto;
+import com.example.testpfsentities.dto.PlayerSearchDto;
 import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +45,14 @@ public class PlayerController {
         playerService.save(playerDto);
     }
 
+    @GetMapping(ApiPaths.SEARCH_PLAYERS)
+    public ResponseEntity<List<PlayerDto>> getPlayersByIdAndNameAndTownAndRegion(
+            @RequestParam(value = "firstName", required = false) String firstName,
+            @RequestParam(value = "lastName", required = false) String lastName,
+            @RequestParam(value = "town", required = false) String town,
+            @RequestParam(value = "region", required = false) String region
+    ) {
+        return ResponseEntity.ok().body(playerService.getPlayers(new PlayerSearchDto(firstName, lastName, town, region)));
+    }
 
 }

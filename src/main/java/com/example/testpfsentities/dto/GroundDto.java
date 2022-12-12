@@ -12,5 +12,9 @@ public class GroundDto {
     private String address;
 
     private boolean status;
+    private int startHour;
+    private int endHour;
+    private String town;
+    private String region;
     private OwnerDto owner;
 }

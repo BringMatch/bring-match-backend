@@ -1,11 +1,7 @@
 package com.example.testpfsentities.mapper;
 
-import com.example.testpfsentities.dto.GroundDto;
 import com.example.testpfsentities.dto.MatchDto;
-import com.example.testpfsentities.dto.TeamDto;
-import com.example.testpfsentities.entities.Ground;
 import com.example.testpfsentities.entities.Match;
-import com.example.testpfsentities.entities.Team;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -17,7 +13,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class MatchMapper {
+public class PlayerSearchMapper {
     private final ModelMapper modelMapper;
 
     public Match toBo(MatchDto matchDto) {
