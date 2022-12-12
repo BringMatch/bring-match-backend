@@ -67,16 +67,12 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public void evaluateMatch(Match match) {
-        Optional<Match> optionalMatch = matchRepository.findById(match.getId());
-        if (optionalMatch.isEmpty()){
-            throw new IllegalArgumentException("match not found");
-        }
         String match_id=match.getId();
 
-        Player p=match.getTeams().get(0).getPlayersTeams().get(0).getPlayer();
-//        TeamPlayer teamPlayer=teamPlayerService.getTeamPlayer();
-
-//        Player palyer=teamPlayer.getPlayer();
+        List<Team> teams = match.getTeams();
+        TeamPlayer teamPlayer=teams.get(0).getPlayersTeams().get(0);
+        log.info("here asjaskd");
+        Player p=teamPlayer.getPlayer();
         NotificationPlayer notificationPlayer=notificationPlayerService.create(match_id,p);
         notificationPlayerService.save(notificationPlayer);
 
@@ -95,6 +91,11 @@ public class MatchServiceImpl implements MatchService {
     public List<Match> getMatchByDate(Date date) {
 
         return  matchRepository.findByDate(date);
+    }
+
+    @Override
+    public List<MatchDto> getMatchsByRegionAndTown(String town, String region) {
+        return matchMapper.toDto(matchRepository.findMatchsByRegionAndTown(town,region));
     }
 
     @Override

@@ -61,6 +61,11 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
+    public List<GroundDto> getAllGroundsByTownAndRegion(String town, String region) {
+        return groundMapper.toDto(groundRepository.findAllGroundByTownAndRegion(town,region));
+    }
+
+    @Override
     public List<GroundDto> getOwnerGrounds(String owner_id) {
         return groundRepository.findByOwner_Id(owner_id).stream().map((groundMapper::toDto))
                 .collect(Collectors.toList());

@@ -14,6 +14,7 @@ public interface GroundService {
     void updateGround(GroundDto groundDto);
 
     void saveGround(GroundDto groundDto);
+    List<GroundDto>  getAllGroundsByTownAndRegion(String town,String region);
 
     List<GroundDto> getOwnerGrounds(String owner_id);
 

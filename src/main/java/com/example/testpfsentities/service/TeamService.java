@@ -13,7 +13,6 @@ import java.util.List;
 public interface TeamService {
     Team createTeam(TeamDto teamDto);
 
-
     Team getTeamById(MatchDto matchDto);
 
     void save(Team team);

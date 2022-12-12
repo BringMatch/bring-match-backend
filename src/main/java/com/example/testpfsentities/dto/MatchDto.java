@@ -20,4 +20,6 @@ public class MatchDto {
     private String matchType;
     private String groundName;
     private String matchCode;
+    private String town;
+    private String region;
 }

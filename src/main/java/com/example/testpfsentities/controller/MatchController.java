@@ -1,5 +1,6 @@
 package com.example.testpfsentities.controller;
 
+import com.example.testpfsentities.dto.GroundDto;
 import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.service.MatchService;
@@ -62,5 +63,8 @@ public class MatchController {
     public ResponseEntity<Integer> getNumberOwnerMatches(@PathVariable(name = "owner_id") String owner_id){
         return ResponseEntity.ok().body(matchService.getNumberOwnerMatches(owner_id));
     }
-
+    @GetMapping(ApiPaths.GET_MATCHES + "/{town}" + "/{region}")
+    public ResponseEntity<List<MatchDto>> getGroundsByRegionAndTown(@PathVariable(name = "town") String town, @PathVariable(name = "region") String region) {
+        return ResponseEntity.ok().body(matchService.getMatchsByRegionAndTown(town,region));
+    }
 }

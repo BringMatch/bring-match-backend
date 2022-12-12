@@ -25,6 +25,8 @@ public class Match extends AbstractEntity {
     private Boolean privateMatch;
     private String matchCode;
     private Date date;
+    private String town;
+    private String region;
 
 
 

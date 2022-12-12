@@ -21,6 +21,7 @@ public interface MatchService {
     Match findMatchById(MatchDto matchDto);
     List<Match> getMatchByDate(Date date);
 
+    List<MatchDto> getMatchsByRegionAndTown(String town,String region);
 
     void save(Match match);
 

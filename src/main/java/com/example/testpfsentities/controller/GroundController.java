@@ -63,6 +63,10 @@ public class GroundController {
     public ResponseEntity<Integer> getNumberOwnerGroundsClosed(@PathVariable(name = "owner_id") String owner_id) {
         return ResponseEntity.ok().body(groundService.getNumberGroundsClosed(owner_id));
     }
+    @GetMapping(ApiPaths.GET_GROUNDS + "{town}" + "/{region}")
+    public ResponseEntity<List<GroundDto>> getGroundsByRegionAndTown(@PathVariable(name = "town") String town, @PathVariable(name = "region") String region) {
+        return ResponseEntity.ok().body(groundService.getAllGroundsByTownAndRegion(town,region));
+    }
 
 
 }
