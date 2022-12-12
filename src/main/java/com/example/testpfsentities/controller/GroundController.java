@@ -17,12 +17,14 @@ import java.util.List;
 @Slf4j
 public class GroundController {
     private final GroundService groundService;
+
     @GetMapping(ApiPaths.GET_GROUNDS)
-    public ResponseEntity<List<GroundDto>> getGrounds(){
+    public ResponseEntity<List<GroundDto>> getGrounds() {
         return ResponseEntity.ok().body(groundService.getGrounds());
     }
+
     @PutMapping(ApiPaths.UPDATE_GROUND)
-    public void updateGround(@RequestBody @Validated GroundDto groundDto){
+    public void updateGround(@RequestBody @Validated GroundDto groundDto) {
         groundService.updateGround(groundDto);
     }
 
@@ -36,5 +38,31 @@ public class GroundController {
         log.info(groundService.getOwnerGrounds(owner_id).toString());
         return ResponseEntity.ok().body(groundService.getOwnerGrounds(owner_id));
     }
+
+    @PutMapping(ApiPaths.UPDATE_STATUS_GROUND)
+    public void updateStatusGround(@RequestBody @Validated GroundDto groundDto) {
+        groundService.updateStatusGround(groundDto);
+    }
+
+    @DeleteMapping(ApiPaths.DELETE_GROUND + "/{ground_id}")
+    public void deleteGround(@PathVariable(name = "ground_id") String ground_id) {
+        groundService.deleteGround(ground_id);
+    }
+
+    @GetMapping(ApiPaths.GET_NUMBER_OWNER_GROUNDS + "/{owner_id}")
+    public ResponseEntity<Integer> getNumberOwnerGrounds(@PathVariable(name = "owner_id") String owner_id) {
+        return ResponseEntity.ok().body(groundService.getNumberOwnerGrounds(owner_id));
+    }
+
+    @GetMapping(ApiPaths.GET_NUMBER_OWNER_GROUNDS_OPEN + "/{owner_id}")
+    public ResponseEntity<Integer> getNumberOwnerGroundsOpen(@PathVariable(name = "owner_id") String owner_id) {
+        return ResponseEntity.ok().body(groundService.getNumberGroundsOpen(owner_id));
+    }
+
+    @GetMapping(ApiPaths.GET_NUMBER_OWNER_GROUNDS_CLOSED + "/{owner_id}")
+    public ResponseEntity<Integer> getNumberOwnerGroundsClosed(@PathVariable(name = "owner_id") String owner_id) {
+        return ResponseEntity.ok().body(groundService.getNumberGroundsClosed(owner_id));
+    }
+
 
 }

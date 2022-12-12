@@ -22,13 +22,14 @@ public final class ApiPaths {
 
 
     public final static String MATCHES = "/matches";
-    public final static String GET_MATCHES = MATCHES + SLASH;
+    public final static String GET_MATCHES = MATCHES;
     public final static String CREATE_MATCH = "/create-match";
     public final static String JOIN_MATCH_AS_PLAYER = "/join-match-player";
     public final static String JOIN_MATCH_AS_TEAM = "/join-match-team";
     public static final String DELETE_MATCH = MATCHES + "/delete-match";
     public static final String EVALUATE_MATCH = MATCHES + "/evaluate-match";
     public static final String GET_CURRENT_NUMBER_TEAMS = "/number-teams";
+    public static final String GET_NUMBER_OWNER_MATCHES = "/number-owner-matches";
 
 
     public final static String TEAMS = "/teams";
@@ -43,10 +44,19 @@ public final class ApiPaths {
 
 
     public static final String OWNERS = "/owners";
-    public static final String GROUNDS = "/grounds";
-    public static final String SAVE_OWNER = "/save";
-    public static final String SAVE_GROUND = "/save-ground";
     public final static String GET_OWNERS = OWNERS + SLASH;
+    public static final String SAVE_OWNER = "/save";
+    public static final String GET_NUMBER_OWNER_GROUNDS = "/number-owner-grounds";
+    public static final String GET_NUMBER_OWNER_GROUNDS_OPEN = "/number-owner-grounds-open";
+    public static final String GET_NUMBER_OWNER_GROUNDS_CLOSED = "/number-owner-grounds-closed";
+
+
+
+    public static final String GROUNDS = "/grounds";
+    public static final String SAVE_GROUND = "/save-ground";
+    public static final String DELETE_GROUND = "/delete-ground";
+    public static final String UPDATE_STATUS_GROUND = "/update-status-ground";
+    public static final String GET_NUMBER_GROUND_MATCHES = "/number-ground-matches";
     public final static String GET_GROUNDS = GROUNDS + SLASH;
     public final static String UPDATE_GROUND = "/update-ground";
 

@@ -23,7 +23,7 @@ public class MatchController {
     }
 
     @GetMapping(ApiPaths.GET_MATCHES)
-    public ResponseEntity<List<Match>> getMatches() {
+    public ResponseEntity<List<MatchDto>> getMatches() {
         return ResponseEntity.ok().body(matchService.getMatches());
     }
 
@@ -33,13 +33,13 @@ public class MatchController {
     }
 
     @PostMapping(ApiPaths.JOIN_MATCH_AS_TEAM)
-    public void joinMatchAsTeam(@RequestBody @Validated MatchDto matchDto) {
-        matchService.joinMatchAsTeam(matchDto);
+    public ResponseEntity<Match> joinMatchAsTeam(@RequestBody @Validated MatchDto matchDto) {
+        return ResponseEntity.ok().body(matchService.joinMatchAsTeam(matchDto));
     }
 
     @PostMapping(ApiPaths.JOIN_MATCH_AS_PLAYER)
-    public void joinMatchAsPlayer(@RequestBody @Validated MatchDto matchDto) {
-        matchService.joinMatchAsPlayer(matchDto);
+    public ResponseEntity<Match> joinMatchAsPlayer(@RequestBody @Validated MatchDto matchDto) {
+        return ResponseEntity.ok().body(matchService.joinMatchAsPlayer(matchDto));
     }
 
     @DeleteMapping(ApiPaths.DELETE_MATCH)
@@ -47,15 +47,20 @@ public class MatchController {
         matchService.deleteMatch(matchDto);
     }
 
-    @GetMapping(ApiPaths.GET_MATCHES + "/{ground_name}")
-    public ResponseEntity<List<MatchDto>> getMatchesGround(@PathVariable(name = "ground_name") String ground_id) {
-        return ResponseEntity.ok().body(matchService.getMatchesGround(ground_id));
-    }
 
     @GetMapping(ApiPaths.GET_CURRENT_NUMBER_TEAMS + "/{match_id}")
     public ResponseEntity<Integer> getCurrentNumberTeams(@PathVariable(name = "match_id") String match_id) {
         return ResponseEntity.ok().body(matchService.countNumberTeams(match_id));
     }
 
+    @GetMapping(ApiPaths.GET_MATCHES + "/{ground_name}")
+    public ResponseEntity<List<MatchDto>> getMatchesGround(@PathVariable(name = "ground_name") String ground_name) {
+        return ResponseEntity.ok().body(matchService.getMatchesGround(ground_name));
+    }
+
+    @GetMapping(ApiPaths.GET_NUMBER_OWNER_MATCHES + "/{owner_id}")
+    public ResponseEntity<Integer> getNumberOwnerMatches(@PathVariable(name = "owner_id") String owner_id){
+        return ResponseEntity.ok().body(matchService.getNumberOwnerMatches(owner_id));
+    }
 
 }

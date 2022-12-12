@@ -17,6 +17,7 @@ public class NotificationPlayer extends Notification {
     @ManyToOne
     @JoinColumn(name = "owner_player_id")
     private Player owner_match;
+
     private String currentMatchId;
 
 

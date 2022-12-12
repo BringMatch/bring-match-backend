@@ -16,7 +16,7 @@ import java.util.Set;
 public interface MatchService {
     void createMatch(MatchDto matchDto);
 
-    List<Match> getMatches();
+    List<MatchDto> getMatches();
 
     void evaluateMatch(MatchDto matchDto);
 
@@ -26,13 +26,16 @@ public interface MatchService {
 
     Match setTeams(Match match , Team team);
 
-    void joinMatchAsTeam(MatchDto matchDto);
+    Match joinMatchAsTeam(MatchDto matchDto);
 
-    void joinMatchAsPlayer(MatchDto matchDto);
+    Match joinMatchAsPlayer(MatchDto matchDto);
 
     void deleteMatch(MatchDto matchDto);
 
-    List<MatchDto> getMatchesGround(String ground_id);
 
     Integer countNumberTeams(String match_id);
+
+    List<MatchDto> getMatchesGround(String ground_name);
+
+    Integer getNumberOwnerMatches(String owner_id);
 }

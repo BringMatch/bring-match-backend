@@ -24,9 +24,6 @@ import java.util.stream.Collectors;
 public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository playerRepository;
-    @Lazy
-    private final TeamPlayerService teamPlayerService;
-    //    private final TeamService teamService;
     private final PlayerMapper playerMapper;
 
     @Override
@@ -74,6 +71,14 @@ public class PlayerServiceImpl implements PlayerService {
 //        });
 //        team.setPlayersTeams(teamPlayers);
         return null;
+    }
+
+    @Override
+    public void checksPlayerExist(PlayerDto player) {
+        Optional<Player> optionalPlayer = playerRepository.findById(player.getId());
+        if (optionalPlayer.isEmpty()) {
+            throw new IllegalArgumentException("player not found !");
+        }
     }
 
 
