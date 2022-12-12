@@ -17,15 +17,15 @@ public interface TeamPlayerService {
     void save(TeamPlayer teamPlayer);
 
     void saveAll(Set<TeamPlayer> playersTeams);
-
     TeamPlayer saveTeamPlayer(TeamPlayer teamPlayer,Team team);
+
+    TeamPlayer getTeamPlayer();
 
     void assignPlayersWithTeamsExisted(List<String> teams_id, List<PlayerDto> playerDtoList);
 
     void assignPlayersWithTeamsNotExisted(List<TeamDto> teamDtoList, List<PlayerDto> playerDtoList);
 
     Collection<? extends TeamPlayer> map(List<TeamPlayerDto> teamPlayerDtos);
-
     void checksPlayerExist(PlayerDto player , Team team);
     void assignTeamsPlayersToTeam(Team team, List<TeamPlayerDto> teamPlayerDtoList);
 

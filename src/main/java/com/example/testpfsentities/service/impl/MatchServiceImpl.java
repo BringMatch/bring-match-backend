@@ -2,6 +2,7 @@ package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.*;
 import com.example.testpfsentities.entities.*;
+import com.example.testpfsentities.mapper.GlobalStatsMapper;
 import com.example.testpfsentities.mapper.MatchMapper;
 import com.example.testpfsentities.mapper.TeamMapper;
 import com.example.testpfsentities.mapper.TeamPlayerMapper;
@@ -27,10 +28,14 @@ public class MatchServiceImpl implements MatchService {
     private final MatchMapper matchMapper;
     private final TeamPlayerMapper teamPlayerMapper;
     private final MatchValidator matchValidator;
+    private final GlobalStatsMapper globalStatsMapper;
     private final GroundService groundService;
     private final ReservationService reservationService;
     private final NotificationOwnerService notificationOwnerService;
+    private final GlobalStatsService globalStatsService;
     private final TeamService teamService;
+    private final TeamPlayerService teamPlayerService;
+    private final NotificationPlayerService notificationPlayerService;
 
     @Override
     public void createMatch(MatchDto matchDto) {
@@ -61,7 +66,19 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public void evaluateMatch(MatchDto matchDto) {
+    public void evaluateMatch(Match match) {
+        Optional<Match> optionalMatch = matchRepository.findById(match.getId());
+        if (optionalMatch.isEmpty()){
+            throw new IllegalArgumentException("match not found");
+        }
+        String match_id=match.getId();
+
+        Player p=match.getTeams().get(0).getPlayersTeams().get(0).getPlayer();
+//        TeamPlayer teamPlayer=teamPlayerService.getTeamPlayer();
+
+//        Player palyer=teamPlayer.getPlayer();
+        NotificationPlayer notificationPlayer=notificationPlayerService.create(match_id,p);
+        notificationPlayerService.save(notificationPlayer);
 
     }
 
@@ -72,6 +89,12 @@ public class MatchServiceImpl implements MatchService {
             throw new IllegalArgumentException("match not found !");
         }
         return optionalMatch.get();
+    }
+
+    @Override
+    public List<Match> getMatchByDate(Date date) {
+
+        return  matchRepository.findByDate(date);
     }
 
     @Override
@@ -86,7 +109,6 @@ public class MatchServiceImpl implements MatchService {
         match.setTeams(teamList);
         return match;
     }
-
     @Override
     public Match joinMatchAsTeam(MatchDto matchDto) {
         Match match = this.findMatchById(matchDto);

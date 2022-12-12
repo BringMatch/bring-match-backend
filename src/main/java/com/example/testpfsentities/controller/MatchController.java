@@ -27,10 +27,10 @@ public class MatchController {
         return ResponseEntity.ok().body(matchService.getMatches());
     }
 
-    @PostMapping(ApiPaths.EVALUATE_MATCH)
-    public void evaluateMatch(@RequestBody @Validated MatchDto matchDto) {
-        matchService.evaluateMatch(matchDto);
-    }
+//    @PostMapping(ApiPaths.EVALUATE_MATCH +  "/match_id")
+//    public void evaluateMatch(@PathVariable(name = "match_id") String match_id) {
+//        matchService.evaluateMatch(match_id);
+//    }
 
     @PostMapping(ApiPaths.JOIN_MATCH_AS_TEAM)
     public ResponseEntity<Match> joinMatchAsTeam(@RequestBody @Validated MatchDto matchDto) {

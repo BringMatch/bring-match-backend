@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -15,8 +16,6 @@ import java.util.List;
 public class Match extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private MatchType matchType;
-    @OneToOne
-    private GlobalStats globalStats;
     @ManyToOne
     private Ground ground;
 
@@ -24,8 +23,9 @@ public class Match extends AbstractEntity {
     private List<Team> teams;
 
     private Boolean privateMatch;
-
-
     private String matchCode;
+    private Date date;
+
+
 
 }

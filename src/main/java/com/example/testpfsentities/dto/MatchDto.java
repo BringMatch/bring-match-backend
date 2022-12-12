@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -13,9 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class MatchDto {
     private String id;
-    private String date;
+    private Date date;
     private List<TeamDto> teams;
-    private String hour;
     private Boolean privateMatch;
     private String matchType;
     private String groundName;
