@@ -1,6 +1,7 @@
 package com.example.testpfsentities.controller;
 
 import com.example.testpfsentities.dto.GroundDto;
+import com.example.testpfsentities.dto.GroundSearchDto;
 import com.example.testpfsentities.service.GroundService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
 import lombok.RequiredArgsConstructor;
@@ -63,9 +64,12 @@ public class GroundController {
     public ResponseEntity<Integer> getNumberOwnerGroundsClosed(@PathVariable(name = "owner_id") String owner_id) {
         return ResponseEntity.ok().body(groundService.getNumberGroundsClosed(owner_id));
     }
-    @GetMapping(ApiPaths.GET_GROUNDS + "{town}" + "/{region}")
-    public ResponseEntity<List<GroundDto>> getGroundsByRegionAndTown(@PathVariable(name = "town") String town, @PathVariable(name = "region") String region) {
-        return ResponseEntity.ok().body(groundService.getAllGroundsByTownAndRegion(town,region));
+    @GetMapping(ApiPaths.SEARCH_GROUND)
+    public ResponseEntity<List<GroundDto>> getGroundsByRegionAndTown(
+            @RequestParam(value = "town", required = false) String town,
+            @RequestParam(value = "region", required = false) String region
+    ) {
+        return ResponseEntity.ok().body(groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(town,region)));
     }
 
 

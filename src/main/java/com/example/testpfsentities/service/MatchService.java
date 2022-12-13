@@ -2,6 +2,7 @@ package com.example.testpfsentities.service;
 
 import com.example.testpfsentities.dto.GroundDto;
 import com.example.testpfsentities.dto.MatchDto;
+import com.example.testpfsentities.dto.MatchSearchDto;
 import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.Team;
@@ -18,10 +19,10 @@ public interface MatchService {
 
     void evaluateMatch(Match match);
 
-    Match findMatchById(MatchDto matchDto);
+    Match findMatchById(String match_id);
     List<Match> getMatchByDate(Date date);
 
-    List<MatchDto> getMatchsByRegionAndTown(String town,String region);
+    List<MatchDto> getMatchsByRegionAndTown(MatchSearchDto matchSearchDto);
 
     void save(Match match);
 
@@ -40,4 +41,8 @@ public interface MatchService {
     List<MatchDto> getMatchesGround(String ground_name);
 
     Integer getNumberOwnerMatches(String owner_id);
+
+    List<MatchDto> getMatchesOfOwnerGrounds(MatchDto matchDto);
+
+    String getMatchCode(String match_id);
 }

@@ -2,6 +2,7 @@ package com.example.testpfsentities.controller;
 
 import com.example.testpfsentities.dto.GroundDto;
 import com.example.testpfsentities.dto.MatchDto;
+import com.example.testpfsentities.dto.MatchSearchDto;
 import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.service.MatchService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
@@ -60,11 +61,27 @@ public class MatchController {
     }
 
     @GetMapping(ApiPaths.GET_NUMBER_OWNER_MATCHES + "/{owner_id}")
-    public ResponseEntity<Integer> getNumberOwnerMatches(@PathVariable(name = "owner_id") String owner_id){
+    public ResponseEntity<Integer> getNumberOwnerMatches(@PathVariable(name = "owner_id") String owner_id) {
         return ResponseEntity.ok().body(matchService.getNumberOwnerMatches(owner_id));
     }
-    @GetMapping(ApiPaths.GET_MATCHES + "/{town}" + "/{region}")
-    public ResponseEntity<List<MatchDto>> getGroundsByRegionAndTown(@PathVariable(name = "town") String town, @PathVariable(name = "region") String region) {
-        return ResponseEntity.ok().body(matchService.getMatchsByRegionAndTown(town,region));
+
+    @GetMapping(ApiPaths.SEARCH_Match)
+    public ResponseEntity<List<MatchDto>> getGroundsByRegionAndTown(
+            @RequestParam(value = "town", required = false) String town,
+            @RequestParam(value = "region", required = false) String region) {
+        return ResponseEntity.ok().body(matchService.getMatchsByRegionAndTown(new MatchSearchDto(town,region)));
     }
+
+
+    @GetMapping(ApiPaths.GET_MATCHES_OF_OWNER_GROUNDS)
+    public ResponseEntity<List<MatchDto>> getMatchesOfOwnerGrounds(@RequestBody @Validated MatchDto matchDto) {
+        return ResponseEntity.ok().body(matchService.getMatchesOfOwnerGrounds(matchDto));
+    }
+
+    @GetMapping(ApiPaths.GET_MATCH_CODE_IF_PRIVATE + "/{match_id}")
+    public ResponseEntity<String> getMatchCodeIfPrivate(@PathVariable(name = "match_id") String match_id) {
+        return ResponseEntity.ok().body(matchService.getMatchCode(match_id));
+    }
+
+
 }

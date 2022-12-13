@@ -18,8 +18,9 @@ public class MatchDto {
     private List<TeamDto> teams;
     private Boolean privateMatch;
     private String matchType;
+    private int startHour;
     private String groundName;
+    private int duration;
     private String matchCode;
-    private String town;
-    private String region;
+    private OwnerDto ownerDto;
 }

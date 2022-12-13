@@ -1,6 +1,7 @@
 package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.GroundDto;
+import com.example.testpfsentities.dto.GroundSearchDto;
 import com.example.testpfsentities.entities.Ground;
 import com.example.testpfsentities.mapper.GroundMapper;
 import com.example.testpfsentities.repository.GroundRepository;
@@ -61,8 +62,11 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
-    public List<GroundDto> getAllGroundsByTownAndRegion(String town, String region) {
-        return groundMapper.toDto(groundRepository.findAllGroundByTownAndRegion(town,region));
+    public List<GroundDto> getAllGroundsByTownAndRegion(GroundSearchDto groundSearchDto) {
+        return groundMapper.toDto(groundRepository.findAllGroundByTownAndRegion(
+                groundSearchDto.getTown(),
+                groundSearchDto.getRegion()
+        ));
     }
 
     @Override
@@ -115,5 +119,10 @@ public class GroundServiceImpl implements GroundService {
         }
         return groundRepository.findByOwner_Id(owner_id).stream().filter(ground ->
                 !ground.isStatus()).toList().size();
+    }
+
+    @Override
+    public boolean getGroundStatusById(Ground ground) {
+        return ground.isStatus();
     }
 }

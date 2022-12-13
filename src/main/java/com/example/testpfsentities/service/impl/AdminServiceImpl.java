@@ -1,5 +1,6 @@
 package com.example.testpfsentities.service.impl;
 
+import com.example.testpfsentities.Email.EmailSenderForOwner;
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.entities.Admin;
 import com.example.testpfsentities.entities.NotificationAdmin;
@@ -11,6 +12,9 @@ import com.example.testpfsentities.repository.OwnerRepository;
 import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.service.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -27,6 +31,8 @@ public class AdminServiceImpl implements AdminService {
     private final OwnerRepository ownerRepository;
     private final NotificationAdminRepository notificationAdminRepository;
     private final PlayerRepository playerRepository;
+    @Autowired
+    private  EmailSenderForOwner emailSenderForOwner;
 
     @Override
     public void initAdmin() {
@@ -66,6 +72,12 @@ public class AdminServiceImpl implements AdminService {
         }
         owner.get().setActive(true);
         ownerRepository.save(owner.get());
+        String subject="compte créé avec succes";
+        String Body="Bienvenue chez Bring Match "+System.lineSeparator()+
+                    "Merci pour votre inscription à notre application "+System.lineSeparator()+
+                    "votre inscription est acceptée"+System.lineSeparator()+
+                    "Merci de ne pas répondre a cette email";
+        emailSenderForOwner.sendEmail(owner.get().getEmail(),subject,Body);
     }
 
     @Override

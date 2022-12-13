@@ -1,10 +1,7 @@
 package com.example.testpfsentities.dto;
 
-import com.example.testpfsentities.entities.composite.TeamPlayerKey;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -12,8 +9,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TeamPlayerDto {
-    String id;
-    PlayerDto player;
-    String position;
+public class PlayerSearchDto {
+    String firstName;
+    String lastName;
+    String town;
+    String region;
 }

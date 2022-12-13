@@ -3,19 +3,19 @@ package com.example.testpfsentities.service.impl;
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.dto.TeamPlayerDto;
-import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.entities.TeamPlayer;
-import com.example.testpfsentities.entities.composite.TeamPlayerKey;
 import com.example.testpfsentities.mapper.PlayerMapper;
 import com.example.testpfsentities.mapper.TeamPlayerMapper;
 import com.example.testpfsentities.repository.TeamPlayerRepository;
 import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.service.TeamPlayerService;
+import com.example.testpfsentities.utils.StringUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -56,30 +56,49 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
     }
 
     @Override
-    public void assignPlayersWithTeamsExisted(List<String> teams_id, List<PlayerDto> playerDtoList) {
-
-    }
-
-    @Override
-    public void assignPlayersWithTeamsNotExisted(List<TeamDto> teamDtoList, List<PlayerDto> playerDtoList) {
-
-    }
-
-    @Override
     public Collection<? extends TeamPlayer> map(List<TeamPlayerDto> teamPlayerDtos) {
         return teamPlayerMapper.toBo(teamPlayerDtos);
     }
 
     @Override
-    public void checksPlayerExist(PlayerDto player, Team team) {
-        playerService.checksPlayerExist(player);
-        checksPlayerExistInTheTeam(player, team);
+    public void validateTeamPlayer(PlayerDto playerDto, Team team, TeamPlayerDto teamPlayerDto) {
+        playerService.checksPlayerExist(playerDto);
+        checksPlayerExistInTheTeam(playerDto, team);
         checksLengthTeamInferiorOrEqualToMaxLengthTeam(team);
+        checksPositionNameExistsInSystem(teamPlayerDto.getPosition());
+        checksPositionPlayerDtoFree(teamPlayerDto, team);
+    }
+
+    private void checksPositionNameExistsInSystem(String position) {
+        if (!StringUtils.getListAvailablePositionsInATeam().contains(position)) {
+            throw new IllegalArgumentException("position not existing in our db ! change the name of your position");
+        }
+    }
+
+    private void checksPositionPlayerDtoFree(TeamPlayerDto teamPlayerDto, Team team) {
+        var listTeamPlayers = team.getPlayersTeams();
+        List<String> listPositionsInTeam = new ArrayList<>();
+        for (TeamPlayer teamPlayer : listTeamPlayers) {
+            listPositionsInTeam.add(teamPlayer.getPosition());
+        }
+        if (listPositionsInTeam.contains(teamPlayerDto.getPosition())) {
+            throw new IllegalArgumentException("this position already exists in the team ! please choose another position !");
+        }
     }
 
     @Override
     public void assignTeamsPlayersToTeam(Team team, List<TeamPlayerDto> teamPlayerDtoList) {
         teamPlayerMapper.toBo(teamPlayerDtoList);
+    }
+
+    @Override
+    public List<String> getCurrentTeamPositions() {
+        var listTeamPlayer = teamPlayerRepository.findAll();
+        List<String> finalCurrentTeamPosition = new ArrayList<>();
+        for (TeamPlayer teamPlayer : listTeamPlayer) {
+            finalCurrentTeamPosition.add(teamPlayer.getPosition());
+        }
+        return finalCurrentTeamPosition;
     }
 
     private void checksLengthTeamInferiorOrEqualToMaxLengthTeam(Team team) {

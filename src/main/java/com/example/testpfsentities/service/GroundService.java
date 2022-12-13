@@ -1,6 +1,7 @@
 package com.example.testpfsentities.service;
 
 import com.example.testpfsentities.dto.GroundDto;
+import com.example.testpfsentities.dto.GroundSearchDto;
 import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.entities.Ground;
 
@@ -14,7 +15,7 @@ public interface GroundService {
     void updateGround(GroundDto groundDto);
 
     void saveGround(GroundDto groundDto);
-    List<GroundDto>  getAllGroundsByTownAndRegion(String town,String region);
+    List<GroundDto>  getAllGroundsByTownAndRegion(GroundSearchDto groundSearchDto);
 
     List<GroundDto> getOwnerGrounds(String owner_id);
 
@@ -29,4 +30,6 @@ public interface GroundService {
     Integer getNumberGroundsOpen(String owner_id);
 
     Integer getNumberGroundsClosed(String owner_id);
+
+    boolean getGroundStatusById(Ground ground);
 }

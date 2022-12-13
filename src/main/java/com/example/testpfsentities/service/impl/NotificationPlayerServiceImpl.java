@@ -24,8 +24,9 @@ public class NotificationPlayerServiceImpl implements NotificationPlayerService 
     public NotificationPlayer create(String match_id, Player player) {
         NotificationPlayer notificationPlayer=new NotificationPlayer();
         notificationPlayer.setOwner_match(player);
+        notificationPlayer.setDelivered(false);
        // notificationPlayer.setCreatedAt(LocalDateTime.now());
         notificationPlayer.setCurrentMatchId(match_id);
-        return notificationPlayer;
+        return notificationPlayerRepository.save(notificationPlayer);
     }
 }

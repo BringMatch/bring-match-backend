@@ -1,9 +1,26 @@
 package com.example.testpfsentities.utils;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public interface StringUtils {
-    public static String getRandomNumberString() {
+    String GK = "GK";
+    String CB = "CB";
+    String RB = "RB";
+    String LB = "LB";
+    String CDM = "CMD";
+    String CM = "CM";
+    String RCM = "LCM";
+    String LCM = "LCM";
+    String RM = "RM";
+    String LM = "LM";
+    String CAM = "CAM";
+    String RW = "RW";
+    String LW = "LW";
+    String ST = "ST";
+
+    static String getRandomNumberString() {
         // It will generate 6 digit random Number.
         // from 0 to 999999
         Random rnd = new Random();
@@ -11,6 +28,10 @@ public interface StringUtils {
 
         // this will convert any number sequence into 6 character.
         return String.format("%06d", number);
+    }
+
+    static List<String> getListAvailablePositionsInATeam() {
+        return Arrays.asList(GK, CB, RB, LB, CDM, CM, LCM, RCM, CAM, RW, ST, LW, RM, LM);
     }
 }
 
