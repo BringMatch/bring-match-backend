@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,7 +74,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void assignPlayersWithTeams(List<Team> teams, TeamDto teamDto) {
-        Team team = teams.stream().filter(teamElement -> teamElement.getName().equals(teamDto.getName())).toList().get(0);
+        Team team = teams.stream().filter(teamElement -> teamElement.getName().equals(teamDto.getName())).collect(Collectors.toList()).get(0);
         team.getPlayersTeams().forEach(teamPlayer -> teamPlayerService.saveTeamPlayer(teamPlayer, team));
     }
 //        List<Team> list = new ArrayList<>();

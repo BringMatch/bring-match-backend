@@ -129,7 +129,7 @@ public class MatchServiceImpl implements MatchService {
 
         var team = match.getTeams().stream()
                 .filter(teamed -> teamed.getName().equals(matchDto.getTeams().get(0).getName()))
-                .toList().get(0);
+                .collect(Collectors.toList()).get(0);
 
         var list = team.getPlayersTeams();
 
