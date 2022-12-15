@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@JsonIgnoreProperties(value = {"userFrom"},allowSetters = true)
+@JsonIgnoreProperties(value = {"userFrom,userTo"},allowSetters = true)
 public class NotificationAdmin extends Notification {
     @ManyToOne
     @JoinColumn(name = "admin_id")

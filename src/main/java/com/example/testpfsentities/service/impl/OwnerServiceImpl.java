@@ -1,9 +1,7 @@
 package com.example.testpfsentities.service.impl;
 
-import com.example.testpfsentities.dto.GroundDto;
 import com.example.testpfsentities.dto.OwnerDto;
 import com.example.testpfsentities.entities.*;
-import com.example.testpfsentities.mapper.GroundMapper;
 import com.example.testpfsentities.mapper.OwnerMapper;
 import com.example.testpfsentities.repository.*;
 import com.example.testpfsentities.scheduling.NewUserEvent;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +35,7 @@ public class OwnerServiceImpl implements OwnerService {
         Owner owner = ownerMapper.toBo(ownerDto);
         ownerRepository.save(owner);
         Admin admin = adminService.save(owner);
-        notificationAdminService.save(admin);
+        notificationAdminService.save(admin,owner);
         applicationEventPublisher.publishEvent(new NewUserEvent(this, owner));
     }
 

@@ -5,7 +5,6 @@ import com.example.testpfsentities.entities.NotificationAdmin;
 import com.example.testpfsentities.entities.Owner;
 import com.example.testpfsentities.repository.NotificationAdminRepository;
 import com.example.testpfsentities.service.NotificationAdminService;
-import com.example.testpfsentities.service.OwnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class NotificationAdminServiceImpl implements NotificationAdminService {
     private final NotificationAdminRepository notificationAdminRepository;
-    private final OwnerService ownerService;
 
     @Override
     public List<NotificationAdmin> findAll() {
@@ -24,12 +22,18 @@ public class NotificationAdminServiceImpl implements NotificationAdminService {
     }
 
     @Override
-    public void save(Admin admin) {
+    public void save(Admin admin, Owner owner) {
         NotificationAdmin notificationAdmin = new NotificationAdmin();
         notificationAdmin.setDelivered(true);
         notificationAdmin.setUserTo(admin);
+        notificationAdmin.setUserFrom(owner);
         notificationAdmin.setRead(false);
+        notificationAdmin.setMessage(setNotificationAdminMessage(owner));
         notificationAdminRepository.save(notificationAdmin);
+    }
+
+    private String setNotificationAdminMessage(Owner owner) {
+        return owner.getLastName() + " " + owner.getFirstName() + " is joining our application !";
     }
 
     @Override
@@ -37,7 +41,8 @@ public class NotificationAdminServiceImpl implements NotificationAdminService {
         var notificationAdmin = findNotificationById(notif_id);
         Owner owner = notificationAdmin.getUserFrom();
         notificationAdmin.setRead(true);
-        ownerService.setActiveStatus(owner , true);
+        owner.setActive(true);
+//        ownerService.setActiveStatus(owner , true);
         notificationAdminRepository.save(notificationAdmin);
     }
 
@@ -46,7 +51,8 @@ public class NotificationAdminServiceImpl implements NotificationAdminService {
         var notificationAdmin = findNotificationById(notif_id);
         Owner owner = notificationAdmin.getUserFrom();
         notificationAdmin.setRead(true);
-        ownerService.setActiveStatus(owner , false);
+        owner.setActive(false);
+//        ownerService.setActiveStatus(owner , false);
         notificationAdminRepository.save(notificationAdmin);
     }
 

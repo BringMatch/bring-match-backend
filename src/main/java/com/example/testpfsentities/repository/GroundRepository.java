@@ -13,13 +13,17 @@ import java.util.Optional;
 @Repository
 public interface GroundRepository extends JpaRepository<Ground, String> {
     Optional<Ground> findByName(String name);
+
     List<Ground> findByOwner_Id(String owner_id);
+
     @Query(value = "SELECT c FROM Ground c " +
-            "WHERE LOWER(c.town)=:town " +
-            "and LOWER(c.region)=:region"
+            "WHERE ( :town='NULL' or LOWER(c.town)=:town )" +
+            "and (:region='NULL' or LOWER(c.region)=:region)"
     )
     List<Ground> findAllGroundByTownAndRegion(
             @Param("town") String town,
             @Param("region") String region
     );
+
+
 }

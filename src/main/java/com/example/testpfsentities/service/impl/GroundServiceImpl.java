@@ -48,7 +48,9 @@ public class GroundServiceImpl implements GroundService {
 
     @Override
     public void updateGround(GroundDto groundDto) {
-
+//        groundValidator.validateGround(groundDto);
+        groundRepository.save(groundMapper.toBo(groundDto));
+        log.info("ground updated !");
     }
 
     @Override
