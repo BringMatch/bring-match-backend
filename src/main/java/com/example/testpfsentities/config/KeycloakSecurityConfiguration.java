@@ -47,17 +47,17 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.csrf().disable().
-                authorizeRequests();
-//                .antMatchers("/h2-console/**")
-//                .permitAll()
-//                .antMatchers("/players/**")
-//                .hasRole("PLAYER")
-//                .antMatchers("/admin/**")
-//                .hasRole("ADMIN")
-//                //.anyRequest().denyAll().and()
-//                .anyRequest().authenticated().and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                authorizeRequests()
+                .antMatchers("/h2-console/**")
+                .permitAll()
+                .antMatchers("/players/**")
+                .hasRole("PLAYER")
+                .antMatchers("/admins/**")
+                .hasRole("ADMIN")
+                //.anyRequest().denyAll().and()
+                .anyRequest().authenticated().and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.headers().frameOptions().disable();
     }

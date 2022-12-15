@@ -8,16 +8,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
 @RequestMapping(ApiPaths.ADMINS)
 @RequiredArgsConstructor
+@RolesAllowed("ADMIN")
 public class AdminController {
     private final AdminService adminService;
 
     @GetMapping(ApiPaths.GET_ADMINS)
-    public ResponseEntity<List<Admin>> getAdmins() {
+    public ResponseEntity<List<Admin>> getAdmins(@RequestHeader String Authorization) {
         return ResponseEntity.ok().body(adminService.getAdmins());
     }
 
@@ -40,7 +42,6 @@ public class AdminController {
     public void updateActiveStatusOwnerWithFalse(@PathVariable(name = "owner_id") String owner_id) {
         adminService.updateStatusOwnerWithFalse(owner_id);
     }
-
 
 
 }

@@ -7,10 +7,8 @@ import com.example.testpfsentities.entities.Owner;
 import com.example.testpfsentities.repository.AdminRepository;
 import com.example.testpfsentities.repository.NotificationAdminRepository;
 import com.example.testpfsentities.repository.OwnerRepository;
-import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.service.AdminService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -25,7 +23,6 @@ public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final OwnerRepository ownerRepository;
     private final NotificationAdminRepository notificationAdminRepository;
-    private final PlayerRepository playerRepository;
     private final EmailSenderForOwner emailSenderForOwner;
 
     @Override
@@ -66,12 +63,12 @@ public class AdminServiceImpl implements AdminService {
         }
         owner.get().setActive(true);
         ownerRepository.save(owner.get());
-        String subject="compte créé avec succes";
-        String Body="Bienvenue chez Bring Match "+System.lineSeparator()+
-                    "Merci pour votre inscription à notre application "+System.lineSeparator()+
-                    "votre inscription est acceptée"+System.lineSeparator()+
-                    "Merci de ne pas répondre a cette email";
-        emailSenderForOwner.sendEmail(owner.get().getEmail(),subject,Body);
+        String subject = "compte créé avec succes";
+        String Body = "Bienvenue chez Bring Match " + System.lineSeparator() +
+                "Merci pour votre inscription à notre application " + System.lineSeparator() +
+                "votre inscription est acceptée" + System.lineSeparator() +
+                "Merci de ne pas répondre a cette email";
+        emailSenderForOwner.sendEmail(owner.get().getEmail(), subject, Body);
     }
 
     @Override
