@@ -3,19 +3,14 @@ package com.example.testpfsentities.service.impl;
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.PlayerSearchDto;
 import com.example.testpfsentities.entities.*;
-import com.example.testpfsentities.entities.composite.TeamPlayerKey;
 import com.example.testpfsentities.mapper.PlayerMapper;
 import com.example.testpfsentities.repository.*;
 import com.example.testpfsentities.service.PlayerService;
-import com.example.testpfsentities.service.TeamPlayerService;
-import com.example.testpfsentities.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,26 +50,18 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player findPlayerById(String player_id) {
-        Optional<Player> optionalPlayer = playerRepository.findById(player_id);
-        if (optionalPlayer.isEmpty()) {
-            throw new IllegalArgumentException("player not found !");
+    public Player returnOwnerMatchPlayer(Match match) {
+        Player player = new Player();
+        for (Team team : match.getTeams()) {
+            for (TeamPlayer teamPlayer : team.getPlayersTeams()) {
+                if (teamPlayer.isMatch_owner()) {
+                    player = teamPlayer.getPlayer();
+                }
+            }
         }
-        return optionalPlayer.get();
+        return player;
     }
 
-
-    @Override
-    public Team assignPlayersWithTeams(Team team, List<String> players) {
-//        List<TeamPlayer> teamPlayers = new ArrayList<>();
-//        players.forEach(player_id -> {
-//            Player player = this.findPlayerById(player_id);
-//            TeamPlayer teamPlayer = teamPlayerService.createTeamPlayer(team, player);
-//            teamPlayers.add(teamPlayer);
-//        });
-//        team.setPlayersTeams(teamPlayers);
-        return null;
-    }
 
     @Override
     public void checksPlayerExist(PlayerDto player) {
@@ -92,6 +79,15 @@ public class PlayerServiceImpl implements PlayerService {
                 playerSearchDto.getTown(),
                 playerSearchDto.getRegion())
         );
+    }
+
+    @Override
+    public Player findPlayerById(String id) {
+        Optional<Player> optionalPlayer = playerRepository.findById(id);
+        if (optionalPlayer.isEmpty()) {
+            throw new IllegalArgumentException("player not found !");
+        }
+        return optionalPlayer.get();
     }
 
 

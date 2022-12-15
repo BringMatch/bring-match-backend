@@ -17,14 +17,18 @@ public interface TeamPlayerService {
     void save(TeamPlayer teamPlayer);
 
     void saveAll(Set<TeamPlayer> playersTeams);
-    TeamPlayer saveTeamPlayer(TeamPlayer teamPlayer,Team team);
+
+    TeamPlayer saveTeamPlayer(TeamPlayer teamPlayer, Team team);
 
     TeamPlayer getTeamPlayer();
 
 
     Collection<? extends TeamPlayer> map(List<TeamPlayerDto> teamPlayerDtos);
-    void validateTeamPlayer(PlayerDto player , Team team , TeamPlayerDto teamPlayerDto);
+
+    void validateTeamPlayer(PlayerDto player, Team team, TeamPlayerDto teamPlayerDto);
+
     void assignTeamsPlayersToTeam(Team team, List<TeamPlayerDto> teamPlayerDtoList);
 
     List<String> getCurrentTeamPositions();
+
 }

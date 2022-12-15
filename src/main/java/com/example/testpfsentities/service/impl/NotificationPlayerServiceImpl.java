@@ -1,5 +1,6 @@
 package com.example.testpfsentities.service.impl;
 
+import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.NotificationPlayer;
 
 import com.example.testpfsentities.entities.Player;
@@ -8,7 +9,8 @@ import com.example.testpfsentities.service.NotificationPlayerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +23,13 @@ public class NotificationPlayerServiceImpl implements NotificationPlayerService 
     }
 
     @Override
-    public NotificationPlayer create(String match_id, Player player) {
-        NotificationPlayer notificationPlayer=new NotificationPlayer();
-        notificationPlayer.setOwner_match(player);
-        notificationPlayer.setDelivered(false);
-       // notificationPlayer.setCreatedAt(LocalDateTime.now());
-        notificationPlayer.setCurrentMatchId(match_id);
+    public NotificationPlayer create(Match match, Player player) {
+        NotificationPlayer notificationPlayer = new NotificationPlayer();
+        notificationPlayer.setDelivered(true);
+        notificationPlayer.setCreatedAt(Date.from(Instant.now()));
+        notificationPlayer.setRead(false);
+        notificationPlayer.setPlayerJoined(player);
+        notificationPlayer.setCurrentMatchId(match.getId());
         return notificationPlayerRepository.save(notificationPlayer);
     }
 }

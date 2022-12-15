@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,20 +74,25 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void assignPlayersWithTeams(List<Team> teams, TeamDto teamDto) {
-        Team team = teams.stream().filter(teamElement -> teamElement.getName().equals(teamDto.getName())).toList().get(0);
-        team.getPlayersTeams().forEach(teamPlayer -> teamPlayerService.saveTeamPlayer(teamPlayer, team));
+        Team team = teams.stream()
+                .filter(teamElement -> teamElement.getName().equals(teamDto.getName()))
+                .collect(Collectors.toList()).get(0);
+
+        boolean updateMatchOwner = teams.size() == 1;
+        boolean updateTeamOwner = team.getPlayersTeams().size() == 1;
+
+        team.getPlayersTeams().forEach(teamPlayer -> {
+            if (updateMatchOwner) {
+                teamPlayer.setTeam_owner(true);
+                teamPlayer.setMatch_owner(true);
+            } else if (updateTeamOwner) {
+                teamPlayer.setMatch_owner(false);
+                teamPlayer.setTeam_owner(true);
+            } else {
+                teamPlayer.setMatch_owner(false);
+                teamPlayer.setTeam_owner(false);
+            }
+            teamPlayerService.saveTeamPlayer(teamPlayer, team);
+        });
     }
-//        List<Team> list = new ArrayList<>();
-//        teamDtoList.forEach(teamDto -> {
-//            Team team;
-//            team = teamMapper.toBo(teamDto);
-//            Team newTeam = playerService.assignPlayersWithTeams(team, teamDto.getPlayers());
-//            newTeam.setCreatedAt(LocalDateTime.now());
-//            newTeam.setUpdatedAt(LocalDateTime.now());
-//            list.add(newTeam);
-//            log.info("this is the team number {} ", newTeam);
-//            teamRepository.save(newTeam);
-//        });
-
-
 }

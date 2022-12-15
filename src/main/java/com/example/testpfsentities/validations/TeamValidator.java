@@ -3,6 +3,7 @@ package com.example.testpfsentities.validations;
 import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.Team;
+import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,10 +15,14 @@ import java.util.List;
 @RequiredArgsConstructor()
 @Slf4j
 public class TeamValidator {
+    private final PlayerService playerService;
+
     public void validateInsertionTeam(MatchDto matchDto, Match match) {
+
+
         // 0 : we must check if the match is private the user must provide the right code
-        if ( match.getPrivateMatch()){
-            if (!matchDto.getMatchCode().equals(match.getMatchCode())){
+        if (match.getPrivateMatch()) {
+            if (!matchDto.getMatchCode().equals(match.getMatchCode())) {
                 throw new IllegalArgumentException("please check the code before you join the match !");
             }
         }
@@ -37,6 +42,11 @@ public class TeamValidator {
             throw new IllegalArgumentException("position not existing in our system ! please try another one !");
         }
 
+        if (matchDto.getMatchCode() == null) {
+            throw new IllegalArgumentException("please provide the code before joining the match !");
+        }
+
+        playerService.checksPlayerExist(matchDto.getTeams().get(0).getPlayersTeams().get(0).getPlayer());
     }
 
 }

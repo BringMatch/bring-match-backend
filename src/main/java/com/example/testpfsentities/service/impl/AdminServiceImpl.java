@@ -1,11 +1,9 @@
 package com.example.testpfsentities.service.impl;
 
-import com.example.testpfsentities.Email.EmailSenderForOwner;
-import com.example.testpfsentities.dto.PlayerDto;
+import com.example.testpfsentities.email.EmailSenderForOwner;
 import com.example.testpfsentities.entities.Admin;
 import com.example.testpfsentities.entities.NotificationAdmin;
 import com.example.testpfsentities.entities.Owner;
-import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.repository.AdminRepository;
 import com.example.testpfsentities.repository.NotificationAdminRepository;
 import com.example.testpfsentities.repository.OwnerRepository;
@@ -13,12 +11,9 @@ import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

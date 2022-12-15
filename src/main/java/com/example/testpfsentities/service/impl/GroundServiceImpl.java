@@ -117,6 +117,7 @@ public class GroundServiceImpl implements GroundService {
         if (!ownerExists) {
             throw new IllegalArgumentException("owner not existing ");
         }
+
         return (int) groundRepository.findByOwner_Id(owner_id).stream().filter(ground ->
                 !ground.isStatus()).count();
     }

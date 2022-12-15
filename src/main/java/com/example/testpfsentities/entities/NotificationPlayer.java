@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -15,14 +12,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationPlayer extends Notification {
-
-
     @ManyToOne
-    @JoinColumn()
     private Player owner_match;
-
     private String currentMatchId;
+    private String team_name;
 
-
+    @OneToOne
+    private Player playerJoined;
 
 }

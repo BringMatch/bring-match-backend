@@ -5,6 +5,7 @@ import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.dto.MatchSearchDto;
 import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.entities.Match;
+import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +18,14 @@ public interface MatchService {
 
     List<MatchDto> getMatches();
 
-    void evaluateMatch(Match match);
+    void evaluateMatch(Match match , Player player);
 
     Match findMatchById(String match_id);
     List<Match> getMatchByDate(Date date);
 
-    List<MatchDto> getMatchsByRegionAndTown(MatchSearchDto matchSearchDto);
+    List<MatchDto> getMatchesByRegionAndTown(MatchSearchDto matchSearchDto);
 
     void save(Match match);
-
-    Match setTeams(Match match , Team team);
-
 
     Match joinMatchAsTeam(MatchDto matchDto);
 

@@ -61,15 +61,9 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public void evaluateMatch(Match match) {
-
-        String match_id=match.getId();
-
-        List<Team> teams = match.getTeams();
-        TeamPlayer teamPlayer=teams.get(0).getPlayersTeams().get(0);
-        log.info("here asjaskd");
-        Player p=teamPlayer.getPlayer();
-        NotificationPlayer notificationPlayer=notificationPlayerService.create(match_id,p);
+    public void evaluateMatch(Match match, Player p) {
+        log.info("this is the id of the match owner {}", p.getId());
+        NotificationPlayer notificationPlayer = notificationPlayerService.create(match, p);
         notificationPlayerService.save(notificationPlayer);
     }
 
@@ -88,24 +82,24 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<MatchDto> getMatchsByRegionAndTown(MatchSearchDto matchSearchDto) {
-        return matchMapper.toDto(matchRepository.findMatchsByRegionAndTown(
-                matchSearchDto.getTown(),
-                matchSearchDto.getRegion()
-        ));
+    public List<MatchDto> getMatchesByRegionAndTown(MatchSearchDto matchSearchDto) {
+        List<Match> matches = matchRepository.findAll();
+        var grounds = groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(matchSearchDto.getTown(), matchSearchDto.getRegion()));
+        List<Match> matchDtoList = new ArrayList<>();
+        for (Match match : matches) {
+            for (GroundDto ground : grounds) {
+                if (ground.getId().equals(match.getGround().getId())) {
+                    matchDtoList.add(match);
+                }
+                break;
+            }
+        }
+        return matchMapper.toDto(matchDtoList);
     }
 
     @Override
     public void save(Match match) {
         matchRepository.save(match);
-    }
-
-    @Override
-    public Match setTeams(Match match, Team team) {
-        List<Team> teamList = match.getTeams();
-        teamList.add(team);
-        match.setTeams(teamList);
-        return match;
     }
 
     @Override
@@ -116,9 +110,15 @@ public class MatchServiceImpl implements MatchService {
         Match matchSaved = matchRepository.save(match);
         TeamDto teamDto = matchDto.getTeams().get(0);
         teamService.assignPlayersWithTeams(matchSaved.getTeams(), teamDto);
-        return match;
+
         // this part is for notification
         // we should notify the owner match player that a new team has joined the game
+
+//        notificationPlayerService.create(matchDto);
+
+
+        return match;
+
     }
 
 
@@ -129,7 +129,7 @@ public class MatchServiceImpl implements MatchService {
 
         var team = match.getTeams().stream()
                 .filter(teamed -> teamed.getName().equals(matchDto.getTeams().get(0).getName()))
-                .toList().get(0);
+                .collect(Collectors.toList()).get(0);
 
         var list = team.getPlayersTeams();
 

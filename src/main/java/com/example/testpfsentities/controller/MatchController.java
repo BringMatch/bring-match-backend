@@ -65,11 +65,11 @@ public class MatchController {
         return ResponseEntity.ok().body(matchService.getNumberOwnerMatches(owner_id));
     }
 
-    @GetMapping(ApiPaths.SEARCH_Match)
+    @GetMapping(ApiPaths.SEARCH_MATCH)
     public ResponseEntity<List<MatchDto>> getGroundsByRegionAndTown(
             @RequestParam(value = "town", required = false) String town,
             @RequestParam(value = "region", required = false) String region) {
-        return ResponseEntity.ok().body(matchService.getMatchsByRegionAndTown(new MatchSearchDto(town,region)));
+        return ResponseEntity.ok().body(matchService.getMatchesByRegionAndTown(new MatchSearchDto(town,region)));
     }
 
 

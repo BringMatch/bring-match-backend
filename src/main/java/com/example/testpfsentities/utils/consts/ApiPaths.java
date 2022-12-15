@@ -33,7 +33,7 @@ public final class ApiPaths {
     public static final String EVALUATE_MATCH = MATCHES + "/evaluate-match";
     public static final String GET_CURRENT_NUMBER_TEAMS = "/number-teams";
     public static final String GET_NUMBER_OWNER_MATCHES = "/number-owner-matches";
-    public final static String SEARCH_Match = "/search";
+    public final static String SEARCH_MATCH = "/search";
 
 
     public final static String TEAMS = "/teams";
