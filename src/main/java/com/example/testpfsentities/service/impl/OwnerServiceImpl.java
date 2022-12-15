@@ -7,6 +7,8 @@ import com.example.testpfsentities.mapper.GroundMapper;
 import com.example.testpfsentities.mapper.OwnerMapper;
 import com.example.testpfsentities.repository.*;
 import com.example.testpfsentities.scheduling.NewUserEvent;
+import com.example.testpfsentities.service.AdminService;
+import com.example.testpfsentities.service.NotificationAdminService;
 import com.example.testpfsentities.service.OwnerService;
 import com.example.testpfsentities.validations.OwnerValidator;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +26,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OwnerServiceImpl implements OwnerService {
     private final OwnerRepository ownerRepository;
-    private final AdminRepository adminRepository;
-    private final NotificationAdminRepository notificationAdminRepository;
+    private final NotificationAdminService notificationAdminService;
     private final OwnerMapper ownerMapper;
-    private final GroundMapper groundMapper;
     private final OwnerValidator ownerValidator;
+    private final AdminService adminService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
@@ -36,15 +37,8 @@ public class OwnerServiceImpl implements OwnerService {
         ownerValidator.validateCreation(ownerDto);
         Owner owner = ownerMapper.toBo(ownerDto);
         ownerRepository.save(owner);
-        List<Admin> adminList = adminRepository.findFirstAdmin();
-        Admin admin = adminList.get(0);
-        admin.getOwners().add(owner);
-        adminRepository.save(admin);
-        NotificationAdmin notificationAdmin = new NotificationAdmin();
-        notificationAdmin.setDelivered(true);
-        notificationAdmin.setUserFrom(admin);
-        notificationAdmin.setRead(false);
-        notificationAdminRepository.save(notificationAdmin);
+        Admin admin = adminService.save(owner);
+        notificationAdminService.save(admin);
         applicationEventPublisher.publishEvent(new NewUserEvent(this, owner));
     }
 
@@ -57,21 +51,16 @@ public class OwnerServiceImpl implements OwnerService {
         }
         return listDtoOwners;
     }
-
-    @Override
-    public List<GroundDto> getGrounds(String owner_id) {
-        Optional<Owner> ownerOptional = ownerRepository.findById(owner_id);
-        if (ownerOptional.isEmpty()) {
-            throw new IllegalArgumentException("owner not existing !");
-        }
-        Owner owner = ownerOptional.get();
-        return owner.getGrounds().stream().map(groundMapper::toDto).collect(Collectors.toList());
-    }
-
     @Override
     public boolean checkOwnerExists(String owner_id) {
         Optional<Owner> ownerOptional = ownerRepository.findById(owner_id);
         return ownerOptional.isPresent();
+    }
+
+    @Override
+    public void setActiveStatus(Owner owner, boolean b) {
+        owner.setActive(b);
+        ownerRepository.save(owner);
     }
 
 }

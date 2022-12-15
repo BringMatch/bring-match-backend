@@ -1,7 +1,5 @@
 package com.example.testpfsentities.controller;
 
-import com.example.testpfsentities.dto.GroundDto;
-import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.dto.OwnerDto;
 import com.example.testpfsentities.service.OwnerService;
 import com.example.testpfsentities.utils.consts.ApiPaths;

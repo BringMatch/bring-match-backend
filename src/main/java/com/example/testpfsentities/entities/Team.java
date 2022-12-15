@@ -23,7 +23,7 @@ public class Team extends AbstractEntity {
 //    )
 //    private List<Player> players;
 
-    @OneToMany(mappedBy = "team",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "team",cascade = CascadeType.ALL , fetch = FetchType.EAGER)
     List<TeamPlayer> playersTeams;
 
 //    @ManyToOne

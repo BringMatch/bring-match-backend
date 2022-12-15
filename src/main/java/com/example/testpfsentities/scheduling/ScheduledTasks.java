@@ -45,13 +45,13 @@ public class ScheduledTasks {
                         && match.getDate().getSeconds() == newDate.getSeconds()
                 ) {
                     Player ownerMatchPlayer = playerService.returnOwnerMatchPlayer(match);
-                    matchService.evaluateMatch(match,ownerMatchPlayer);
+                    matchService.evaluateMatch(match, ownerMatchPlayer);
                 }
             }
         } catch (Exception e) {
             log.info("no match has selected");
         }
-
-
     }
+
+
 }

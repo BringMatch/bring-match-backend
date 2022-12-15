@@ -17,6 +17,9 @@ import javax.persistence.*;
 public class NotificationAdmin extends Notification {
     @ManyToOne
     @JoinColumn(name = "admin_id")
-    private Admin userFrom;
+    private Admin userTo;
+
+    @OneToOne
+    private Owner userFrom;
 
 }

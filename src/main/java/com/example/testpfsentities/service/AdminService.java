@@ -2,6 +2,7 @@ package com.example.testpfsentities.service;
 
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.entities.Admin;
+import com.example.testpfsentities.entities.Owner;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface AdminService {
     void updateStatusOwnerWithTrue(String owner_id);
     void updateStatusOwnerWithFalse(String owner_id);
 
+    Admin save(Owner owner);
 }

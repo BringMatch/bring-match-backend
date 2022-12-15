@@ -11,12 +11,15 @@ public final class ApiPaths {
     public final static String GET_PLAYER_ID = PLAYERS + SLASH_ID;
     public final static String SAVE_PLAYER = "/add";
     public final static String SEARCH_PLAYERS = "/search";
+    public final static String GET_NOTIFICATIONS_PLAYER = "/notification-player";
 
 
     public final static String ADMINS = "/admins";
     public final static String GET_ADMINS = SLASH;
     public static final String NOTIF_ADMINS = "/notifAdmins";
     public final static String GET_NOTIF_ADMINS = SLASH;
+    public final static String ACCEPT_NOTIF_ADMIN = "/accept-notification";
+    public final static String REFUSE_NOTIF_ADMIN = "/refuse-notification";
     public static final String UPDATE_NOTIF_ADMIN_READ_STATUS = "/updateNotification";
     public static final String UPDATE_STATUS_OWNER_TRUE = "/updateOwnerTrue";
     public static final String UPDATE_STATUS_OWNER_FALSE = "/updateOwnerFalse";

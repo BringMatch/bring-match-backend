@@ -26,8 +26,7 @@ public class AdminServiceImpl implements AdminService {
     private final OwnerRepository ownerRepository;
     private final NotificationAdminRepository notificationAdminRepository;
     private final PlayerRepository playerRepository;
-    @Autowired
-    private  EmailSenderForOwner emailSenderForOwner;
+    private final EmailSenderForOwner emailSenderForOwner;
 
     @Override
     public void initAdmin() {
@@ -83,6 +82,14 @@ public class AdminServiceImpl implements AdminService {
         }
         owner.get().setActive(false);
         ownerRepository.save(owner.get());
+    }
+
+    @Override
+    public Admin save(Owner owner) {
+        List<Admin> adminList = adminRepository.findFirstAdmin();
+        Admin admin = adminList.get(0);
+        admin.getOwners().add(owner);
+        return admin;
     }
 
 

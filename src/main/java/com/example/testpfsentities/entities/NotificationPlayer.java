@@ -15,9 +15,5 @@ public class NotificationPlayer extends Notification {
     @ManyToOne
     private Player owner_match;
     private String currentMatchId;
-    private String team_name;
-
-    @OneToOne
-    private Player playerJoined;
 
 }

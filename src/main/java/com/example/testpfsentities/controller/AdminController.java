@@ -41,4 +41,6 @@ public class AdminController {
         adminService.updateStatusOwnerWithFalse(owner_id);
     }
 
+
+
 }

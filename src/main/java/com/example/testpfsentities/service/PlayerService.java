@@ -25,4 +25,5 @@ public interface PlayerService {
     List<PlayerDto> getPlayers(PlayerSearchDto playerSearchDto);
 
     Player findPlayerById(String id);
+
 }

@@ -62,7 +62,6 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public void evaluateMatch(Match match, Player p) {
-        log.info("this is the id of the match owner {}", p.getId());
         NotificationPlayer notificationPlayer = notificationPlayerService.create(match, p);
         notificationPlayerService.save(notificationPlayer);
     }
