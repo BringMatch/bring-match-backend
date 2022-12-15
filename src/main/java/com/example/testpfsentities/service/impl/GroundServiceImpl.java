@@ -108,7 +108,7 @@ public class GroundServiceImpl implements GroundService {
         if (!ownerExists) {
             throw new IllegalArgumentException("owner not existing ");
         }
-        return groundRepository.findByOwner_Id(owner_id).stream().filter(Ground::isStatus).toList().size();
+        return (int) groundRepository.findByOwner_Id(owner_id).stream().filter(Ground::isStatus).count();
     }
 
     @Override
@@ -117,8 +117,8 @@ public class GroundServiceImpl implements GroundService {
         if (!ownerExists) {
             throw new IllegalArgumentException("owner not existing ");
         }
-        return groundRepository.findByOwner_Id(owner_id).stream().filter(ground ->
-                !ground.isStatus()).toList().size();
+        return (int) groundRepository.findByOwner_Id(owner_id).stream().filter(ground ->
+                !ground.isStatus()).count();
     }
 
     @Override
