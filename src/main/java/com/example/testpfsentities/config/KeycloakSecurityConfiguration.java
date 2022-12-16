@@ -39,8 +39,11 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
      * Tell Spring Security that keycloak will take care of users
      */
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(keycloakAuthenticationProvider());
+    protected void configure(AuthenticationManagerBuilder auth) {
+        KeycloakAuthenticationProvider keycloakAuthenticationProvider =
+                keycloakAuthenticationProvider();
+        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+        auth.authenticationProvider(keycloakAuthenticationProvider);
     }
 
     @Override
@@ -49,15 +52,15 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
         http.csrf().disable().
                 authorizeRequests()
                 .antMatchers("/h2-console/**")
-                .permitAll()
-                .antMatchers("/players/**")
-                .hasRole("PLAYER")
-                .antMatchers("/admins/**")
-                .hasRole("ADMIN")
+                .permitAll();
+//                .antMatchers("/players/**")
+//                .hasRole("PLAYER")
+//                .antMatchers("/admins/**")
+//                .hasRole("ADMIN").and()
                 //.anyRequest().denyAll().and()
-                .anyRequest().authenticated().and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//                .anyRequest().authenticated().and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.headers().frameOptions().disable();
     }

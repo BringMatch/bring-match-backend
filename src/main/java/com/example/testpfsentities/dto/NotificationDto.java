@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationDto {
+    private String id;
     private String message;
     private Boolean delivered;
     private Boolean read;

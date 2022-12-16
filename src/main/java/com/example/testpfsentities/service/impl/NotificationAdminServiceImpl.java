@@ -42,7 +42,7 @@ public class NotificationAdminServiceImpl implements NotificationAdminService {
         Owner owner = notificationAdmin.getUserFrom();
         notificationAdmin.setRead(true);
         owner.setActive(true);
-//        ownerService.setActiveStatus(owner , true);
+        owner.setPending(false);
         notificationAdminRepository.save(notificationAdmin);
     }
 
@@ -52,7 +52,7 @@ public class NotificationAdminServiceImpl implements NotificationAdminService {
         Owner owner = notificationAdmin.getUserFrom();
         notificationAdmin.setRead(true);
         owner.setActive(false);
-//        ownerService.setActiveStatus(owner , false);
+        owner.setPending(false);
         notificationAdminRepository.save(notificationAdmin);
     }
 

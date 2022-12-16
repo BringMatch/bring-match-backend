@@ -1,9 +1,12 @@
 package com.example.testpfsentities.service.impl;
 
+import com.example.testpfsentities.dto.OwnerDto;
 import com.example.testpfsentities.email.EmailSenderForOwner;
 import com.example.testpfsentities.entities.Admin;
 import com.example.testpfsentities.entities.NotificationAdmin;
 import com.example.testpfsentities.entities.Owner;
+import com.example.testpfsentities.entities.enums.Role;
+import com.example.testpfsentities.mapper.OwnerMapper;
 import com.example.testpfsentities.repository.AdminRepository;
 import com.example.testpfsentities.repository.NotificationAdminRepository;
 import com.example.testpfsentities.repository.OwnerRepository;
@@ -12,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +28,7 @@ public class AdminServiceImpl implements AdminService {
     private final OwnerRepository ownerRepository;
     private final NotificationAdminRepository notificationAdminRepository;
     private final EmailSenderForOwner emailSenderForOwner;
+    private final OwnerMapper ownerMapper;
 
     @Override
     public void initAdmin() {
@@ -34,7 +39,7 @@ public class AdminServiceImpl implements AdminService {
         admin.setFirstName("ajaoua");
         admin.setLastName("ajaqsdfoua");
         admin.setPhoneNumber("45454");
-        admin.setRoleName("admin");
+        admin.setRoleName(Role.ADMIN);
         admin.setCreatedAt(Date.from(Instant.now()));
         adminRepository.save(admin);
     }
@@ -89,5 +94,43 @@ public class AdminServiceImpl implements AdminService {
         return admin;
     }
 
+    @Override
+    public List<OwnerDto> getAcceptedOwners(String admin_id) {
+        Admin admin = findAdminById(admin_id);
+        List<Owner> listAcceptedOwners = new ArrayList<>();
+        for (Owner owner : admin.getOwners()) {
+            if (owner.isActive()) {
+                listAcceptedOwners.add(owner);
+            }
+        }
+        return ownerMapper.toDto(listAcceptedOwners);
+    }
+
+    @Override
+    public List<OwnerDto> getRefusedOwners(String admin_id) {
+        Admin admin = findAdminById(admin_id);
+        List<Owner> listAcceptedOwners = new ArrayList<>();
+        for (Owner owner : admin.getOwners()) {
+            if (!owner.isActive()) {
+                listAcceptedOwners.add(owner);
+            }
+        }
+        return ownerMapper.toDto(listAcceptedOwners);
+    }
+
+    @Override
+    public List<OwnerDto> getAllOwners(String admin_id) {
+        Admin admin = findAdminById(admin_id);
+        List<Owner> listAcceptedOwners = new ArrayList<>(admin.getOwners());
+        return ownerMapper.toDto(listAcceptedOwners);
+    }
+
+    private Admin findAdminById(String admin_id) {
+        Optional<Admin> optionalAdmin = adminRepository.findById(admin_id);
+        if (optionalAdmin.isEmpty()) {
+            throw new IllegalArgumentException("admin not found ");
+        }
+        return optionalAdmin.get();
+    }
 
 }

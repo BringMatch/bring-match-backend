@@ -1,6 +1,5 @@
 package com.example.testpfsentities.entities;
 
-import com.example.testpfsentities.entities.composite.TeamPlayerKey;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

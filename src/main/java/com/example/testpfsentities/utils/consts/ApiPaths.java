@@ -23,6 +23,9 @@ public final class ApiPaths {
     public static final String UPDATE_NOTIF_ADMIN_READ_STATUS = "/updateNotification";
     public static final String UPDATE_STATUS_OWNER_TRUE = "/updateOwnerTrue";
     public static final String UPDATE_STATUS_OWNER_FALSE = "/updateOwnerFalse";
+    public static final String GET_ACCEPTED_OWNERS = "/accepted-owners";
+    public static final String GET_REFUSED_OWNERS = "/refused-owners";
+    public static final String GET_ALL_OWNERS = "/all-owners";
 
 
     public final static String MATCHES = "/matches";
@@ -33,22 +36,18 @@ public final class ApiPaths {
     public final static String JOIN_MATCH_AS_PLAYER = "/join-match-player";
     public final static String JOIN_MATCH_AS_TEAM = "/join-match-team";
     public static final String DELETE_MATCH = MATCHES + "/delete-match";
-    public static final String EVALUATE_MATCH = MATCHES + "/evaluate-match";
     public static final String GET_CURRENT_NUMBER_TEAMS = "/number-teams";
     public static final String GET_NUMBER_OWNER_MATCHES = "/number-owner-matches";
     public final static String SEARCH_MATCH = "/search";
 
 
     public final static String TEAMS = "/teams";
-    public final static String GET_TEAMS = TEAMS + SLASH;
     public final static String GET_FREE_POSITIONS_IN_A_TEAM = "/free-positions";
     public final static String CREATE_TEAM = "/create-team";
 
     public final static String NOTIFICATIONS = "/notifications";
-    public final static String GET_NOTIFICATIONS = NOTIFICATIONS + SLASH;
 
     public final static String STATISTICS = "/statistics";
-    public final static String GET_STATISTICS = STATISTICS + SLASH;
 
 
     public static final String OWNERS = "/owners";
@@ -71,4 +70,5 @@ public final class ApiPaths {
 
     public static final String GlobalStats = "/globalStats";
     public static final String Save_GlobalStats ="/save";
+    public static final String GET_GLOBAL_STATS ="/get-global-stats";
 }
