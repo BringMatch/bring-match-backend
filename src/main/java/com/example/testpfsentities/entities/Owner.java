@@ -31,4 +31,7 @@ public class Owner extends User {
     @Column(columnDefinition = "boolean default false")
     private boolean active;
 
+    @Column(columnDefinition = "boolean default true")
+    private boolean pending;
+
 }

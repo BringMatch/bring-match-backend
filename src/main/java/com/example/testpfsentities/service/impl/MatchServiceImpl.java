@@ -175,7 +175,7 @@ public class MatchServiceImpl implements MatchService {
         var listMatches = matchRepository.findAll();
         List<Match> finalListMatches = new ArrayList<>();
         for (Match match : listMatches) {
-            if (match.getGround().getOwner().getId().equals(matchDto.getOwnerDto().getId())) {
+            if (match.getGround().getOwner().getId().equals(matchDto.getOwner().getId())) {
                 finalListMatches.add(match);
             }
         }
@@ -189,6 +189,12 @@ public class MatchServiceImpl implements MatchService {
             throw new IllegalArgumentException("Sorry this match is public ! you don't need a code ");
         }
         return match.getMatchCode();
+    }
+
+    @Override
+    public MatchDto getMatchById(String match_id) {
+        var match = findMatchById(match_id);
+        return matchMapper.toDto(match);
     }
 
 

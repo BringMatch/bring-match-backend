@@ -2,27 +2,33 @@ package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.GlobalStatsDto;
 import com.example.testpfsentities.entities.GlobalStats;
-import com.example.testpfsentities.entities.Ground;
 import com.example.testpfsentities.mapper.GlobalStatsMapper;
-import com.example.testpfsentities.repository.GlobalStatsRipository;
+import com.example.testpfsentities.repository.GlobalStatsRepository;
 import com.example.testpfsentities.service.GlobalStatsService;
+import com.example.testpfsentities.service.MatchService;
+import com.example.testpfsentities.service.NotificationPlayerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class GlobalStatsServiceImpl implements GlobalStatsService {
 
-    private final GlobalStatsRipository globalStatsRipository;
-    private final GlobalStatsMapper mapper;
+    private final GlobalStatsRepository globalStatsRepository;
+    private final GlobalStatsMapper globalStatsMapper;
+    private final NotificationPlayerService notificationPlayerService;
+    private final MatchService matchService;
 
     @Override
     public GlobalStats getGlobalStatsById(long GlobalStatsId) {
-        Optional<GlobalStats> optionalGlobalStats = globalStatsRipository.findById(GlobalStatsId);
+        Optional<GlobalStats> optionalGlobalStats = globalStatsRepository.findById(GlobalStatsId);
         if (optionalGlobalStats.isEmpty()) {
-            throw new IllegalArgumentException("ground not existing !");
+            throw new IllegalArgumentException("global Stat not existing !");
         }
 
         return optionalGlobalStats.get();
@@ -30,7 +36,16 @@ public class GlobalStatsServiceImpl implements GlobalStatsService {
 
 
     @Override
-    public void saveStats(GlobalStatsDto globalStatsDto) {
-        globalStatsRipository.save(mapper.toBo(globalStatsDto));
+    public void saveStats(GlobalStatsDto globalStatsDto, String notification_player_id) {
+        var globalStat = globalStatsMapper.toBo(globalStatsDto);
+        String match_id = globalStatsDto.getMatch_id();
+        globalStat.setMatch(matchService.findMatchById(match_id));
+        globalStatsRepository.save(globalStat);
+        notificationPlayerService.updateNotificationState(notification_player_id);
+    }
+
+    @Override
+    public List<GlobalStatsDto> getAllGlobalStats() {
+        return globalStatsMapper.toDto(globalStatsRepository.findAll());
     }
 }

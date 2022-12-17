@@ -1,6 +1,5 @@
 package com.example.testpfsentities.dto;
 
-import com.example.testpfsentities.entities.composite.TeamPlayerKey;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

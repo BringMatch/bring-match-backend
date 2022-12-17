@@ -17,6 +17,7 @@ import java.util.List;
 @Slf4j
 @RequestMapping(ApiPaths.OWNERS)
 @RestController
+@CrossOrigin("http://localhost:8081/")
 public class OwnerController {
     private final OwnerService ownerService;
 

@@ -3,6 +3,7 @@ package com.example.testpfsentities.service.impl;
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.PlayerSearchDto;
 import com.example.testpfsentities.entities.*;
+import com.example.testpfsentities.entities.enums.Role;
 import com.example.testpfsentities.mapper.PlayerMapper;
 import com.example.testpfsentities.repository.*;
 import com.example.testpfsentities.service.PlayerService;
@@ -31,7 +32,7 @@ public class PlayerServiceImpl implements PlayerService {
         player.setFirstName("ajaoua");
         player.setLastName("ajaqsdfoua");
         player.setPhoneNumber("45454");
-        player.setRoleName("player");
+        player.setRoleName(Role.PLAYER);
         player.setTown("kech");
         player.setRegion("ensa");
         player.setCreatedAt(Date.from(Instant.now()));

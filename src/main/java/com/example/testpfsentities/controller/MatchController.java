@@ -1,6 +1,5 @@
 package com.example.testpfsentities.controller;
 
-import com.example.testpfsentities.dto.GroundDto;
 import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.dto.MatchSearchDto;
 import com.example.testpfsentities.entities.Match;
@@ -55,7 +54,7 @@ public class MatchController {
         return ResponseEntity.ok().body(matchService.countNumberTeams(match_id));
     }
 
-    @GetMapping(ApiPaths.GET_MATCHES + "/{ground_name}")
+    @GetMapping(ApiPaths.GET_MATCHES_GROUND + "{ground_name}")
     public ResponseEntity<List<MatchDto>> getMatchesGround(@PathVariable(name = "ground_name") String ground_name) {
         return ResponseEntity.ok().body(matchService.getMatchesGround(ground_name));
     }
@@ -69,7 +68,7 @@ public class MatchController {
     public ResponseEntity<List<MatchDto>> getGroundsByRegionAndTown(
             @RequestParam(value = "town", required = false) String town,
             @RequestParam(value = "region", required = false) String region) {
-        return ResponseEntity.ok().body(matchService.getMatchesByRegionAndTown(new MatchSearchDto(town,region)));
+        return ResponseEntity.ok().body(matchService.getMatchesByRegionAndTown(new MatchSearchDto(town, region)));
     }
 
 
@@ -81,6 +80,11 @@ public class MatchController {
     @GetMapping(ApiPaths.GET_MATCH_CODE_IF_PRIVATE + "/{match_id}")
     public ResponseEntity<String> getMatchCodeIfPrivate(@PathVariable(name = "match_id") String match_id) {
         return ResponseEntity.ok().body(matchService.getMatchCode(match_id));
+    }
+
+    @GetMapping(ApiPaths.GET_MATCHES+"{match_id}")
+    public ResponseEntity<MatchDto> getMatchById(@PathVariable(name = "match_id") String match_id) {
+        return ResponseEntity.ok().body(matchService.getMatchById(match_id));
     }
 
 

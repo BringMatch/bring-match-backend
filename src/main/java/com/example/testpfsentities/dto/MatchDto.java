@@ -1,10 +1,13 @@
 package com.example.testpfsentities.dto;
 
+import com.example.testpfsentities.entities.enums.MatchType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +20,13 @@ public class MatchDto {
     private Date date;
     private List<TeamDto> teams;
     private Boolean privateMatch;
-    private String matchType;
-    private int startHour;
+
+    @Enumerated(EnumType.STRING)
+    private MatchType matchType;
+
     private String groundName;
+    private int startHour;
     private int duration;
     private String matchCode;
-    private OwnerDto ownerDto;
+    private OwnerDto owner;
 }

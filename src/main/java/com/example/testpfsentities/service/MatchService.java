@@ -43,4 +43,6 @@ public interface MatchService {
     List<MatchDto> getMatchesOfOwnerGrounds(MatchDto matchDto);
 
     String getMatchCode(String match_id);
+
+    MatchDto getMatchById(String match_id);
 }

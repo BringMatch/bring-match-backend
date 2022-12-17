@@ -28,12 +28,12 @@ public abstract class AbstractEntity implements Serializable {
     String id;
 
     @CreationTimestamp
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Temporal(TemporalType.DATE)
     Date createdAt;
 
     @UpdateTimestamp
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Temporal(TemporalType.DATE)
     Date updatedAt;
 

@@ -9,5 +9,5 @@ import lombok.*;
 @NoArgsConstructor
 public class NotificationPlayerDto extends NotificationDto{
     private PlayerDto owner_match;
-    private String currentMatchId;
+    private MatchDto match;
 }

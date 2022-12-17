@@ -14,6 +14,8 @@ import java.util.List;
 public class NotificationPlayer extends Notification {
     @ManyToOne
     private Player owner_match;
-    private String currentMatchId;
+
+    @OneToOne
+    private Match match;
 
 }

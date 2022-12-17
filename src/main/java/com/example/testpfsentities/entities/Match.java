@@ -27,7 +27,7 @@ public class Match extends AbstractEntity {
     private Date date;
     private String town;
     private String region;
-
-
+    private int startHour;
+    private int duration;
 
 }

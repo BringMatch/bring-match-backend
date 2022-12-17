@@ -1,6 +1,7 @@
 package com.example.testpfsentities.entities;
 
 
+import com.example.testpfsentities.entities.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,21 +20,19 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@JsonIgnoreProperties( allowSetters = true)
+@JsonIgnoreProperties(allowSetters = true)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User extends AbstractEntity {
+    //
+    @Transient
+    String password;
     private String firstName;
     private String lastName;
     // the user should connect with his phoneNumber !
     private String phoneNumber;
-
-//    @Column(nullable = false)
+    //    @Column(nullable = false)
     private String email;
-
-//    @Column(nullable = false)
-    private String roleName;
-//
-    @Transient
-    String password;
+    @Enumerated(EnumType.STRING)
+    private Role roleName;
 
 }
