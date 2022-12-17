@@ -191,5 +191,11 @@ public class MatchServiceImpl implements MatchService {
         return match.getMatchCode();
     }
 
+    @Override
+    public MatchDto getMatchById(String match_id) {
+        var match = findMatchById(match_id);
+        return matchMapper.toDto(match);
+    }
+
 
 }
