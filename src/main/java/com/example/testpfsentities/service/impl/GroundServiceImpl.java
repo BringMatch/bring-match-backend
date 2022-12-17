@@ -3,6 +3,7 @@ package com.example.testpfsentities.service.impl;
 import com.example.testpfsentities.dto.GroundDto;
 import com.example.testpfsentities.dto.GroundSearchDto;
 import com.example.testpfsentities.entities.Ground;
+import com.example.testpfsentities.entities.Owner;
 import com.example.testpfsentities.mapper.GroundMapper;
 import com.example.testpfsentities.repository.GroundRepository;
 import com.example.testpfsentities.service.GroundService;
@@ -73,7 +74,11 @@ public class GroundServiceImpl implements GroundService {
 
     @Override
     public List<GroundDto> getOwnerGrounds(String owner_id) {
-        return groundRepository.findByOwner_Id(owner_id).stream().map((groundMapper::toDto))
+        var owner = groundRepository.findByOwner_Id(owner_id);
+        if(owner.size() == 0){
+            throw new IllegalArgumentException("owner not existing");
+        }
+        return owner.stream().map((groundMapper::toDto))
                 .collect(Collectors.toList());
     }
 

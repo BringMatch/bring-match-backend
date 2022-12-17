@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(ApiPaths.GlobalStats)
+@RequestMapping(ApiPaths.GLOBAL_STATS)
 @RequiredArgsConstructor
 public class GlobalStatsController {
 
     private final GlobalStatsService globalStatsService;
 
-    @PostMapping(ApiPaths.Save_GlobalStats + "/{notification_player_id}")
+    @PostMapping(ApiPaths.SAVE_GLOBAL_STATS + "/{notification_player_id}")
     public void save(@RequestBody @Validated GlobalStatsDto globalStatsDto,
                      @PathVariable(name = "notification_player_id") String notification_player_id)
     {

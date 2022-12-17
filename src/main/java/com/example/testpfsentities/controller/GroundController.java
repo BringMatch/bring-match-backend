@@ -34,8 +34,8 @@ public class GroundController {
         groundService.saveGround(groundDto);
     }
 
-    @GetMapping(ApiPaths.GET_GROUNDS + "{owner_id}")
-    public ResponseEntity<List<GroundDto>> getAllGrounds(@PathVariable(name = "owner_id") String owner_id) {
+    @GetMapping
+    public ResponseEntity<List<GroundDto>> getAllGrounds(@RequestParam(name = "owner_id") String owner_id) {
         log.info(groundService.getOwnerGrounds(owner_id).toString());
         return ResponseEntity.ok().body(groundService.getOwnerGrounds(owner_id));
     }
@@ -64,12 +64,13 @@ public class GroundController {
     public ResponseEntity<Integer> getNumberOwnerGroundsClosed(@PathVariable(name = "owner_id") String owner_id) {
         return ResponseEntity.ok().body(groundService.getNumberGroundsClosed(owner_id));
     }
+
     @GetMapping(ApiPaths.SEARCH_GROUND)
     public ResponseEntity<List<GroundDto>> getGroundsByRegionAndTown(
             @RequestParam(value = "town", required = false) String town,
             @RequestParam(value = "region", required = false) String region
     ) {
-        return ResponseEntity.ok().body(groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(town,region)));
+        return ResponseEntity.ok().body(groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(town, region)));
     }
 
 

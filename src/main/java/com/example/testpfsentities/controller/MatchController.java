@@ -54,7 +54,7 @@ public class MatchController {
         return ResponseEntity.ok().body(matchService.countNumberTeams(match_id));
     }
 
-    @GetMapping(ApiPaths.GET_MATCHES + "/{ground_name}")
+    @GetMapping(ApiPaths.GET_MATCHES_GROUND + "{ground_name}")
     public ResponseEntity<List<MatchDto>> getMatchesGround(@PathVariable(name = "ground_name") String ground_name) {
         return ResponseEntity.ok().body(matchService.getMatchesGround(ground_name));
     }
@@ -82,8 +82,8 @@ public class MatchController {
         return ResponseEntity.ok().body(matchService.getMatchCode(match_id));
     }
 
-    @GetMapping(ApiPaths.GET_MATCHES)
-    public ResponseEntity<MatchDto> getMatchById(@RequestParam(name = "match_id") String match_id) {
+    @GetMapping(ApiPaths.GET_MATCHES+"{match_id}")
+    public ResponseEntity<MatchDto> getMatchById(@PathVariable(name = "match_id") String match_id) {
         return ResponseEntity.ok().body(matchService.getMatchById(match_id));
     }
 
