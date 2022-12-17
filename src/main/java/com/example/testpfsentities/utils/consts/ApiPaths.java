@@ -14,7 +14,7 @@ public final class ApiPaths {
     public final static String GET_NOTIFICATIONS_PLAYER = "/notification-player";
 
 
-    public final static String ADMINS = "/admins";
+    public final static String ADMINS = "/admin";
     public final static String GET_ADMINS = SLASH;
     public static final String NOTIF_ADMINS = "/notifAdmins";
     public final static String GET_NOTIF_ADMINS = SLASH;

@@ -5,6 +5,7 @@ import com.example.testpfsentities.service.AdminService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +17,7 @@ import java.util.List;
 public class AdminController {
     private final AdminService adminService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(ApiPaths.GET_ADMINS)
     public ResponseEntity<List<Admin>> getAdmins() {
         return ResponseEntity.ok().body(adminService.getAdmins());

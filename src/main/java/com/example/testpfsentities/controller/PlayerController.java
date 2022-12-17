@@ -5,6 +5,7 @@ import com.example.testpfsentities.dto.PlayerSearchDto;
 import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class PlayerController {
 //                .body(playerService.getPlayers());
 //
 //    }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(ApiPaths.GET_PLAYERS)
     public ResponseEntity<List<PlayerDto>> getPlayers() {
         return ResponseEntity.ok().body(playerService.getPlayers());
