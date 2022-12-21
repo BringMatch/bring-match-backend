@@ -82,14 +82,8 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<MatchDto> getMatchesByRegionAndTown(MatchSearchDto matchSearchDto) {
-        List<Match> matches;
-        if (matchSearchDto.getDate().equals(null)){
-             matches = matchRepository.findAll();
-        }
-        else {
-           matches = matchRepository.findByDate(matchSearchDto.getDate());
-        }
+    public List<MatchDto> searchforMatches(MatchSearchDto matchSearchDto) {
+        List<Match> matches = matchRepository.findByDate(matchSearchDto.getDate());
 
         var grounds = groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(matchSearchDto.getTown(), matchSearchDto.getRegion(),matchSearchDto.getGround_name()));
         List<Match> matchDtoList = new ArrayList<>();

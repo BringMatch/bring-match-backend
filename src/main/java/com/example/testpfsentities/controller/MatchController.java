@@ -73,7 +73,7 @@ public class MatchController {
             @RequestParam(value = "region", required = false) String region,
             @RequestParam(value = "groundName", required = false) String groudName,
             @RequestParam(value = "date" ,required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date) {
-        return ResponseEntity.ok().body(matchService.getMatchesByRegionAndTown(new MatchSearchDto(town, region, date,groudName)));
+        return ResponseEntity.ok().body(matchService.searchforMatches(new MatchSearchDto(town, region, date,groudName)));
     }
 
     @GetMapping(ApiPaths.SEARCH_MATCH_BY_DATE)

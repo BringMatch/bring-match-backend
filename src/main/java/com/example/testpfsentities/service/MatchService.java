@@ -24,7 +24,7 @@ public interface MatchService {
     Match findMatchById(String match_id);
     List<MatchDto> getMatchByDate(Date date);
 
-    List<MatchDto> getMatchesByRegionAndTown(MatchSearchDto matchSearchDto);
+    List<MatchDto> searchforMatches(MatchSearchDto matchSearchDto);
 
     void save(Match match);
 
