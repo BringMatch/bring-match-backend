@@ -1,5 +1,6 @@
 package com.example.testpfsentities.config;
 
+import com.example.testpfsentities.entities.enums.Role;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
@@ -52,15 +53,16 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
         http.csrf().disable().
                 authorizeRequests()
                 .antMatchers("/h2-console/**")
-                .permitAll();
-//                .antMatchers("/players/**")
-//                .hasRole("PLAYER")
-//                .antMatchers("/admins/**")
-//                .hasRole("ADMIN").and()
+                .permitAll()
+                .antMatchers("/players/**")
+                .hasAuthority(Role.PLAYER.name())
+                .antMatchers("/admins/**")
+                .hasRole(Role.ADMIN.name())
+                .and()
                 //.anyRequest().denyAll().and()
 //                .anyRequest().authenticated().and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.headers().frameOptions().disable();
     }

@@ -30,9 +30,14 @@ public class User extends AbstractEntity {
     private String lastName;
     // the user should connect with his phoneNumber !
     private String phoneNumber;
+
     //    @Column(nullable = false)
+    @Column(unique = true)
     private String email;
+
     @Enumerated(EnumType.STRING)
     private Role roleName;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean active;
 }
