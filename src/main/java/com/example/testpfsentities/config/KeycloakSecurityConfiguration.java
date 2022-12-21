@@ -49,15 +49,15 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
         http.csrf().disable().
                 authorizeRequests()
                 .antMatchers("/h2-console/**")
-                .permitAll()
-                .antMatchers("/players/**")
-                .hasRole("PLAYER")
-                .antMatchers("/admin/**")
-                .hasRole("ADMIN")
-                //.anyRequest().denyAll().and()
-                .anyRequest().authenticated().and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .permitAll();
+//                .antMatchers("/players/**")
+//                .hasRole("player")
+//                .antMatchers("/admins/**")
+//                .hasRole("ADMIN")
+//                //.anyRequest().denyAll().and()
+//                .anyRequest().authenticated().and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.headers().frameOptions().disable();
     }

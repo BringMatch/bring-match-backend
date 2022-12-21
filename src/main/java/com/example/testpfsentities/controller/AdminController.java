@@ -22,7 +22,6 @@ import java.util.List;
 public class AdminController {
     private final AdminService adminService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(ApiPaths.GET_ADMINS)
     public ResponseEntity<List<Admin>> getAdmins(
             @RequestHeader String Authorization

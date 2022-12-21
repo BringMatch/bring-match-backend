@@ -68,7 +68,8 @@ public class GroundServiceImpl implements GroundService {
     public List<GroundDto> getAllGroundsByTownAndRegion(GroundSearchDto groundSearchDto) {
         return groundMapper.toDto(groundRepository.findAllGroundByTownAndRegion(
                 groundSearchDto.getTown(),
-                groundSearchDto.getRegion()
+                groundSearchDto.getRegion(),
+                groundSearchDto.getName()
         ));
     }
 

@@ -14,7 +14,7 @@ public final class ApiPaths {
     public final static String GET_NOTIFICATIONS_PLAYER = "/notification-player";
 
 
-    public final static String ADMINS = "/admin";
+    public final static String ADMINS = "/admins";
     public final static String GET_ADMINS = SLASH;
     public static final String NOTIF_ADMINS = "/notifAdmins";
     public final static String GET_NOTIF_ADMINS = SLASH;
@@ -40,6 +40,7 @@ public final class ApiPaths {
     public static final String GET_CURRENT_NUMBER_TEAMS = "/number-teams";
     public static final String GET_NUMBER_OWNER_MATCHES = "/number-owner-matches";
     public final static String SEARCH_MATCH = "/search";
+    public final static String SEARCH_MATCH_BY_DATE = "/search-date";
 
 
     public final static String TEAMS = "/teams";

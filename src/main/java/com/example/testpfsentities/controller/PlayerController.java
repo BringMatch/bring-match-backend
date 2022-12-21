@@ -35,7 +35,6 @@ public class PlayerController {
 //                .body(playerService.getPlayers());
 //
 //    }
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(ApiPaths.GET_PLAYERS)
     public ResponseEntity<List<PlayerDto>> getPlayers() {
         return ResponseEntity.ok().body(playerService.getPlayers());
