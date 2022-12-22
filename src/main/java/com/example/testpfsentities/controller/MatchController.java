@@ -6,10 +6,12 @@ import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.service.MatchService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -67,10 +69,19 @@ public class MatchController {
     @GetMapping(ApiPaths.SEARCH_MATCH)
     public ResponseEntity<List<MatchDto>> getGroundsByRegionAndTown(
             @RequestParam(value = "town", required = false) String town,
-            @RequestParam(value = "region", required = false) String region) {
-        return ResponseEntity.ok().body(matchService.getMatchesByRegionAndTown(new MatchSearchDto(town, region)));
+            @RequestParam(value = "region", required = false) String region,
+            @RequestParam(value = "groundName", required = false) String groundName,
+            @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+            @RequestParam(value = "privateMatch", required = false) boolean privateMatch
+    ) {
+        return ResponseEntity.ok().body(matchService.searchforMatches(new MatchSearchDto(town, region, date, groundName, privateMatch)));
     }
 
+    @GetMapping(ApiPaths.SEARCH_MATCH_BY_DATE)
+    public ResponseEntity<List<MatchDto>> getMatchByIDate(
+            @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+        return ResponseEntity.ok().body(matchService.getMatchByDate(date));
+    }
 
     @GetMapping(ApiPaths.GET_MATCHES_OF_OWNER_GROUNDS)
     public ResponseEntity<List<MatchDto>> getMatchesOfOwnerGrounds(@RequestBody @Validated MatchDto matchDto) {
@@ -82,7 +93,7 @@ public class MatchController {
         return ResponseEntity.ok().body(matchService.getMatchCode(match_id));
     }
 
-    @GetMapping(ApiPaths.GET_MATCHES+"{match_id}")
+    @GetMapping(ApiPaths.GET_MATCHES + "{match_id}")
     public ResponseEntity<MatchDto> getMatchById(@PathVariable(name = "match_id") String match_id) {
         return ResponseEntity.ok().body(matchService.getMatchById(match_id));
     }

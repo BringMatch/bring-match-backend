@@ -18,11 +18,13 @@ public interface GroundRepository extends JpaRepository<Ground, String> {
 
     @Query(value = "SELECT c FROM Ground c " +
             "WHERE ( :town='NULL' or LOWER(c.town)=:town )" +
-            "and (:region='NULL' or LOWER(c.region)=:region)"
+            "and (:region='NULL' or LOWER(c.region)=:region)" +
+            "and (:name='NULL' or LOWER(c.name)=:name)"
     )
     List<Ground> findAllGroundByTownAndRegion(
             @Param("town") String town,
-            @Param("region") String region
+            @Param("region") String region,
+            @Param("name") String name
     );
 
 

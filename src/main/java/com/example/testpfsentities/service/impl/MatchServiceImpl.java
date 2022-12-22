@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,14 +77,15 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<Match> getMatchByDate(Date date) {
-        return matchRepository.findByDate(date);
+    public List<MatchDto> getMatchByDate(Date date) {
+        return matchMapper.toDto(matchRepository.findByDate(date));
     }
 
     @Override
-    public List<MatchDto> getMatchesByRegionAndTown(MatchSearchDto matchSearchDto) {
-        List<Match> matches = matchRepository.findAll();
-        var grounds = groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(matchSearchDto.getTown(), matchSearchDto.getRegion()));
+    public List<MatchDto> searchforMatches(MatchSearchDto matchSearchDto) {
+        List<Match> matches = matchRepository.findByDate(matchSearchDto.getDate());
+
+        var grounds = groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(matchSearchDto.getTown(), matchSearchDto.getRegion(),matchSearchDto.getGround_name()));
         List<Match> matchDtoList = new ArrayList<>();
         for (Match match : matches) {
             for (GroundDto ground : grounds) {

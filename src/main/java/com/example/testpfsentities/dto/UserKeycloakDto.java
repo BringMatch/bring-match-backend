@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserKeycloakDto {
     private String userName;
-    private String emailId;
+    private String email;
     private String password;
     private String firstname;
     private String lastName;

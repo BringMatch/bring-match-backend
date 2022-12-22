@@ -9,6 +9,7 @@ import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -21,9 +22,9 @@ public interface MatchService {
     void evaluateMatch(Match match , Player player);
 
     Match findMatchById(String match_id);
-    List<Match> getMatchByDate(Date date);
+    List<MatchDto> getMatchByDate(Date date);
 
-    List<MatchDto> getMatchesByRegionAndTown(MatchSearchDto matchSearchDto);
+    List<MatchDto> searchforMatches(MatchSearchDto matchSearchDto);
 
     void save(Match match);
 

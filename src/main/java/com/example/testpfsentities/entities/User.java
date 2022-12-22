@@ -37,6 +37,7 @@ public class User extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     private Role roleName;
+    private String username;
 
     @Column(columnDefinition = "boolean default false")
     private boolean active;

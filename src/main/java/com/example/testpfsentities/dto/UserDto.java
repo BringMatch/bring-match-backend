@@ -31,5 +31,7 @@ public class UserDto {
     @Pattern(regexp = "OWNER|ADMIN|PLAYER", message = "you must respect these types  : OWNER , ADMIN , PLAYER")
     private String roleName;
 
-    private String userPassword;
+    private String password;
+    private String username;
+
 }

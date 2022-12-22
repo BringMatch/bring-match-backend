@@ -1,8 +1,6 @@
 package com.example.testpfsentities.config;
 
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.OAuth2Constants;
-import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.ClientsResource;
 import org.keycloak.admin.client.resource.RealmResource;
@@ -19,14 +17,14 @@ public class AdminManagementBuilder {
     @Value("${keycloak.realm}")
     private String realm;
 
-    @Value("${keycloak.clientId}")
+    @Value("${management.admin.clientId}")
     private String clientId;
 
-    @Value("${keycloak.username:''}")
+    @Value("${management.admin.username}")
     private String username;
 
+    @Value("${management.admin.password}")
     private String password;
-    @Value("${keycloak.password:''}")
 
 
     public UsersResource getUsersResource() {
@@ -38,11 +36,7 @@ public class AdminManagementBuilder {
     }
 
     public RealmResource getRealmResource() {
-        Keycloak kc = KeycloakBuilder.builder().serverUrl(keycloakUrl).realm(realm).username("yessine")
-                .password("admin").clientId("admin-cli").resteasyClient(new ResteasyClientBuilder().connectionPoolSize(10).build())
-                .build();
-        return kc.realm(realm);
-//        return newKeycloakBuilderWithClientCredentials().build().realm(realm);
+        return newKeycloakBuilderWithClientCredentials().build().realm(realm);
     }
 
     private KeycloakBuilder newKeycloakBuilderWithClientCredentials() {
