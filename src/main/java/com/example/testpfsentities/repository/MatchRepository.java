@@ -18,9 +18,9 @@ public interface MatchRepository extends JpaRepository<Match,String> {
     List<MatchDto> findByGroundName(String groundName);
 
     @Query(value = "SELECT c FROM Match c" +
-            " where c.date >= :date "
+            " where c.date >= :date or c.date IS NULL"
     )
-    List<Match> findByDate(@Param("date") Date date);
+    List<Match> findByDate(@Param("date") @Nullable Date date);
 
 
 //    @Query(value = "SELECT c FROM Match c" +
