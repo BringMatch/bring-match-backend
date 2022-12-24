@@ -25,19 +25,19 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public void createPlayer() {
-        Player player = new Player();
-        player.setEmail("yessinejawa@gmail.com");
-        player.setUpdatedAt(Date.from(Instant.now()));
-        player.setPassword("yessine");
-        player.setFirstName("ajaoua");
-        player.setLastName("ajaqsdfoua");
-        player.setPhoneNumber("45454");
-        player.setRoleName(Role.PLAYER);
-        player.setTown("kech");
-        player.setRegion("ensa");
-        player.setCreatedAt(Date.from(Instant.now()));
-        player.setNotificationPlayer(null);
-        playerRepository.save(player);
+//        Player player = new Player();
+//        player.setEmail("yessinejawa@gmail.com");
+//        player.setUpdatedAt(Date.from(Instant.now()));
+//        player.setPassword("yessine");
+//        player.setFirstName("ajaoua");
+//        player.setLastName("ajaqsdfoua");
+//        player.setPhoneNumber("45454");
+//        player.setRoleName(Role.PLAYER);
+//        player.setTown("kech");
+//        player.setRegion("ensa");
+//        player.setCreatedAt(Date.from(Instant.now()));
+//        player.setNotificationPlayer(null);
+//        playerRepository.save(player);
     }
 
     @Override

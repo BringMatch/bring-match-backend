@@ -69,13 +69,11 @@ public class MatchController {
     @GetMapping(ApiPaths.SEARCH_MATCH)
     public ResponseEntity<List<MatchDto>> getGroundsByRegionAndTown(
             @RequestParam(value = "town", required = false) String town,
-            @RequestParam(value = "region", required = false) String region,
             @RequestParam(value = "groundName", required = false) String groundName,
-            @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
-            @RequestParam(value = "privateMatch", required = false) boolean privateMatch
+            @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date
     ) {
 
-            return ResponseEntity.ok().body(matchService.searchforMatches(new MatchSearchDto(town, region, date, groundName, privateMatch)));
+            return ResponseEntity.ok().body(matchService.searchforMatches(new MatchSearchDto(town, date, groundName)));
     }
 
 
