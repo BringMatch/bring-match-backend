@@ -2,7 +2,9 @@ package com.example.testpfsentities.validations;
 
 import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.entities.Ground;
+import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.service.GroundService;
+import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class MatchValidator {
     private final GroundService groundService;
+    private final PlayerService playerService;
 
     public void validateCreation(MatchDto matchDto) {
         // first we must check if the player's position already exist in our string utils or not !
@@ -38,6 +41,9 @@ public class MatchValidator {
                 || endHour < ground.getStartHour()) {
             throw new IllegalArgumentException("check your start and end hour ! the ground finishes at " + ground.getEndHour());
         }
-
+        Player player =playerService.findPlayerById(matchDto.getTeams().get(0).getPlayersTeams().get(0).getPlayer().getId());
+        if (player.equals(null)){
+            throw new IllegalArgumentException("player not exist" );
+        }
     }
 }

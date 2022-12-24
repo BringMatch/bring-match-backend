@@ -66,11 +66,15 @@ public class GroundServiceImpl implements GroundService {
 
     @Override
     public List<GroundDto> getAllGroundsByTownAndRegion(GroundSearchDto groundSearchDto) {
-        return groundMapper.toDto(groundRepository.findAllGroundByTownAndRegion(
-                groundSearchDto.getTown(),
-                groundSearchDto.getRegion(),
-                groundSearchDto.getName()
-        ));
+        if (groundSearchDto.getTown() == null && groundSearchDto.getRegion()==null && groundSearchDto.getName()==null){
+            return  groundMapper.toDto(groundRepository.findAll());
+        }else {
+            return groundMapper.toDto(groundRepository.findAllGroundByTownAndRegion(
+                    groundSearchDto.getTown(),
+                    groundSearchDto.getRegion(),
+                    groundSearchDto.getName()
+            ));
+        }
     }
 
     @Override
