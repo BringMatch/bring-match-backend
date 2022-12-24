@@ -17,9 +17,9 @@ public interface GroundRepository extends JpaRepository<Ground, String> {
     List<Ground> findByOwner_Id(String owner_id);
 
     @Query(value = "SELECT c FROM Ground c " +
-            "WHERE ( :town='NULL' or LOWER(c.town)=:town )" +
-            "and (:region='NULL' or LOWER(c.region)=:region)" +
-            "and (:name='NULL' or LOWER(c.name)=:name)"
+            "WHERE ( :town is NULL or LOWER(c.town)=:town )" +
+            "and (:region is NULL or LOWER(c.region)=:region)" +
+            "and (:name is NULL or LOWER(c.name)=:name)"
     )
     List<Ground> findAllGroundByTownAndRegion(
             @Param("town") String town,

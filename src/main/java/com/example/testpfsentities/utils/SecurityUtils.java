@@ -36,7 +36,7 @@ public interface SecurityUtils {
                 && !(authentication instanceof AnonymousAuthenticationToken);
     }
 
-    private static AccessToken getAccessToken() {
+    static AccessToken getAccessToken() {
         SimpleKeycloakAccount account = (SimpleKeycloakAccount) getAuthentication().getDetails();
         return account.getKeycloakSecurityContext().getToken();
     }

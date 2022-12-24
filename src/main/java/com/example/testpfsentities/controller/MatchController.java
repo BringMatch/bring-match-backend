@@ -74,13 +74,17 @@ public class MatchController {
             @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
             @RequestParam(value = "privateMatch", required = false) boolean privateMatch
     ) {
-        return ResponseEntity.ok().body(matchService.searchforMatches(new MatchSearchDto(town, region, date, groundName, privateMatch)));
+
+            return ResponseEntity.ok().body(matchService.searchforMatches(new MatchSearchDto(town, region, date, groundName, privateMatch)));
     }
+
 
     @GetMapping(ApiPaths.SEARCH_MATCH_BY_DATE)
     public ResponseEntity<List<MatchDto>> getMatchByIDate(
             @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-        return ResponseEntity.ok().body(matchService.getMatchByDate(date));
+
+            return ResponseEntity.ok().body(matchService.getMatchByDate(date));
+
     }
 
     @GetMapping(ApiPaths.GET_MATCHES_OF_OWNER_GROUNDS)
