@@ -3,6 +3,7 @@ package com.example.testpfsentities.service;
 import com.example.testpfsentities.dto.OwnerDto;
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.UserDto;
+import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.User;
 import com.example.testpfsentities.exceptions.BusinessException;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -17,8 +18,7 @@ public interface UserService {
     void disableUser(String id);
     void enableUser(String id);
 
-    void addRoleToUser(String email, String role);
-    public void saveUserInProviderWithPermanentPassword(User userBo);
+    void saveUserInProviderWithPermanentPassword(User userBo);
 
     List<UserRepresentation> getUser(String userName);
 
@@ -26,7 +26,7 @@ public interface UserService {
 
     void deleteUser(String userId);
 
-    public void resetPassword(String password);
+    void resetPassword(String password);
 
 
 }

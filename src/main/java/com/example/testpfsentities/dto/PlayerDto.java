@@ -19,4 +19,5 @@ public class PlayerDto {
     private String roleName;
     private String town;
     private String region;
+    private String username;
 }

@@ -1,6 +1,8 @@
 package com.example.testpfsentities.config;
 
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.OAuth2Constants;
+import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.ClientsResource;
 import org.keycloak.admin.client.resource.RealmResource;
@@ -28,25 +30,26 @@ public class AdminManagementBuilder {
 
 
     public UsersResource getUsersResource() {
-        return newKeycloakBuilderWithClientCredentials().build().realm(realm).users();
+        return newKeycloakBuilderWithClientCredentials().realm(realm).users();
     }
 
     public ClientsResource getClientResource() {
-        return newKeycloakBuilderWithClientCredentials().build().realm(realm).clients();
+        return newKeycloakBuilderWithClientCredentials().realm(realm).clients();
     }
 
     public RealmResource getRealmResource() {
-        return newKeycloakBuilderWithClientCredentials().build().realm(realm);
+        return newKeycloakBuilderWithClientCredentials().realm(realm);
     }
 
-    private KeycloakBuilder newKeycloakBuilderWithClientCredentials() {
+    private Keycloak newKeycloakBuilderWithClientCredentials() {
         return KeycloakBuilder.builder()
                 .realm(realm)
                 .serverUrl(keycloakUrl)
                 .clientId(clientId)
                 .username(username)
                 .password(password)
-                .grantType(OAuth2Constants.PASSWORD);
+                .grantType(OAuth2Constants.PASSWORD)
+                .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(10).build()).build();
     }
 
 }
