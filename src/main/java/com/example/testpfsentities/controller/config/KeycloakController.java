@@ -1,6 +1,7 @@
 package com.example.testpfsentities.controller.config;
 
 import com.example.testpfsentities.config.AdminManagementBuilder;
+import com.example.testpfsentities.dto.OwnerDto;
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.UserDto;
 import com.example.testpfsentities.service.UserService;
@@ -26,6 +27,10 @@ public class KeycloakController {
     public void createPlayer(@RequestBody @Validated PlayerDto playerDto) {
         userService.create(playerDto);
     }
+    @PostMapping("/create-owner")
+    public void createOwner(@RequestBody @Validated OwnerDto ownerDto) {
+        userService.create(ownerDto);
+    }
 
     /**
      * this will return the users inside our client !
@@ -44,30 +49,30 @@ public class KeycloakController {
     }
 
     @GetMapping(path = "/{userName}")
-    public List<UserRepresentation> getUser(@PathVariable("userName") String userName){
+    public List<UserRepresentation> getUser(@PathVariable("userName") String userName) {
         return userService.getUser(userName);
     }
 
 
     @PutMapping(path = "/update/{userId}")
-    public String updateUser(@PathVariable("userId") String userId,   @RequestBody UserDto userDTO){
+    public String updateUser(@PathVariable("userId") String userId, @RequestBody UserDto userDTO) {
         userService.updateUser(userId, userDTO);
         return "User Details Updated Successfully.";
     }
 
     @DeleteMapping(path = "/delete/{userId}")
-    public String deleteUser(@PathVariable("userId") String userId){
+    public String deleteUser(@PathVariable("userId") String userId) {
         userService.deleteUser(userId);
         return "User Deleted Successfully.";
     }
 
     @PutMapping(path = "/enable-user/{userId}")
-    public void enableUserStatus(@PathVariable("userId")String userId){
+    public void enableUserStatus(@PathVariable("userId") String userId) {
         userService.enableUser(userId);
     }
 
     @PutMapping(path = "/disable-user/{userId}")
-    public void disableUserStatus(@PathVariable("userId")String userId){
+    public void disableUserStatus(@PathVariable("userId") String userId) {
         userService.disableUser(userId);
     }
 
