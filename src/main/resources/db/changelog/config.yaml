@@ -1,5 +1,0 @@
-databaseChangeLog:
-    - include:
-        file: db/changelog/logs/creation.sql
-    - include:
-        file : db/changelog/logs/changelog.sql

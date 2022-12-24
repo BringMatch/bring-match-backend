@@ -94,7 +94,8 @@ public class MatchServiceImpl implements MatchService {
         } else {
             matches = matchRepository.findByDate(matchSearchDto.getDate());
         }
-        var grounds = groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(matchSearchDto.getTown(), matchSearchDto.getRegion(), matchSearchDto.getGround_name()));
+
+        var grounds = groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(matchSearchDto.getTown(), matchSearchDto.getGround_name()));
         List<Match> matchDtoList = new ArrayList<>();
         for (Match match : matches) {
             for (GroundDto ground : grounds) {

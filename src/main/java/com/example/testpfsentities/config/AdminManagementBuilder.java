@@ -22,11 +22,14 @@ public class AdminManagementBuilder {
     @Value("${management.admin.clientId}")
     private String clientId;
 
-    @Value("${management.admin.username}")
+    @Value("fatiha")
     private String username;
 
-    @Value("${management.admin.password}")
+    @Value("admin")
     private String password;
+
+    @Value("${keycloak.credentials.secret}")
+    private String secretKey;
 
 
     public UsersResource getUsersResource() {
@@ -46,6 +49,7 @@ public class AdminManagementBuilder {
                 .realm(realm)
                 .serverUrl(keycloakUrl)
                 .clientId(clientId)
+                .clientSecret(secretKey)
                 .username(username)
                 .password(password)
                 .grantType(OAuth2Constants.PASSWORD)

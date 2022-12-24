@@ -13,8 +13,6 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MatchSearchDto {
     String town;
-    String region;
     Date date;
     String ground_name;
-    boolean privateMatch;
 }
