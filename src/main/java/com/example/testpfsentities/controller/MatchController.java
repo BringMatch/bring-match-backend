@@ -25,7 +25,7 @@ public class MatchController {
         matchService.createMatch(matchDto);
     }
 
-    @GetMapping(ApiPaths.GET_MATCHES)
+    @GetMapping("")
     public ResponseEntity<List<MatchDto>> getMatches() {
         return ResponseEntity.ok().body(matchService.getMatches());
     }
