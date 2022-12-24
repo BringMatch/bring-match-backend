@@ -32,6 +32,7 @@ public final class ApiPaths {
     public final static String MATCHES = "/matches";
     public final static String GET_MATCHES = SLASH;
     public final static String GET_MATCHES_GROUND = "/ground" + SLASH;
+    public final static String GET_LENGTH_TEAM_IN_A_MATCH = "/length-team-in-a-match";
     public final static String GET_MATCHES_OF_OWNER_GROUNDS = "/matches-of-owner-grounds";
     public final static String GET_MATCH_CODE_IF_PRIVATE = "/match-code";
     public final static String CREATE_MATCH = "/create-match";
@@ -47,6 +48,7 @@ public final class ApiPaths {
     public final static String TEAMS = "/teams";
     public final static String GET_TEAMS = SLASH;
     public final static String GET_FREE_POSITIONS_IN_A_TEAM = "/free-positions";
+    public final static String GET_LENGTH_REMAINING = "/length-remaining";
     public final static String CREATE_TEAM = "/create-team";
 
     public final static String NOTIFICATIONS = "/notifications";
@@ -57,6 +59,7 @@ public final class ApiPaths {
     public static final String OWNERS = "/owners";
     public final static String GET_OWNERS = SLASH;
     public static final String SAVE_OWNER = "/save";
+    public static final String OWNER_CONNECTED = "/connected";
     public static final String GET_NUMBER_OWNER_GROUNDS = "/number-owner-grounds";
     public static final String GET_NUMBER_OWNER_GROUNDS_OPEN = "/number-owner-grounds-open";
     public static final String GET_NUMBER_OWNER_GROUNDS_CLOSED = "/number-owner-grounds-closed";

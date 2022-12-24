@@ -25,5 +25,9 @@ public class TeamController {
     public ResponseEntity<List<String>> getFreePositions(@PathVariable(name = "team_name") String team_name) {
         return ResponseEntity.ok().body(teamService.getFreePositions(team_name));
     }
+    @GetMapping(ApiPaths.GET_LENGTH_REMAINING + "/{team_name}")
+    public ResponseEntity<Integer> getLengthRemaining(@PathVariable(name = "team_name") String team_name){
+        return ResponseEntity.ok().body(teamService.getLengthRemaining(team_name));
+    }
 
 }

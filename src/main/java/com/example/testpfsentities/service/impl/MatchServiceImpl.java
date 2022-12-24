@@ -39,7 +39,9 @@ public class MatchServiceImpl implements MatchService {
         matchValidator.validateCreation(matchDto);
         String ground_name = matchDto.getGroundName();
         Ground ground = groundService.findByName(ground_name);
+
         Match match = matchMapper.toBo(matchDto);
+
         Reservation reservation = reservationService.create(matchDto, ground);
 
         if (matchDto.getPrivateMatch()) {
@@ -48,7 +50,9 @@ public class MatchServiceImpl implements MatchService {
 
         match.setGround(ground);
         Match match1 = matchRepository.save(match);
+
         teamService.assignPlayersWithTeams(match1.getTeams(), matchDto.getTeams().get(0));
+        teamService.assignLengthMatchWithTeamLength(match1.getTeams(), matchDto.getNumberTeamPlayers());
 
         NotificationOwner notificationOwner = notificationOwnerService.create(reservation, ground);
         notificationOwnerService.save(notificationOwner);
@@ -84,13 +88,13 @@ public class MatchServiceImpl implements MatchService {
     @Override
     public List<MatchDto> searchforMatches(MatchSearchDto matchSearchDto) {
         List<Match> matches;
-        if (matchSearchDto.getDate()==null) {
+        if (matchSearchDto.getDate() == null) {
             matches = matchRepository.findAll();
 
-        }else {
+        } else {
             matches = matchRepository.findByDate(matchSearchDto.getDate());
         }
-        var grounds = groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(matchSearchDto.getTown(), matchSearchDto.getRegion(),matchSearchDto.getGround_name()));
+        var grounds = groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(matchSearchDto.getTown(), matchSearchDto.getRegion(), matchSearchDto.getGround_name()));
         List<Match> matchDtoList = new ArrayList<>();
         for (Match match : matches) {
             for (GroundDto ground : grounds) {
@@ -112,11 +116,12 @@ public class MatchServiceImpl implements MatchService {
     public Match joinMatchAsTeam(MatchDto matchDto) {
         Match match = this.findMatchById(matchDto.getId());
         teamValidator.validateInsertionTeam(matchDto, match);
-        match.getTeams().addAll(teamMapper.toBo(matchDto.getTeams()));
+        List<Team> teams = teamMapper.toBo(matchDto.getTeams());
+        match.getTeams().addAll(teams);
+        teams.get(0).setLength(match.getNumberTeamPlayers() - 1);
         Match matchSaved = matchRepository.save(match);
         TeamDto teamDto = matchDto.getTeams().get(0);
         teamService.assignPlayersWithTeams(matchSaved.getTeams(), teamDto);
-
         // this part is for notification
         // we should notify the owner match player that a new team has joined the game
 
@@ -137,10 +142,13 @@ public class MatchServiceImpl implements MatchService {
                 .filter(teamed -> teamed.getName().equals(matchDto.getTeams().get(0).getName()))
                 .collect(Collectors.toList()).get(0);
 
-        var list = team.getPlayersTeams();
 
         // this is for verification of inserting the player inside the match
         teamService.validateInsertionPlayer(team, matchDto.getTeams().get(0).getPlayersTeams());
+
+        int current_length_team = team.getLength();
+        team.setLength(current_length_team - 1);
+        var list = team.getPlayersTeams();
 
         list.addAll(teamPlayerMapper.toBo(teamPlayerDtoList));
         TeamDto teamDto = matchDto.getTeams().get(0);
@@ -202,6 +210,12 @@ public class MatchServiceImpl implements MatchService {
     public MatchDto getMatchById(String match_id) {
         var match = findMatchById(match_id);
         return matchMapper.toDto(match);
+    }
+
+    @Override
+    public Integer getLengthTeamInMatch(String match_id) {
+        Match match = findMatchById(match_id);
+        return match.getNumberTeamPlayers();
     }
 
 

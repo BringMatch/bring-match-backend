@@ -65,7 +65,7 @@ public class PlayerServiceImpl implements PlayerService {
 
 
     @Override
-    public void checksPlayerExist(PlayerDto player) {
+    public void checksPlayerExist(Player player) {
         Optional<Player> optionalPlayer = playerRepository.findById(player.getId());
         if (optionalPlayer.isEmpty()) {
             throw new IllegalArgumentException("player not found !");

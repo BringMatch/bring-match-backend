@@ -2,11 +2,13 @@ package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.dto.TeamPlayerDto;
+import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.mapper.TeamMapper;
 import com.example.testpfsentities.repository.TeamRepository;
 import com.example.testpfsentities.service.TeamPlayerService;
 import com.example.testpfsentities.service.TeamService;
+import com.example.testpfsentities.service.UserService;
 import com.example.testpfsentities.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ public class TeamServiceImpl implements TeamService {
     private final TeamMapper teamMapper;
 
     private final TeamPlayerService teamPlayerService;
+    private final UserService userService;
 
     @Override
     public Team createTeam(TeamDto teamDto) {
@@ -38,8 +41,12 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void validateInsertionPlayer(Team team, List<TeamPlayerDto> teamPlayerDtos) {
+        if ( team.getLength() == 0){
+            throw new IllegalArgumentException("sorry you cannot join this match ! full positions");
+        }
+        Player player =  userService.getPlayerConnected();
         teamPlayerDtos.forEach(teamPlayerDto -> teamPlayerService
-                .validateTeamPlayer(teamPlayerDto.getPlayer(), team, teamPlayerDto));
+                .validateTeamPlayer(player, team, teamPlayerDto));
     }
 
     @Override
@@ -70,6 +77,20 @@ public class TeamServiceImpl implements TeamService {
             }
         }
         return freePositionsList;
+    }
+
+    @Override
+    public void assignLengthMatchWithTeamLength(List<Team> teams, int length) {
+        Team firstTeam = teams.get(0);
+        firstTeam.setLength(length - 1);
+        teamRepository.save(firstTeam);
+    }
+
+
+    @Override
+    public Integer getLengthRemaining(String team_name) {
+        Team team = getTeamByName(team_name);
+        return team.getLength();
     }
 
     @Override

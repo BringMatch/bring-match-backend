@@ -1,5 +1,6 @@
 package com.example.testpfsentities.entities;
 
+import com.example.testpfsentities.entities.enums.MatchStatus;
 import com.example.testpfsentities.entities.enums.MatchType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class Match extends AbstractEntity {
     @ManyToOne
     private Ground ground;
 
-    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Team> teams;
 
     private Boolean privateMatch;
@@ -29,5 +30,11 @@ public class Match extends AbstractEntity {
     private String region;
     private int startHour;
     private int duration;
+    private int numberTeamPlayers;
+
+    @Enumerated(EnumType.STRING)
+    private MatchStatus matchStatus;
+
+    private boolean draw;
 
 }

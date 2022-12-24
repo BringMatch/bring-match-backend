@@ -33,8 +33,8 @@ public class ScheduledTasks {
     }
 
     @Scheduled(cron = "* * * * * *")
-    public void evaluateMatchAfterFourHour() {
-        Date newDate = new Date(System.currentTimeMillis() - 3600 * 4000);
+    public void evaluateMatchAfterOneHour() {
+        Date newDate = new Date(System.currentTimeMillis() - 3600 * 1000);
 
         //get the list of match that have the date dateTime
         try {
@@ -52,6 +52,11 @@ public class ScheduledTasks {
             log.info("no match has selected");
         }
     }
+
+//    @Scheduled(cron = "* * * * *")
+//    public void updateMatchStatus(){
+//        // here we must change the status from not started -> to pending , to played !
+//    }
 
 
 }

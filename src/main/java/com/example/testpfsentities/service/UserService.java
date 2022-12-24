@@ -29,4 +29,7 @@ public interface UserService {
     void resetPassword(String password);
 
 
+    OwnerDto getOwnerConnected();
+
+    Player getPlayerConnected();
 }

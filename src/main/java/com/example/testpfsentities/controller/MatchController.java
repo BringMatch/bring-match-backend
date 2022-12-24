@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class MatchController {
     private final MatchService matchService;
 
     @PostMapping(ApiPaths.CREATE_MATCH)
+    @RolesAllowed(value = "PLAYER")
     public void createMatch(@RequestBody @Validated MatchDto matchDto) {
         matchService.createMatch(matchDto);
     }
@@ -82,9 +84,12 @@ public class MatchController {
     @GetMapping(ApiPaths.SEARCH_MATCH_BY_DATE)
     public ResponseEntity<List<MatchDto>> getMatchByIDate(
             @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-
             return ResponseEntity.ok().body(matchService.getMatchByDate(date));
+    }
 
+    @GetMapping(ApiPaths.GET_LENGTH_TEAM_IN_A_MATCH + "/{match_id}")
+    public ResponseEntity<Integer> getLengthTeamInMatch(@PathVariable(name = "match_id") String match_id){
+        return ResponseEntity.ok().body(matchService.getLengthTeamInMatch(match_id));
     }
 
     @GetMapping(ApiPaths.GET_MATCHES_OF_OWNER_GROUNDS)

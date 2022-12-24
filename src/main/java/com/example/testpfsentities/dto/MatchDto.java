@@ -29,4 +29,5 @@ public class MatchDto {
     private int duration;
     private String matchCode;
     private OwnerDto owner;
+    private int numberTeamPlayers;
 }

@@ -46,4 +46,6 @@ public interface MatchService {
     String getMatchCode(String match_id);
 
     MatchDto getMatchById(String match_id);
+
+    Integer getLengthTeamInMatch(String match_id);
 }

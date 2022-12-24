@@ -1,9 +1,12 @@
 package com.example.testpfsentities.dto;
 
+import com.example.testpfsentities.entities.PlayerStats;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,4 +23,5 @@ public class PlayerDto {
     private String town;
     private String region;
     private String username;
+    private List<PlayerStatsDto> playerStats;
 }

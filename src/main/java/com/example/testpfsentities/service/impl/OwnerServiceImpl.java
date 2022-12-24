@@ -8,6 +8,7 @@ import com.example.testpfsentities.scheduling.NewUserEvent;
 import com.example.testpfsentities.service.AdminService;
 import com.example.testpfsentities.service.NotificationAdminService;
 import com.example.testpfsentities.service.OwnerService;
+import com.example.testpfsentities.service.UserService;
 import com.example.testpfsentities.validations.OwnerValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class OwnerServiceImpl implements OwnerService {
     private final OwnerMapper ownerMapper;
     private final OwnerValidator ownerValidator;
     private final AdminService adminService;
+    private final UserService userService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override

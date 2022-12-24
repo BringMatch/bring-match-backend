@@ -20,7 +20,7 @@ public interface PlayerService {
 
     Player returnOwnerMatchPlayer(Match match);
 
-    void checksPlayerExist(PlayerDto player);
+    void checksPlayerExist(Player player);
 
     List<PlayerDto> getPlayers(PlayerSearchDto playerSearchDto);
 

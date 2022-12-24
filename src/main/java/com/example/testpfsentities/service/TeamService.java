@@ -26,5 +26,9 @@ public interface TeamService {
 
 
     List<String> getFreePositions(String team_id);
+
+    void assignLengthMatchWithTeamLength(List<Team> teams , int length);
+
+    Integer getLengthRemaining(String team_name);
 }
 

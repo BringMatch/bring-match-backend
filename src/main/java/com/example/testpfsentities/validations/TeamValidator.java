@@ -46,7 +46,7 @@ public class TeamValidator {
             throw new IllegalArgumentException("please provide the code before joining the match !");
         }
 
-        playerService.checksPlayerExist(matchDto.getTeams().get(0).getPlayersTeams().get(0).getPlayer());
+        //playerService.checksPlayerExist(matchDto.getTeams().get(0).getPlayersTeams().get(0).getPlayer());
     }
 
 }

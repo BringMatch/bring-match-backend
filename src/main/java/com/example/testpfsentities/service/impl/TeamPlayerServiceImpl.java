@@ -2,6 +2,7 @@ package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.TeamPlayerDto;
+import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.entities.TeamPlayer;
 import com.example.testpfsentities.mapper.PlayerMapper;
@@ -9,6 +10,8 @@ import com.example.testpfsentities.mapper.TeamPlayerMapper;
 import com.example.testpfsentities.repository.TeamPlayerRepository;
 import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.service.TeamPlayerService;
+import com.example.testpfsentities.service.UserService;
+import com.example.testpfsentities.utils.SecurityUtils;
 import com.example.testpfsentities.utils.StringUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 public class TeamPlayerServiceImpl implements TeamPlayerService {
     private final TeamPlayerRepository teamPlayerRepository;
     private final PlayerMapper playerMapper;
+    private final UserService userService;
     private final PlayerService playerService;
 
     private final TeamPlayerMapper teamPlayerMapper;
@@ -43,7 +47,9 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
 
     @Override
     public TeamPlayer saveTeamPlayer(TeamPlayer teamPlayer, Team team) {
+        Player player=userService.getPlayerConnected();
         log.info("welcome");
+        teamPlayer.setPlayer(player);
         teamPlayer.setTeam(team);
         return teamPlayerRepository.save(teamPlayer);
     }
@@ -60,9 +66,9 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
     }
 
     @Override
-    public void validateTeamPlayer(PlayerDto playerDto, Team team, TeamPlayerDto teamPlayerDto) {
-        playerService.checksPlayerExist(playerDto);
-        checksPlayerExistInTheTeam(playerDto, team);
+    public void validateTeamPlayer(Player player, Team team, TeamPlayerDto teamPlayerDto) {
+        playerService.checksPlayerExist(player);
+        checksPlayerExistInTheTeam(player, team);
         checksLengthTeamInferiorOrEqualToMaxLengthTeam(team);
         checksPositionNameExistsInSystem(teamPlayerDto.getPosition());
         checksPositionPlayerDtoFree(teamPlayerDto, team);
@@ -107,7 +113,7 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
         }
     }
 
-    private void checksPlayerExistInTheTeam(PlayerDto player, Team team) {
+    private void checksPlayerExistInTheTeam(Player player, Team team) {
         var listTeamPlayers = getListPlayersInTeam(team.getId());
         listTeamPlayers.forEach(teamPlayer -> {
             if (teamPlayer.getPlayer().getId().equals(player.getId())) {

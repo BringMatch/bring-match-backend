@@ -18,5 +18,6 @@ public class GlobalStatsDto {
     private Long numGoalsTeamTwo;
     private String finalScore;
     private Date createdAt;
+
     private String match_id;
 }

@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
                 "Merci pour votre inscription à notre application " + System.lineSeparator() +
                 "votre inscription est acceptée" + System.lineSeparator() +
                 "Merci de ne pas répondre a cette email";
-        //emailSenderForOwner.sendEmail(player.getEmail(),subject,body);
+        emailSenderForOwner.sendEmail(player.getEmail(), subject, body);
 
     }
 
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         Owner user = ownerMapper.toBo(ownerDto);
         saveUserInProviderWithPermanentPassword(user);
         var owner = ownerRepository.save(user);
-        ownerEmailSender.newEmailSender(owner);
+        //ownerEmailSender.newEmailSender(owner);
     }
 
     @Override
@@ -180,6 +180,24 @@ public class UserServiceImpl implements UserService {
 
         }
 
+    }
+
+    @Override
+    public OwnerDto getOwnerConnected() {
+        Optional<String> email = SecurityUtils.getUserEmail();
+        if (email.isEmpty()) {
+            throw new IllegalArgumentException("email not found !");
+        }
+        return ownerMapper.toDto(ownerRepository.findByEmail(email.get()).get());
+    }
+
+    @Override
+    public Player getPlayerConnected(){
+        Optional<String> email = SecurityUtils.getUserEmail();
+        if (email.isEmpty()) {
+            throw new IllegalArgumentException("email not found !");
+        }
+        return playerRepository.findByEmail(email.get()).get();
     }
 
     private void setUserPassword(CredentialRepresentation credential, String email) {

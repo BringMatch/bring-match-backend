@@ -11,10 +11,7 @@ import javax.persistence.*;
 public class GlobalStats extends AbstractEntity {
     private Long numGoalsTeamOne;
     private Long numGoalsTeamTwo;
-
     private String finalScore;
-
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Match match;
 
