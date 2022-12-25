@@ -24,23 +24,6 @@ public class PlayerServiceImpl implements PlayerService {
     private final PlayerMapper playerMapper;
 
     @Override
-    public void createPlayer() {
-//        Player player = new Player();
-//        player.setEmail("yessinejawa@gmail.com");
-//        player.setUpdatedAt(Date.from(Instant.now()));
-//        player.setPassword("yessine");
-//        player.setFirstName("ajaoua");
-//        player.setLastName("ajaqsdfoua");
-//        player.setPhoneNumber("45454");
-//        player.setRoleName(Role.PLAYER);
-//        player.setTown("kech");
-//        player.setRegion("ensa");
-//        player.setCreatedAt(Date.from(Instant.now()));
-//        player.setNotificationPlayer(null);
-//        playerRepository.save(player);
-    }
-
-    @Override
     public List<PlayerDto> getPlayers() {
         return playerRepository.findAll().stream().map(playerMapper::toDto).collect(Collectors.toList());
     }

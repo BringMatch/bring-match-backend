@@ -14,7 +14,8 @@ public class GroundDto {
     private int endHour;
     private String town;
     private String region;
-    private boolean status;
+    private boolean open;
 
     private OwnerDto owner;
+    private boolean free;
 }

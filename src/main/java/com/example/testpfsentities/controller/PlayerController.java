@@ -21,11 +21,6 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    @PostConstruct
-    public void initPlayer() {
-        playerService.createPlayer();
-    }
-
 //    @GetMapping(ApiPaths.GET_PLAYERS)
 //    public ResponseEntity<List<Player>> getPlayers(Authentication authentication, Principal) {
 //        return ResponseEntity

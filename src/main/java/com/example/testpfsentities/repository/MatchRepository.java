@@ -27,6 +27,8 @@ public interface MatchRepository extends JpaRepository<Match,String> {
     )
     List<Match> findAllBycurrentDate(Date currentDate);
 
+    List<Match> findAllByMatchStatus(String matchStatus);
+
 //    @Query(value = "SELECT c FROM Match c" +
 //            " where LOWER (c.town)=:town " +
 //            "and LOWER (c.region)=:region "

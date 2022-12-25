@@ -48,4 +48,6 @@ public interface MatchService {
     MatchDto getMatchById(String match_id);
 
     Integer getLengthTeamInMatch(String match_id);
+
+    List<Match> getPendingMatches();
 }

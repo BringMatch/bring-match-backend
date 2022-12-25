@@ -3,7 +3,6 @@ package com.example.testpfsentities.service.impl;
 import com.example.testpfsentities.dto.GroundDto;
 import com.example.testpfsentities.dto.GroundSearchDto;
 import com.example.testpfsentities.entities.Ground;
-import com.example.testpfsentities.entities.Owner;
 import com.example.testpfsentities.mapper.GroundMapper;
 import com.example.testpfsentities.repository.GroundRepository;
 import com.example.testpfsentities.service.GroundService;
@@ -12,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,12 +66,11 @@ public class GroundServiceImpl implements GroundService {
 
     @Override
     public List<GroundDto> getAllGroundsByTownAndRegion(GroundSearchDto groundSearchDto) {
-        if (groundSearchDto.getTown() == null && groundSearchDto.getName()==null){
+        if (groundSearchDto.getTown() == null && groundSearchDto.getName() == null) {
             log.info("here");
-            return  groundMapper.toDto(groundRepository.findAll());
+            return groundMapper.toDto(groundRepository.findAll());
 
-        }
-        else {
+        } else {
             log.info("heremee");
             return groundMapper.toDto(groundRepository.findAllGroundByTownAndRegion(
                     groundSearchDto.getTown(),
@@ -83,7 +82,7 @@ public class GroundServiceImpl implements GroundService {
     @Override
     public List<GroundDto> getOwnerGrounds(String owner_id) {
         var owner = groundRepository.findByOwner_Id(owner_id);
-        if(owner.size() == 0){
+        if (owner.size() == 0) {
             throw new IllegalArgumentException("owner not existing");
         }
         return owner.stream().map((groundMapper::toDto))
@@ -97,7 +96,7 @@ public class GroundServiceImpl implements GroundService {
     @Override
     public void updateStatusGround(GroundDto groundDto) {
         Ground ground = findById(groundDto.getId());
-        ground.setStatus(groundDto.isStatus());
+        ground.setOpen(groundDto.isOpen());
         groundRepository.save(ground);
     }
 
@@ -123,7 +122,7 @@ public class GroundServiceImpl implements GroundService {
         if (!ownerExists) {
             throw new IllegalArgumentException("owner not existing ");
         }
-        return (int) groundRepository.findByOwner_Id(owner_id).stream().filter(Ground::isStatus).count();
+        return (int) groundRepository.findByOwner_Id(owner_id).stream().filter(Ground::isOpen).count();
     }
 
     @Override
@@ -134,11 +133,28 @@ public class GroundServiceImpl implements GroundService {
         }
 
         return (int) groundRepository.findByOwner_Id(owner_id).stream().filter(ground ->
-                !ground.isStatus()).count();
+                !ground.isOpen()).count();
     }
 
     @Override
-    public boolean getGroundStatusById(Ground ground) {
-        return ground.isStatus();
+    public boolean getGroundOpenStatusById(Ground ground) {
+        return ground.isOpen();
+    }
+
+    @Override
+    public boolean getGroundFreeStatusById(Ground ground) {
+        return ground.isFree();
+    }
+
+    @Override
+    public List<GroundDto> getOpenAndFreeGrounds() {
+        var listGrounds = groundRepository.findAll();
+        List<Ground> finalGroundList = new ArrayList<>();
+        for (Ground ground : listGrounds) {
+            if (ground.isFree() && ground.isOpen()) {
+                finalGroundList.add(ground);
+            }
+        }
+        return groundMapper.toDto(finalGroundList);
     }
 }

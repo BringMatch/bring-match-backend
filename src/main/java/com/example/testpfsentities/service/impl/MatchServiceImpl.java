@@ -51,6 +51,7 @@ public class MatchServiceImpl implements MatchService {
         }
 
         match.setGround(ground);
+        ground.setFree(false);
         match.setMatchStatus(MatchStatus.NOT_PLAYED);
         Match match1 = matchRepository.save(match);
 
@@ -241,6 +242,11 @@ public class MatchServiceImpl implements MatchService {
     public Integer getLengthTeamInMatch(String match_id) {
         Match match = findMatchById(match_id);
         return match.getNumberTeamPlayers();
+    }
+
+    @Override
+    public List<Match> getPendingMatches() {
+        return matchRepository.findAllByMatchStatus("PENDING");
     }
 
 

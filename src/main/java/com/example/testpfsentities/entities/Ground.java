@@ -17,25 +17,27 @@ import java.util.List;
 public class Ground extends AbstractEntity {
 
     @OneToMany(mappedBy = "ground")
+    List<Image> images;
+    @OneToMany(mappedBy = "ground")
     private List<Match> matches;
-
-    @ManyToOne
-    private Owner owner;
 
 //    @OneToMany(cascade = CascadeType.ALL)
 //    private List<Reservation> reservations;
-
+    @ManyToOne
+    private Owner owner;
     @Column(nullable = false, unique = true)
     private String name;
-
-    @OneToMany(mappedBy = "ground")
-    List<Image> images;
-
     private String address;
-    private boolean status;
+
+    @Column(columnDefinition = "boolean default true")
+    private boolean open;
+
     private int startHour;
     private int endHour;
     private String town;
+
+    @Column(columnDefinition = "boolean default true")
+    private boolean free;
     private String region;
 
 

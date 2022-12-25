@@ -13,7 +13,6 @@ import java.util.List;
 
 @Service
 public interface PlayerService {
-    void createPlayer();
 
     List<PlayerDto> getPlayers();
     void save(PlayerDto playerDto);

@@ -6,6 +6,7 @@ import com.example.testpfsentities.service.GroundService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -73,5 +74,9 @@ public class GroundController {
         return ResponseEntity.ok().body(groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(town,name)));
     }
 
+    @GetMapping(ApiPaths.GET_OPEN_FREE_GROUNDS)
+    public ResponseEntity<List<GroundDto>> getOpenAndFreeGrounds(){
+        return ResponseEntity.ok().body(groundService.getOpenAndFreeGrounds());
+    }
 
 }

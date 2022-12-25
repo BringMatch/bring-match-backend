@@ -27,10 +27,10 @@ public class ScheduledTasks {
     private final MatchService matchService;
 
 
-    @Scheduled(fixedRate = 5000)
-    public void reportCurrentTime() {
-        log.info("The time is now {}", dateFormat.format(new Date()));
-    }
+//    @Scheduled(fixedRate = 5000)
+//    public void reportCurrentTime() {
+//        log.info("The time is now {}", dateFormat.format(new Date()));
+//    }
 
     @Scheduled(cron = "* * * * * *")
     public void evaluateMatchAfterOneHour() {
@@ -56,6 +56,13 @@ public class ScheduledTasks {
 //    @Scheduled(cron = "* * * * *")
 //    public void updateMatchStatus(){
 //        // here we must change the status from not started -> to pending , to played !
+//    }
+
+//    @Scheduled(cron = "* * * * *")
+//    public void changeFreeStatusGround() {
+//        Date now = new Date();
+//        var list = matchService.getPendingMatches();
+//        // first we must get all matches that are
 //    }
 
 

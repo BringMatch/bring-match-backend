@@ -2,7 +2,6 @@ package com.example.testpfsentities.service;
 
 import com.example.testpfsentities.dto.GroundDto;
 import com.example.testpfsentities.dto.GroundSearchDto;
-import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.entities.Ground;
 
 import java.util.List;
@@ -31,5 +30,8 @@ public interface GroundService {
 
     Integer getNumberGroundsClosed(String owner_id);
 
-    boolean getGroundStatusById(Ground ground);
+    boolean getGroundOpenStatusById(Ground ground);
+    boolean getGroundFreeStatusById(Ground ground);
+
+    List<GroundDto> getOpenAndFreeGrounds();
 }

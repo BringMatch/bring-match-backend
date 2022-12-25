@@ -33,10 +33,17 @@ public class MatchValidator {
         int startHour = matchDto.getStartHour();
         int endHour = startHour + matchDto.getDuration();
 
-        boolean ground_status = groundService.getGroundStatusById(ground);
-        if (!ground_status) {
+        boolean open = groundService.getGroundOpenStatusById(ground);
+        boolean free = groundService.getGroundFreeStatusById(ground);
+
+        if (!free) {
+            throw new IllegalArgumentException("the ground is not free for the moment ! please come back later !");
+        }
+
+        if (!open) {
             throw new IllegalArgumentException("the ground is now closed ! we cannot create a match for you !");
         }
+
         if (startHour < ground.getStartHour()
                 || endHour > ground.getEndHour()
                 || startHour > ground.getEndHour()
@@ -44,8 +51,8 @@ public class MatchValidator {
             throw new IllegalArgumentException("check your start and end hour ! the ground finishes at " + ground.getEndHour());
         }
         Player player = userService.getPlayerConnected();
-        if (player.equals(null)){
-            throw new IllegalArgumentException("player not exist" );
+        if (player.equals(null)) {
+            throw new IllegalArgumentException("player not exist");
         }
     }
 }

@@ -32,16 +32,16 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void initAdmin() {
-//        Admin admin = new Admin();
-//        admin.setEmail("yessinejawa@gmail.com");
-//        admin.setUpdatedAt(Date.from(Instant.now()));
-//        admin.setPassword("yessine");
-//        admin.setFirstName("ajaoua");
-//        admin.setLastName("ajaqsdfoua");
-//        admin.setPhoneNumber("45454");
-//        admin.setRoleName(Role.ADMIN);
-//        admin.setCreatedAt(Date.from(Instant.now()));
-//        adminRepository.save(admin);
+        Admin admin = new Admin();
+        admin.setEmail("yessinejawa@gmail.com");
+        admin.setUpdatedAt(Date.from(Instant.now()));
+        admin.setPassword("yessine");
+        admin.setFirstName("ajaoua");
+        admin.setLastName("ajaqsdfoua");
+        admin.setPhoneNumber("45454");
+        admin.setRoleName(Role.ADMIN);
+        admin.setCreatedAt(Date.from(Instant.now()));
+        adminRepository.save(admin);
     }
 
     @Override
