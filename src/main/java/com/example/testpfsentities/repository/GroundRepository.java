@@ -17,12 +17,12 @@ public interface GroundRepository extends JpaRepository<Ground, String> {
     List<Ground> findByOwner_Id(String owner_id);
 
     @Query(value = "SELECT c FROM Ground c " +
-            "WHERE ( :town is NULL or c.town like :town )" +
-            "and (:name is NULL or c.name like :name)"
+            "WHERE ( :town IS NULL or c.town like :town )" +
+            "OR (:groundName IS NULL or c.name like :groundName)"
     )
     List<Ground> findAllGroundByTownAndRegion(
             @Param("town") String town,
-            @Param("name") String name
+            @Param("groundName") String name
     );
 
 
