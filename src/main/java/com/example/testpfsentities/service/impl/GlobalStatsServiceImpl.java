@@ -2,6 +2,7 @@ package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.GlobalStatsDto;
 import com.example.testpfsentities.entities.GlobalStats;
+import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.mapper.GlobalStatsMapper;
 import com.example.testpfsentities.repository.GlobalStatsRepository;
 import com.example.testpfsentities.service.GlobalStatsService;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,8 +40,20 @@ public class GlobalStatsServiceImpl implements GlobalStatsService {
     @Override
     public void saveStats(GlobalStatsDto globalStatsDto, String notification_player_id) {
         var globalStat = globalStatsMapper.toBo(globalStatsDto);
-        String match_id = globalStatsDto.getMatch_id();
+        String match_id = globalStatsDto.getMatch().getId();
         globalStat.setMatch(matchService.findMatchById(match_id));
+        Long teamOneGoals = globalStatsDto.getNumGoalsTeamOne();
+        Long teamTwoGoals = globalStatsDto.getNumGoalsTeamTwo();
+        String final_score = teamOneGoals + "-" + teamTwoGoals;
+        globalStat.setFinalScore(final_score);
+        Match match = matchService.findMatchById(match_id);
+
+        if (Objects.equals(teamOneGoals, teamTwoGoals)) {
+            match.setDraw(true);
+        } else {
+            match.setDraw(false);
+        }
+
         globalStatsRepository.save(globalStat);
         notificationPlayerService.updateNotificationState(notification_player_id);
     }

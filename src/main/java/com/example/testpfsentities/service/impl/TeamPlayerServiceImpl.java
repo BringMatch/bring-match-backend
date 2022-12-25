@@ -108,7 +108,7 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
 
     private void checksLengthTeamInferiorOrEqualToMaxLengthTeam(Team team) {
         var listTeamPlayers = getListPlayersInTeam(team.getId());
-        if (team.getLength() <= listTeamPlayers.size()) {
+        if (team.getLength() == 0) {
             throw new IllegalArgumentException("Maximum team members is reached out !");
         }
     }

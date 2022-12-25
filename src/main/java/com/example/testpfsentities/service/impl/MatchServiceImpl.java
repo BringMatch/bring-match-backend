@@ -2,6 +2,7 @@ package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.*;
 import com.example.testpfsentities.entities.*;
+import com.example.testpfsentities.entities.enums.MatchStatus;
 import com.example.testpfsentities.mapper.MatchMapper;
 import com.example.testpfsentities.mapper.TeamMapper;
 import com.example.testpfsentities.mapper.TeamPlayerMapper;
@@ -49,10 +50,11 @@ public class MatchServiceImpl implements MatchService {
         }
 
         match.setGround(ground);
+        match.setMatchStatus(MatchStatus.NOT_PLAYED);
         Match match1 = matchRepository.save(match);
 
         teamService.assignPlayersWithTeams(match1.getTeams(), matchDto.getTeams().get(0));
-        teamService.assignLengthMatchWithTeamLength(match1.getTeams(), matchDto.getNumberTeamPlayers());
+        teamService.assignLengthTeamWithMatchLength(match1.getTeams(), matchDto.getNumberTeamPlayers());
 
         NotificationOwner notificationOwner = notificationOwnerService.create(reservation, ground);
         notificationOwnerService.save(notificationOwner);
@@ -119,16 +121,17 @@ public class MatchServiceImpl implements MatchService {
         teamValidator.validateInsertionTeam(matchDto, match);
         List<Team> teams = teamMapper.toBo(matchDto.getTeams());
         match.getTeams().addAll(teams);
-        teams.get(0).setLength(match.getNumberTeamPlayers() - 1);
+        for(Team team : match.getTeams()){
+            log.info(team.getId());
+        }
         Match matchSaved = matchRepository.save(match);
         TeamDto teamDto = matchDto.getTeams().get(0);
         teamService.assignPlayersWithTeams(matchSaved.getTeams(), teamDto);
+        teamService.setLengthTeamWithMaxLengthMatchWhenJoinAsTeam(match,matchDto);
         // this part is for notification
         // we should notify the owner match player that a new team has joined the game
 
 //        notificationPlayerService.create(matchDto);
-
-
         return match;
 
     }

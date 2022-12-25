@@ -22,10 +22,10 @@ public class AdminManagementBuilder {
     @Value("${management.admin.clientId}")
     private String clientId;
 
-    @Value("fatiha")
+    @Value("${management.admin.username}")
     private String username;
 
-    @Value("admin")
+    @Value("${management.admin.password}")
     private String password;
 
     @Value("${keycloak.credentials.secret}")

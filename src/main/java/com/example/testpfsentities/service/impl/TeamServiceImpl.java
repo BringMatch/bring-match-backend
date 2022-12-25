@@ -1,7 +1,9 @@
 package com.example.testpfsentities.service.impl;
 
+import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.dto.TeamPlayerDto;
+import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.mapper.TeamMapper;
@@ -41,10 +43,10 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void validateInsertionPlayer(Team team, List<TeamPlayerDto> teamPlayerDtos) {
-        if ( team.getLength() == 0){
+        if (team.getLength() == 0) {
             throw new IllegalArgumentException("sorry you cannot join this match ! full positions");
         }
-        Player player =  userService.getPlayerConnected();
+        Player player = userService.getPlayerConnected();
         teamPlayerDtos.forEach(teamPlayerDto -> teamPlayerService
                 .validateTeamPlayer(player, team, teamPlayerDto));
     }
@@ -80,7 +82,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void assignLengthMatchWithTeamLength(List<Team> teams, int length) {
+    public void assignLengthTeamWithMatchLength(List<Team> teams, int length) {
         Team firstTeam = teams.get(0);
         firstTeam.setLength(length - 1);
         teamRepository.save(firstTeam);
@@ -91,6 +93,19 @@ public class TeamServiceImpl implements TeamService {
     public Integer getLengthRemaining(String team_name) {
         Team team = getTeamByName(team_name);
         return team.getLength();
+    }
+
+    @Override
+    public void setLengthTeamWithMaxLengthMatchWhenJoinAsTeam(Match match, MatchDto matchDto) {
+        int maxNumberPlayer = match.getNumberTeamPlayers();
+        var teams = match.getTeams();
+        String currentTeamName = matchDto.getTeams().get(0).getName();
+        for (Team team : teams) {
+            if (team.getName().equals(currentTeamName)) {
+                team.setLength(maxNumberPlayer - 1);
+                break;
+            }
+        }
     }
 
     @Override

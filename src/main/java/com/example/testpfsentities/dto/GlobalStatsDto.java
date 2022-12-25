@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -18,6 +17,5 @@ public class GlobalStatsDto {
     private Long numGoalsTeamTwo;
     private String finalScore;
     private Date createdAt;
-
-    private String match_id;
+    private MatchDto match;
 }

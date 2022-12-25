@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
                 "Merci pour votre inscription à notre application " + System.lineSeparator() +
                 "votre inscription est acceptée" + System.lineSeparator() +
                 "Merci de ne pas répondre a cette email";
-        emailSenderForOwner.sendEmail(player.getEmail(), subject, body);
+        //emailSenderForOwner.sendEmail(player.getEmail(), subject, body);
 
     }
 
