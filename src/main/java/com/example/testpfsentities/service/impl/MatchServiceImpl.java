@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -82,17 +83,38 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public List<MatchDto> getMatchByDate(Date date) {
-        return matchMapper.toDto(matchRepository.findByDate(date));
+        Date currentDate = new Date(System.currentTimeMillis() - 3600 * 1000);
+
+        List<Match> matches;
+
+        if (date == null) {
+            matches = matchRepository.findAllBycurrentDate(currentDate);
+
+        } else {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.DATE, 1);
+            Date modifiedDate = calendar.getTime();
+            matches = matchRepository.findByDate(currentDate,modifiedDate);
+        }
+        return matchMapper.toDto(matches);
     }
 
     @Override
     public List<MatchDto> searchforMatches(MatchSearchDto matchSearchDto) {
-        List<Match> matches;
+
+        Date currentDate = new Date(System.currentTimeMillis() - 3600 * 1000);
+                List<Match> matches;
+
         if (matchSearchDto.getDate() == null) {
-            matches = matchRepository.findAll();
+            matches = matchRepository.findAllBycurrentDate(currentDate);
 
         } else {
-            matches = matchRepository.findByDate(matchSearchDto.getDate());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(matchSearchDto.getDate());
+            calendar.add(Calendar.DATE, 1);
+            Date modifiedDate = calendar.getTime();
+            matches = matchRepository.findByDate(currentDate,modifiedDate);
         }
 
         var grounds = groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(matchSearchDto.getTown(), matchSearchDto.getGround_name()));
@@ -102,7 +124,6 @@ public class MatchServiceImpl implements MatchService {
                 if (ground.getId().equals(match.getGround().getId())) {
                     matchDtoList.add(match);
                 }
-                break;
             }
         }
         return matchMapper.toDto(matchDtoList);

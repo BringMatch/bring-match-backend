@@ -19,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "app_user")
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(allowSetters = true)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)

@@ -68,7 +68,7 @@ public class GroundController {
     @GetMapping(ApiPaths.SEARCH_GROUND)
     public ResponseEntity<List<GroundDto>> getGroundsByRegionAndTown(
             @RequestParam(value = "town", required = false) String town,
-            @RequestParam(value = "name", required = false) String name
+            @RequestParam(value = "groundName", required = false) String name
     ) {
         return ResponseEntity.ok().body(groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(town,name)));
     }
