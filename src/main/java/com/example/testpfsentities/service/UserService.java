@@ -3,6 +3,7 @@ package com.example.testpfsentities.service;
 import com.example.testpfsentities.dto.OwnerDto;
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.UserDto;
+import com.example.testpfsentities.entities.Owner;
 import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.User;
 import com.example.testpfsentities.exceptions.BusinessException;
@@ -30,6 +31,7 @@ public interface UserService {
 
 
     OwnerDto getOwnerConnected();
+    Owner getOwnerBoConnected();
 
     Player getPlayerConnected();
 }

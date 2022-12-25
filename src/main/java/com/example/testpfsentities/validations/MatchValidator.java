@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class MatchValidator {
     private final GroundService groundService;
-    private final PlayerService playerService;
     private final UserService userService;
 
     public void validateCreation(MatchDto matchDto) {

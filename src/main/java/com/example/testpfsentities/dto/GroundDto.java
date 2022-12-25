@@ -15,7 +15,5 @@ public class GroundDto {
     private String town;
     private String region;
     private boolean open;
-
-    private OwnerDto owner;
     private boolean free;
 }

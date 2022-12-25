@@ -1,5 +1,6 @@
 package com.example.testpfsentities.dto;
 
+import com.example.testpfsentities.entities.enums.MatchStatus;
 import com.example.testpfsentities.entities.enums.MatchType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,8 @@ public class MatchDto {
     private int startHour;
     private int duration;
     private String matchCode;
-    private OwnerDto owner;
     private int numberTeamPlayers;
+    private boolean draw;
+    @Enumerated(EnumType.STRING)
+    private MatchStatus matchStatus;
 }

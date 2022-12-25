@@ -5,18 +5,16 @@ import com.example.testpfsentities.email.EmailSenderForOwner;
 import com.example.testpfsentities.entities.Admin;
 import com.example.testpfsentities.entities.NotificationAdmin;
 import com.example.testpfsentities.entities.Owner;
-import com.example.testpfsentities.entities.enums.Role;
 import com.example.testpfsentities.mapper.OwnerMapper;
 import com.example.testpfsentities.repository.AdminRepository;
 import com.example.testpfsentities.repository.NotificationAdminRepository;
 import com.example.testpfsentities.repository.OwnerRepository;
 import com.example.testpfsentities.service.AdminService;
+import com.example.testpfsentities.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,19 +27,20 @@ public class AdminServiceImpl implements AdminService {
     private final NotificationAdminRepository notificationAdminRepository;
     private final EmailSenderForOwner emailSenderForOwner;
     private final OwnerMapper ownerMapper;
+    private final UserService userService;
 
     @Override
     public void initAdmin() {
-        Admin admin = new Admin();
-        admin.setEmail("yessinejawa@gmail.com");
-        admin.setUpdatedAt(Date.from(Instant.now()));
-        admin.setPassword("yessine");
-        admin.setFirstName("ajaoua");
-        admin.setLastName("ajaqsdfoua");
-        admin.setPhoneNumber("45454");
-        admin.setRoleName(Role.ADMIN);
-        admin.setCreatedAt(Date.from(Instant.now()));
-        adminRepository.save(admin);
+//        Admin admin = new Admin();
+//        admin.setEmail("yessinejawa@gmail.com");
+//        admin.setUpdatedAt(Date.from(Instant.now()));
+//        admin.setPassword("yessine");
+//        admin.setFirstName("ajaoua");
+//        admin.setLastName("ajaqsdfoua");
+//        admin.setPhoneNumber("45454");
+//        admin.setRoleName(Role.ADMIN);
+//        admin.setCreatedAt(Date.from(Instant.now()));
+//        adminRepository.save(admin);
     }
 
     @Override
@@ -61,29 +60,56 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public void updateStatusOwnerWithTrue(String owner_id) {
-        Optional<Owner> owner = ownerRepository.findById(owner_id);
-        if (owner.isEmpty()) {
+    public void updateStatusOwnerWithTrue(String notification_id) {
+        NotificationAdmin notificationAdmin = findNotificationAdminById(notification_id);
+        Optional<Owner> ownerOptional = ownerRepository.findById(notificationAdmin.getUserFrom().getId());
+        if (ownerOptional.isEmpty()) {
             throw new IllegalArgumentException("Owner not existing !");
         }
-        owner.get().setActive(true);
-        ownerRepository.save(owner.get());
+        Owner owner = ownerOptional.get();
+        owner.setActive(true);
+        ownerRepository.save(owner);
+
+        userService.enableUser(owner.getId());
+
         String subject = "compte créé avec succes";
         String Body = "Bienvenue chez Bring Match " + System.lineSeparator() +
                 "Merci pour votre inscription à notre application " + System.lineSeparator() +
                 "votre inscription est acceptée" + System.lineSeparator() +
                 "Merci de ne pas répondre a cette email";
-        emailSenderForOwner.sendEmail(owner.get().getEmail(), subject, Body);
+
+        emailSenderForOwner.sendEmail(owner.getEmail(), subject, Body);
+    }
+
+    private NotificationAdmin findNotificationAdminById(String notification_id) {
+
+        Optional<NotificationAdmin> notificationAdminOptional = notificationAdminRepository.findById(notification_id);
+        if (notificationAdminOptional.isEmpty()) {
+            throw new IllegalArgumentException("Notif not existing !");
+        }
+        return notificationAdminOptional.get();
     }
 
     @Override
-    public void updateStatusOwnerWithFalse(String owner_id) {
-        Optional<Owner> owner = ownerRepository.findById(owner_id);
-        if (owner.isEmpty()) {
+    public void updateStatusOwnerWithFalse(String notification_id) {
+        NotificationAdmin notificationAdmin = findNotificationAdminById(notification_id);
+        Optional<Owner> ownerOptional = ownerRepository.findById(notificationAdmin.getUserFrom().getId());
+        if (ownerOptional.isEmpty()) {
             throw new IllegalArgumentException("Owner not existing !");
         }
-        owner.get().setActive(false);
-        ownerRepository.save(owner.get());
+        Owner owner = ownerOptional.get();
+        owner.setActive(false);
+        ownerRepository.save(owner);
+
+        userService.disableUser(owner.getId());
+
+        String subject = "compte non créé ";
+        String Body = "Désolé" + System.lineSeparator() +
+                "Merci pour votre inscription à notre application " + System.lineSeparator() +
+                "votre inscription est refusée " + System.lineSeparator() +
+                "Merci de ne pas répondre a cette email";
+
+        emailSenderForOwner.sendEmail(owner.getEmail(), subject, Body);
     }
 
     @Override

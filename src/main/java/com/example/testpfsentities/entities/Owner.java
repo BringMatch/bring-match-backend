@@ -28,8 +28,6 @@ public class Owner extends User {
     private String num_cin;
     private String num_certif_prop;
 
-
-
     @Column(columnDefinition = "boolean default true")
     private boolean pending;
 

@@ -38,4 +38,9 @@ public class OwnerController {
         return ResponseEntity.ok().body(userService.getOwnerConnected());
     }
 
+    @DeleteMapping(ApiPaths.DELETE_OWNER + "/{owner_id}")
+    public void deleteOwner(@PathVariable(name = "owner_id") String owner_id){
+        ownerService.delete(owner_id);
+    }
+
 }

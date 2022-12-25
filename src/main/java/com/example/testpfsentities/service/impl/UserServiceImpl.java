@@ -14,9 +14,11 @@ import com.example.testpfsentities.mapper.OwnerMapper;
 import com.example.testpfsentities.mapper.PlayerMapper;
 import com.example.testpfsentities.repository.OwnerRepository;
 import com.example.testpfsentities.repository.PlayerRepository;
+import com.example.testpfsentities.repository.UserRepository;
 import com.example.testpfsentities.service.UserService;
 import com.example.testpfsentities.utils.PasswordUtils;
 import com.example.testpfsentities.utils.SecurityUtils;
+import com.example.testpfsentities.utils.consts.ErrorCodes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.CreatedResponseUtil;
@@ -41,6 +43,7 @@ public class UserServiceImpl implements UserService {
     private final PlayerRepository playerRepository;
     private final OwnerMapper ownerMapper;
     private final OwnerSenderEmail ownerEmailSender;
+    private final UserRepository userRepository;
     private final EmailSenderForOwner emailSenderForOwner;
 
     @Override
@@ -61,37 +64,34 @@ public class UserServiceImpl implements UserService {
     public void create(OwnerDto ownerDto) throws BusinessException {
         Owner user = ownerMapper.toBo(ownerDto);
         saveUserInProviderWithPermanentPassword(user);
-        var owner = ownerRepository.save(user);
         //ownerEmailSender.newEmailSender(owner);
     }
 
     @Override
     public void disableUser(String id) {
-//        Optional<User> userBo = userRepository.findById(id);
-//        if (userBo.isEmpty()) throw new BusinessException(ErrorCodes.USER_NOT_FOUND);
-//        userBo.get().setActive(false);
-        //userRepository.save(userBo.get());
-        desactivateUserInProvider(id);
+        Optional<User> userBo = userRepository.findById(id);
+        if (userBo.isEmpty()) throw new BusinessException(ErrorCodes.USER_NOT_FOUND);
+        userBo.get().setActive(false);
+        userRepository.save(userBo.get());
+        desactivateUserInProvider(userBo.get());
     }
 
     @Override
     public void enableUser(String id) {
-//        Optional<User> userBo = userRepository.findById(id);
-//        if (userBo.isEmpty()) throw new BusinessException(ErrorCodes.USER_NOT_FOUND);
-//        userBo.get().setActive(true);
-//        userRepository.save(userBo.get());
-        activateUserInProvider(id);
-
+        Optional<User> userBo = userRepository.findById(id);
+        if (userBo.isEmpty()) throw new BusinessException(ErrorCodes.USER_NOT_FOUND);
+        userBo.get().setActive(true);
+        userRepository.save(userBo.get());
+        activateUserInProvider(userBo.get());
     }
 
     private UserRepresentation findByEmailInProvider(String email) {
-        log.info("this is the email  {}", email);
-        UserRepresentation aa = admin.getUsersResource().search(email).get(0);
-        log.info("aa {}", aa.getId());
+        log.info("this is the email {}" , email);
         var list = admin.getUsersResource();
+        log.info("this is the length of all users {}" , list.list().size());
         for (var item : list.list()) {
             if (item.getEmail().equals(email)) {
-                return aa;
+                return item;
             }
         }
         return null;
@@ -120,12 +120,13 @@ public class UserServiceImpl implements UserService {
 
     private void saveUserInProvider(User userBo, CredentialRepresentation credential) {
         UserRepresentation user = new UserRepresentation();
+
         user.setEmail(userBo.getEmail());
         user.setFirstName(userBo.getFirstName());
         user.setLastName(userBo.getLastName());
         user.setUsername(userBo.getUsername());
         user.setCredentials(Collections.singletonList(credential));
-        user.setEnabled(true);
+        user.setEnabled(false);
 
         admin.getUsersResource().list().add(user);
         Response response = admin.getUsersResource().create(user);
@@ -192,7 +193,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Player getPlayerConnected(){
+    public Owner getOwnerBoConnected() {
+        Optional<String> email = SecurityUtils.getUserEmail();
+        if (email.isEmpty()) {
+            throw new IllegalArgumentException("email not found !");
+        }
+        if (ownerRepository.findByEmail(email.get()).isEmpty()) {
+            throw new IllegalArgumentException("owner not existing ");
+        }
+        return ownerRepository.findByEmail(email.get()).get();
+    }
+
+    @Override
+    public Player getPlayerConnected() {
         Optional<String> email = SecurityUtils.getUserEmail();
         if (email.isEmpty()) {
             throw new IllegalArgumentException("email not found !");
@@ -211,17 +224,17 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private void desactivateUserInProvider(String id) {
-//        String userId = findByEmailInProvider(userBo.getEmail()).getId();
+    private void desactivateUserInProvider(User userBo) {
+        String userId = findByEmailInProvider(userBo.getEmail()).getId();
         log.info("user desactivated in provider");
         UserRepresentation user = new UserRepresentation();
         user.setEnabled(false);
-        admin.getUsersResource().get(id).update(user);
+        admin.getUsersResource().get(userId).update(user);
     }
 
-    private void activateUserInProvider(String userId) {
-        //String userId = findByEmailInProvider(userBo.getUsername()).getId();
-        log.info("user desactivated in provider");
+    private void activateUserInProvider(User userBo) {
+        String userId = findByEmailInProvider(userBo.getEmail()).getId();
+        log.info("user activated in provider");
         UserRepresentation user = new UserRepresentation();
         user.setEnabled(true);
         admin.getUsersResource().get(userId).update(user);

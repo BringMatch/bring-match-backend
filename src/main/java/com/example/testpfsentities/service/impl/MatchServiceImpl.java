@@ -216,9 +216,9 @@ public class MatchServiceImpl implements MatchService {
         var listMatches = matchRepository.findAll();
         List<Match> finalListMatches = new ArrayList<>();
         for (Match match : listMatches) {
-            if (match.getGround().getOwner().getId().equals(matchDto.getOwner().getId())) {
-                finalListMatches.add(match);
-            }
+//            if (match.getGround().getOwner().getId().equals(matchDto.getOwner().getId())) {
+//                finalListMatches.add(match);
+//            }
         }
         return matchMapper.toDto(finalListMatches);
     }

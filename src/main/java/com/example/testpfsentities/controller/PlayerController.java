@@ -50,4 +50,6 @@ public class PlayerController {
         return ResponseEntity.ok().body(playerService.getPlayers(new PlayerSearchDto(firstName, lastName, town, region)));
     }
 
+
+
 }

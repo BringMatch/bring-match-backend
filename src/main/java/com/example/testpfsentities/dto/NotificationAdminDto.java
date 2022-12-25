@@ -13,6 +13,5 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor
 public class NotificationAdminDto extends NotificationDto {
     private AdminDto userTo;
-
     private OwnerDto userFrom;
 }

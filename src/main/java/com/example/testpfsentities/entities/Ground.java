@@ -3,6 +3,7 @@ package com.example.testpfsentities.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.List;
@@ -29,14 +30,14 @@ public class Ground extends AbstractEntity {
     private String name;
     private String address;
 
-    @Column(columnDefinition = "boolean default true")
+    //@ColumnDefault("boolean default true")
     private boolean open;
 
     private int startHour;
     private int endHour;
     private String town;
 
-    @Column(columnDefinition = "boolean default true")
+    //@Column(columnDefinition = "boolean default true")
     private boolean free;
     private String region;
 

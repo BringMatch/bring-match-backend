@@ -7,6 +7,8 @@ import com.example.testpfsentities.mapper.GroundMapper;
 import com.example.testpfsentities.repository.GroundRepository;
 import com.example.testpfsentities.service.GroundService;
 import com.example.testpfsentities.service.OwnerService;
+import com.example.testpfsentities.service.UserService;
+import com.example.testpfsentities.validations.GroundValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,8 +23,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GroundServiceImpl implements GroundService {
     private final GroundRepository groundRepository;
+    private final GroundValidator groundValidator;
     private final GroundMapper groundMapper;
     private final OwnerService ownerService;
+    private final UserService userService;
 
     @Override
     public List<GroundDto> getGrounds() {
@@ -56,13 +60,19 @@ public class GroundServiceImpl implements GroundService {
 
     @Override
     public void saveGround(GroundDto groundDto) {
-        String owner_id = groundDto.getOwner().getId();
-        if (ownerService.checkOwnerExists(owner_id)) {
-            groundRepository.save(groundMapper.toBo(groundDto));
-        } else {
+        groundValidator.validateCreation(groundDto);
+        var owner = userService.getOwnerBoConnected();
+        if (owner != null){
+            var ground = groundRepository.save(groundMapper.toBo(groundDto));
+            ground.setFree(true);
+            ground.setOpen(true);
+            ground.setOwner(owner);
+            groundRepository.save(ground);
+        } else{
             throw new IllegalArgumentException("owner not existing !");
         }
     }
+
 
     @Override
     public List<GroundDto> getAllGroundsByTownAndRegion(GroundSearchDto groundSearchDto) {

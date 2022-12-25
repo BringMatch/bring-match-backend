@@ -15,6 +15,5 @@ import java.util.List;
 @NoArgsConstructor
 public class AdminDto extends UserDto {
     private List<OwnerDto> owners;
-
     private List<NotificationAdminDto> notificationAdmins;
 }

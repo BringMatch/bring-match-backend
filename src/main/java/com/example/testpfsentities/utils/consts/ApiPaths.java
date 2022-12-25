@@ -58,6 +58,7 @@ public final class ApiPaths {
 
     public static final String OWNERS = "/owners";
     public final static String GET_OWNERS = SLASH;
+    public final static String  DELETE_OWNER = "/delete";
     public static final String SAVE_OWNER = "/save";
     public static final String OWNER_CONNECTED = "/connected";
     public static final String GET_NUMBER_OWNER_GROUNDS = "/number-owner-grounds";
@@ -69,7 +70,6 @@ public final class ApiPaths {
     public static final String SAVE_GROUND = "/save-ground";
     public static final String DELETE_GROUND = "/delete-ground";
     public static final String UPDATE_STATUS_GROUND = "/update-status-ground";
-    public static final String GET_NUMBER_GROUND_MATCHES = "/number-ground-matches";
     public final static String GET_GROUNDS = SLASH;
     public final static String UPDATE_GROUND = "/update-ground";
     public final static String SEARCH_GROUND = "/search";

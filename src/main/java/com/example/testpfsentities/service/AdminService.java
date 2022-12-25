@@ -16,7 +16,7 @@ public interface AdminService {
 
     void updateStatusNotification(String notif_id);
 
-    void updateStatusOwnerWithTrue(String owner_id);
+    void updateStatusOwnerWithTrue(String notification_id);
 
     void updateStatusOwnerWithFalse(String owner_id);
 

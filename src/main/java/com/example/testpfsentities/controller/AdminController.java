@@ -17,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping(ApiPaths.ADMINS)
 @RequiredArgsConstructor
-//@RolesAllowed("ADMIN")
 @Slf4j
 public class AdminController {
     private final AdminService adminService;
@@ -40,14 +39,14 @@ public class AdminController {
         adminService.updateStatusNotification(notif_id);
     }
 
-    @PutMapping(ApiPaths.UPDATE_STATUS_OWNER_TRUE + "/{owner_id}")
-    public void updateActiveStatusOwnerWithTrue(@PathVariable(name = "owner_id") String owner_id) {
-        adminService.updateStatusOwnerWithTrue(owner_id);
+    @PutMapping(ApiPaths.UPDATE_STATUS_OWNER_TRUE + "/{notification_id}")
+    public void updateActiveStatusOwnerWithTrue(@PathVariable(name = "notification_id") String notification_id) {
+        adminService.updateStatusOwnerWithTrue(notification_id);
     }
 
-    @PutMapping(ApiPaths.UPDATE_STATUS_OWNER_FALSE + "/{owner_id}")
-    public void updateActiveStatusOwnerWithFalse(@PathVariable(name = "owner_id") String owner_id) {
-        adminService.updateStatusOwnerWithFalse(owner_id);
+    @PutMapping(ApiPaths.UPDATE_STATUS_OWNER_FALSE + "/{notification_id}")
+    public void updateActiveStatusOwnerWithFalse(@PathVariable(name = "notification_id") String notification_id) {
+        adminService.updateStatusOwnerWithFalse(notification_id);
     }
 
     @GetMapping(ApiPaths.GET_ACCEPTED_OWNERS + "/{admin_id}")

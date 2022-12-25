@@ -37,7 +37,12 @@ public class OwnerServiceImpl implements OwnerService {
         Owner owner = ownerMapper.toBo(ownerDto);
         ownerRepository.save(owner);
         Admin admin = adminService.save(owner);
+
+        // we will create him in keycloak !
+        userService.create(ownerDto);
+
         notificationAdminService.save(admin,owner);
+
         applicationEventPublisher.publishEvent(new NewUserEvent(this, owner));
     }
 
@@ -61,5 +66,11 @@ public class OwnerServiceImpl implements OwnerService {
         owner.setActive(b);
         ownerRepository.save(owner);
     }
+
+    @Override
+    public void delete(String owner_id) {
+        ownerRepository.deleteById(owner_id);
+    }
+
 
 }
