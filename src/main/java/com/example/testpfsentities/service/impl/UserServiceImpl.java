@@ -3,6 +3,7 @@ package com.example.testpfsentities.service.impl;
 import com.example.testpfsentities.config.AdminManagementBuilder;
 import com.example.testpfsentities.dto.OwnerDto;
 import com.example.testpfsentities.dto.PlayerDto;
+import com.example.testpfsentities.dto.PlayerStatsDto;
 import com.example.testpfsentities.dto.UserDto;
 import com.example.testpfsentities.email.EmailSenderForOwner;
 import com.example.testpfsentities.entities.Owner;
@@ -15,6 +16,7 @@ import com.example.testpfsentities.mapper.PlayerMapper;
 import com.example.testpfsentities.repository.OwnerRepository;
 import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.repository.UserRepository;
+import com.example.testpfsentities.service.PlayerSatsService;
 import com.example.testpfsentities.service.UserService;
 import com.example.testpfsentities.utils.PasswordUtils;
 import com.example.testpfsentities.utils.SecurityUtils;
@@ -45,12 +47,14 @@ public class UserServiceImpl implements UserService {
     private final OwnerSenderEmail ownerEmailSender;
     private final UserRepository userRepository;
     private final EmailSenderForOwner emailSenderForOwner;
+    private final PlayerSatsService playerSatsService;
 
     @Override
     public void create(PlayerDto playerDto) throws BusinessException {
         Player user = playerMapper.toBo(playerDto);
         saveUserInProviderWithPermanentPassword(user);
         var player = playerRepository.save(user);
+
         String subject = "compte créé avec succes";
         String body = "Bienvenue chez Bring Match " + System.lineSeparator() +
                 "Merci pour votre inscription à notre application " + System.lineSeparator() +

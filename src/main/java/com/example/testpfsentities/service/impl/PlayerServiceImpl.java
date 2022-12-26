@@ -2,10 +2,12 @@ package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.PlayerSearchDto;
+import com.example.testpfsentities.dto.PlayerStatsDto;
 import com.example.testpfsentities.entities.*;
 import com.example.testpfsentities.entities.enums.Role;
 import com.example.testpfsentities.mapper.PlayerMapper;
 import com.example.testpfsentities.repository.*;
+import com.example.testpfsentities.service.PlayerSatsService;
 import com.example.testpfsentities.service.PlayerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository playerRepository;
     private final PlayerMapper playerMapper;
+    private final PlayerSatsService playerSatsService;
 
     @Override
     public List<PlayerDto> getPlayers() {
@@ -31,6 +34,10 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public void save(PlayerDto playerDto) {
         playerRepository.save(playerMapper.toBo(playerDto));
+//        PlayerStatsDto playerStats = new PlayerStatsDto();
+//        playerStats.setNumGoals(0);
+//        playerStats.setPlayer(playerDto);
+//        playerSatsService.savePlayerStats(playerStats);
     }
 
     @Override

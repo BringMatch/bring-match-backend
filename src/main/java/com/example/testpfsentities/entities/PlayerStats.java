@@ -10,15 +10,16 @@ import javax.persistence.*;
 @Getter
 @Setter
 @JsonIgnoreProperties(allowSetters = true, value = {"player"})
-public class PlayerStats {
+public class PlayerStats extends AbstractEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private String id;
 
-    private Long numGoals;
+    private int numGoals;
     private boolean MOTM;
-    @ManyToOne
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Player player;
 
 }

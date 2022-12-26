@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlayerDto {
+public class PlayerDto  {
     private String id;
     private String firstName;
     private String lastName;
@@ -23,5 +23,5 @@ public class PlayerDto {
     private String town;
     private String region;
     private String username;
-    private List<PlayerStatsDto> playerStats;
+    private PlayerStatsDto playerStat;
 }

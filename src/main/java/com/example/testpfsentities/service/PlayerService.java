@@ -25,4 +25,6 @@ public interface PlayerService {
 
     Player findPlayerById(String id);
 
+    //int getTotalGoals();
+
 }
