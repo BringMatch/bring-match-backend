@@ -105,23 +105,23 @@ public class MatchController {
         return ResponseEntity.ok().body(matchService.getMatchById(match_id));
     }
 
-    @GetMapping(ApiPaths.GET_NUMBER_MATCHES_OF_A_PLAYER + "/{player_id}")
-    public ResponseEntity<Integer> getNumberMatchesOfPlayer(@PathVariable(name = "player_id") String player_id){
-        return ResponseEntity.ok().body(matchService.getNumberMatchesOfPlayer(player_id));
+    @GetMapping(ApiPaths.GET_NUMBER_MATCHES_OF_A_PLAYER)
+    public ResponseEntity<Integer> getNumberMatchesOfPlayer(){
+        return ResponseEntity.ok().body(matchService.getNumberMatchesOfPlayer());
     }
 
-    @GetMapping(ApiPaths.GET_NUMBER_MATCHES_WIN_OF_A_PLAYER + "/{player_id}")
-    public ResponseEntity<Integer> getNumberMatchesWinOfPlayer(@PathVariable(name = "player_id") String player_id){
-        return ResponseEntity.ok().body(matchService.getNumberMatchesWinOfPlayer(player_id));
+    @GetMapping(ApiPaths.GET_NUMBER_MATCHES_WIN_OF_A_PLAYER)
+    public ResponseEntity<Integer> getNumberMatchesWinOfPlayer(){
+        return ResponseEntity.ok().body(matchService.getNumberMatchesWinOfPlayer());
     }
-    @GetMapping(ApiPaths.GET_NUMBER_MATCHES_LOSE_OF_A_PLAYER + "/{player_id}")
-    public ResponseEntity<Integer> getNumberMatchesLoseOfPlayer(@PathVariable(name = "player_id") String player_id){
-        return ResponseEntity.ok().body(matchService.getNumberMatchesLoseOfPlayer(player_id));
+    @GetMapping(ApiPaths.GET_NUMBER_MATCHES_LOSE_OF_A_PLAYER)
+    public ResponseEntity<Integer> getNumberMatchesLoseOfPlayer(){
+        return ResponseEntity.ok().body(matchService.getNumberMatchesLoseOfPlayer());
     }
 
-    @GetMapping(ApiPaths.GET_NUMBER_MATCHES_DRAW_OF_A_PLAYER + "/{player_id}")
-    public ResponseEntity<Integer> getNumberMatchesDrawOfPlayer(@PathVariable(name = "player_id") String player_id){
-        return ResponseEntity.ok().body(matchService.getNumberMatchesDrawOfPlayer(player_id));
+    @GetMapping(ApiPaths.GET_NUMBER_MATCHES_DRAW_OF_A_PLAYER)
+    public ResponseEntity<Integer> getNumberMatchesDrawOfPlayer(){
+        return ResponseEntity.ok().body(matchService.getNumberMatchesDrawOfPlayer());
     }
 
     @GetMapping(ApiPaths.GET_MATCHES + "{player_id}")

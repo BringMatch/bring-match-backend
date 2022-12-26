@@ -48,13 +48,13 @@ public interface MatchService {
 
     List<Match> getPendingMatches();
 
-    Integer getNumberMatchesOfPlayer(String player_id);
+    Integer getNumberMatchesOfPlayer();
 
-    Integer getNumberMatchesWinOfPlayer(String player_id);
+    Integer getNumberMatchesWinOfPlayer();
 
-    Integer getNumberMatchesLoseOfPlayer(String player_id);
+    Integer getNumberMatchesLoseOfPlayer();
 
-    Integer getNumberMatchesDrawOfPlayer(String player_id);
+    Integer getNumberMatchesDrawOfPlayer();
 
     List<MatchDto> getMatchesByPlayer(String player_id);
 

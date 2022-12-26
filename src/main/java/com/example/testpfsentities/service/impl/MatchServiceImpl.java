@@ -262,7 +262,8 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Integer getNumberMatchesOfPlayer(String player_id) {
+    public Integer getNumberMatchesOfPlayer() {
+
         var matches = matchRepository.findAllByMatchStatus_Played();
         int result = 0;
         for (Match match : matches) {
@@ -279,7 +280,7 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Integer getNumberMatchesWinOfPlayer(String player_id) {
+    public Integer getNumberMatchesWinOfPlayer() {
         var matches = matchRepository.findAllByMatchStatus_Played();
         int result = 0;
         for (Match match : matches) {
@@ -298,8 +299,9 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Integer getNumberMatchesLoseOfPlayer(String player_id) {
+    public Integer getNumberMatchesLoseOfPlayer() {
         var matches = matchRepository.findAllByMatchStatus_Played();
+
         int result = 0;
         for (Match match : matches) {
             for (Team team : match.getTeams()) {
@@ -317,7 +319,7 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Integer getNumberMatchesDrawOfPlayer(String player_id) {
+    public Integer getNumberMatchesDrawOfPlayer() {
         var matches = matchRepository.findAllByMatchStatus_Played();
         int result = 0;
         for (Match match : matches) {
