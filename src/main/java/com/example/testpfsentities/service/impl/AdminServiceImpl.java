@@ -5,6 +5,7 @@ import com.example.testpfsentities.email.EmailSenderForOwner;
 import com.example.testpfsentities.entities.Admin;
 import com.example.testpfsentities.entities.NotificationAdmin;
 import com.example.testpfsentities.entities.Owner;
+import com.example.testpfsentities.entities.enums.Role;
 import com.example.testpfsentities.mapper.OwnerMapper;
 import com.example.testpfsentities.repository.AdminRepository;
 import com.example.testpfsentities.repository.NotificationAdminRepository;
@@ -14,7 +15,9 @@ import com.example.testpfsentities.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,16 +34,16 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void initAdmin() {
-//        Admin admin = new Admin();
-//        admin.setEmail("yessinejawa@gmail.com");
-//        admin.setUpdatedAt(Date.from(Instant.now()));
-//        admin.setPassword("yessine");
-//        admin.setFirstName("ajaoua");
-//        admin.setLastName("ajaqsdfoua");
-//        admin.setPhoneNumber("45454");
-//        admin.setRoleName(Role.ADMIN);
-//        admin.setCreatedAt(Date.from(Instant.now()));
-//        adminRepository.save(admin);
+        Admin admin = new Admin();
+        admin.setEmail("yessinejawa@gmail.com");
+        admin.setUpdatedAt(Date.from(Instant.now()));
+        admin.setPassword("yessine");
+        admin.setFirstName("ajaoua");
+        admin.setLastName("ajaqsdfoua");
+        admin.setPhoneNumber("45454");
+        admin.setRoleName(Role.ADMIN);
+        admin.setCreatedAt(Date.from(Instant.now()));
+        adminRepository.save(admin);
     }
 
     @Override

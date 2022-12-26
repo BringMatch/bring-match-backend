@@ -1,16 +1,16 @@
 cloud:
   aws:
     credentials:
-      access-key:
-      secret-key:
+      access-key: ASIAX22MGECDWUG45IUM
+      secret-key: DEvQVdxn5sDYiNpz/aOeHgzBnI5uZoMUtqrmdCSv
     region:
-      static: us-east-2
+      static: us-east-1
     stack:
       auto: false
 
 application:
   bucket:
-    name: javatechiestorage
+    name: elasticbeanstalk-us-east-1-538641309831Info
 
 
 spring:
@@ -22,4 +22,4 @@ spring:
       max-request-size: 10MB
 
 server:
-  port: 9090
+  port: 8083

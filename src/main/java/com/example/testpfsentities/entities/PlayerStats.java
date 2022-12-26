@@ -18,7 +18,7 @@ public class PlayerStats {
 
     private Long numGoals;
     private boolean MOTM;
-    @ManyToOne
+    @OneToOne
     private Player player;
 
 }

@@ -60,6 +60,7 @@ public class MatchServiceImpl implements MatchService {
 
         teamService.assignPlayersWithTeams(match1.getTeams(), matchDto.getTeams().get(0));
         teamService.assignLengthTeamWithMatchLength(match1.getTeams(), matchDto.getNumberTeamPlayers());
+        
 
         NotificationOwner notificationOwner = notificationOwnerService.create(reservation, ground);
         notificationOwnerService.save(notificationOwner);

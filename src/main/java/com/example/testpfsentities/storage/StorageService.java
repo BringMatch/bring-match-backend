@@ -23,7 +23,7 @@ public class StorageService {
     @Value("${application.bucket.name}")
     private String bucketName;
 
-    private AmazonS3 s3Client;
+    private final AmazonS3 s3Client;
 
     public String uploadFile(MultipartFile file) {
         File fileObj = convertMultiPartFileToFile(file);

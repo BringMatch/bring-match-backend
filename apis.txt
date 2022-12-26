@@ -1,0 +1,9 @@
+// player
+	player stats !
+	global sgtats of course !
+
+// using the jwt to make the admin from who we will get his ide
+ and then update the status of the notification 
+ if accepted or refused !
+
+// remove pending from the owner entity!
