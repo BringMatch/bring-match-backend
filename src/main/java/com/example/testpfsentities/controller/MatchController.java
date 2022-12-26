@@ -1,5 +1,6 @@
 package com.example.testpfsentities.controller;
 
+import com.example.testpfsentities.dto.EvaluationMatchDto;
 import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.dto.MatchSearchDto;
 import com.example.testpfsentities.entities.Match;
@@ -32,10 +33,10 @@ public class MatchController {
         return ResponseEntity.ok().body(matchService.getMatches());
     }
 
-//    @PostMapping(ApiPaths.EVALUATE_MATCH +  "/match_id")
-//    public void evaluateMatch(@PathVariable(name = "match_id") String match_id) {
-//        matchService.evaluateMatch(match_id);
-//    }
+    @PostMapping(ApiPaths.EVALUATE_MATCH)
+    public void evaluateMatch(EvaluationMatchDto evaluationMatchDto) {
+        matchService.evaluateMatch(evaluationMatchDto);
+    }
 
     @PostMapping(ApiPaths.JOIN_MATCH_AS_TEAM)
     public ResponseEntity<Match> joinMatchAsTeam(@RequestBody @Validated MatchDto matchDto) {

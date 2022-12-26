@@ -4,11 +4,11 @@ import com.example.testpfsentities.dto.*;
 import com.example.testpfsentities.entities.*;
 import com.example.testpfsentities.entities.enums.MatchResult;
 import com.example.testpfsentities.entities.enums.MatchStatus;
-import com.example.testpfsentities.mapper.MatchMapper;
-import com.example.testpfsentities.mapper.TeamMapper;
-import com.example.testpfsentities.mapper.TeamPlayerMapper;
+import com.example.testpfsentities.mapper.*;
+import com.example.testpfsentities.repository.GlobalStatsRepository;
 import com.example.testpfsentities.repository.MatchRepository;
 import com.example.testpfsentities.repository.PlayerRepository;
+import com.example.testpfsentities.repository.PlayerStatsRepository;
 import com.example.testpfsentities.service.*;
 import com.example.testpfsentities.utils.StringUtils;
 import com.example.testpfsentities.validations.MatchValidator;
@@ -26,11 +26,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class MatchServiceImpl implements MatchService {
-    private final PlayerRepository playerRepository;
+    private final PlayerStatsRepository playerStatsRepository;
+    private final GlobalStatsRepository globalStatsRepository;
+    private final GlobalStatsMapper globalStatsMapper;
     private final TeamMapper teamMapper;
     private final MatchRepository matchRepository;
     private final MatchMapper matchMapper;
-    private final TeamPlayerMapper teamPlayerMapper;
     private final MatchValidator matchValidator;
     private final TeamValidator teamValidator;
     private final GroundService groundService;
@@ -38,6 +39,9 @@ public class MatchServiceImpl implements MatchService {
     private final NotificationOwnerService notificationOwnerService;
     private final TeamService teamService;
     private final NotificationPlayerService notificationPlayerService;
+    private final PlayerStatsService playerStatsService;
+    private final PlayerStatsMapper playerStatsMapper;
+
 
     @Override
     public void createMatch(MatchDto matchDto) {
@@ -60,7 +64,7 @@ public class MatchServiceImpl implements MatchService {
 
         teamService.assignPlayersWithTeams(match1.getTeams(), matchDto.getTeams().get(0));
         teamService.assignLengthTeamWithMatchLength(match1.getTeams(), matchDto.getNumberTeamPlayers());
-        
+        playerStatsService.savePlayerStats();
 
         NotificationOwner notificationOwner = notificationOwnerService.create(reservation, ground);
         notificationOwnerService.save(notificationOwner);
@@ -74,9 +78,16 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public void evaluateMatch(Match match, Player p) {
-        NotificationPlayer notificationPlayer = notificationPlayerService.create(match, p);
-        notificationPlayerService.save(notificationPlayer);
+    public void evaluateMatch(EvaluationMatchDto evaluationMatchDto) {
+
+        var globalStatsDto = evaluationMatchDto.getGlobalStatsDto();
+        GlobalStats globalStats = globalStatsMapper.toBo(globalStatsDto);
+        globalStatsRepository.save(globalStats);
+        var listPlayerStats = evaluationMatchDto.getPlayers();
+        playerStatsRepository.saveAll(playerStatsMapper.toBo(listPlayerStats));
+
+//        var match = findMatchById(evaluationMatchDto.getGlobalStatsDto().getMatch().getId());
+//        playerStatsService.updateGoalsScoredWhenMatchEnds(match , listPlayerStats);
     }
 
     @Override
@@ -147,13 +158,12 @@ public class MatchServiceImpl implements MatchService {
         teamValidator.validateInsertionTeam(matchDto, match);
         List<Team> teams = teamMapper.toBo(matchDto.getTeams());
         match.getTeams().addAll(teams);
-        for (Team team : match.getTeams()) {
-            log.info(team.getId());
-        }
         Match matchSaved = matchRepository.save(match);
         TeamDto teamDto = matchDto.getTeams().get(0);
         teamService.assignPlayersWithTeams(matchSaved.getTeams(), teamDto);
         teamService.setLengthTeamWithMaxLengthMatchWhenJoinAsTeam(match, matchDto);
+        playerStatsService.savePlayerStats();
+
         // this part is for notification
         // we should notify the owner match player that a new team has joined the game
 
@@ -178,11 +188,9 @@ public class MatchServiceImpl implements MatchService {
 
         int current_length_team = team.getLength();
         team.setLength(current_length_team - 1);
-        var list = team.getPlayersTeams();
-
-        list.addAll(teamPlayerMapper.toBo(teamPlayerDtoList));
         TeamDto teamDto = matchDto.getTeams().get(0);
         teamService.assignPlayersWithTeams(match.getTeams(), teamDto);
+        playerStatsService.savePlayerStats();
         return matchRepository.save(match);
 
     }
@@ -337,6 +345,12 @@ public class MatchServiceImpl implements MatchService {
             matchDto.setMatchResult(returnMatchResul(match, player_id));
         }
         return matchesDto;
+    }
+
+    @Override
+    public void sendNotificationOfMatchEvaluation(Match match, Player player) {
+        NotificationPlayer notificationPlayer = notificationPlayerService.create(match, player);
+        notificationPlayerService.save(notificationPlayer);
     }
 
     private MatchResult returnMatchResul(Match match, String player_id) {

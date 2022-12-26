@@ -3,15 +3,15 @@ package com.example.testpfsentities.service.impl;
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.PlayerSearchDto;
 import com.example.testpfsentities.entities.*;
-import com.example.testpfsentities.entities.enums.Role;
 import com.example.testpfsentities.mapper.PlayerMapper;
 import com.example.testpfsentities.repository.*;
+import com.example.testpfsentities.service.PlayerStatsService;
 import com.example.testpfsentities.service.PlayerService;
+import com.example.testpfsentities.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,6 +22,8 @@ public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository playerRepository;
     private final PlayerMapper playerMapper;
+    private final UserService userService;
+    private final PlayerStatsService playerStatsService;
 
     @Override
     public List<PlayerDto> getPlayers() {
@@ -72,6 +74,12 @@ public class PlayerServiceImpl implements PlayerService {
             throw new IllegalArgumentException("player not found !");
         }
         return optionalPlayer.get();
+    }
+
+    @Override
+    public Integer getGoalsScored() {
+        var player = userService.getPlayerConnected();
+        return playerStatsService.getGoalsScoredByPlayer(player);
     }
 
 

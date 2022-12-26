@@ -45,7 +45,7 @@ public class ScheduledTasks {
                         && match.getDate().getSeconds() == newDate.getSeconds()
                 ) {
                     Player ownerMatchPlayer = playerService.returnOwnerMatchPlayer(match);
-                    matchService.evaluateMatch(match, ownerMatchPlayer);
+                    matchService.sendNotificationOfMatchEvaluation(match, ownerMatchPlayer);
                 }
             }
         } catch (Exception e) {

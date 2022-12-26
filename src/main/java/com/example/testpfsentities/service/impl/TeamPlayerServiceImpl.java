@@ -1,6 +1,5 @@
 package com.example.testpfsentities.service.impl;
 
-import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.TeamPlayerDto;
 import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
@@ -11,7 +10,6 @@ import com.example.testpfsentities.repository.TeamPlayerRepository;
 import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.service.TeamPlayerService;
 import com.example.testpfsentities.service.UserService;
-import com.example.testpfsentities.utils.SecurityUtils;
 import com.example.testpfsentities.utils.StringUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +45,7 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
 
     @Override
     public TeamPlayer saveTeamPlayer(TeamPlayer teamPlayer, Team team) {
-        Player player=userService.getPlayerConnected();
+        Player player = userService.getPlayerConnected();
         log.info("welcome");
         teamPlayer.setPlayer(player);
         teamPlayer.setTeam(team);
@@ -105,6 +103,7 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
         }
         return finalCurrentTeamPosition;
     }
+
 
     private void checksLengthTeamInferiorOrEqualToMaxLengthTeam(Team team) {
         var listTeamPlayers = getListPlayersInTeam(team.getId());

@@ -15,6 +15,7 @@ import com.example.testpfsentities.mapper.PlayerMapper;
 import com.example.testpfsentities.repository.OwnerRepository;
 import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.repository.UserRepository;
+import com.example.testpfsentities.service.PlayerStatsService;
 import com.example.testpfsentities.service.UserService;
 import com.example.testpfsentities.utils.PasswordUtils;
 import com.example.testpfsentities.utils.SecurityUtils;
@@ -45,12 +46,14 @@ public class UserServiceImpl implements UserService {
     private final OwnerSenderEmail ownerEmailSender;
     private final UserRepository userRepository;
     private final EmailSenderForOwner emailSenderForOwner;
+    private final PlayerStatsService playerStatsService;
 
     @Override
     public void create(PlayerDto playerDto) throws BusinessException {
         Player user = playerMapper.toBo(playerDto);
         saveUserInProviderWithPermanentPassword(user);
         var player = playerRepository.save(user);
+
         String subject = "compte créé avec succes";
         String body = "Bienvenue chez Bring Match " + System.lineSeparator() +
                 "Merci pour votre inscription à notre application " + System.lineSeparator() +

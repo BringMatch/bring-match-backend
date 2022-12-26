@@ -10,14 +10,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @JsonIgnoreProperties(allowSetters = true, value = {"player"})
-public class PlayerStats {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
+public class PlayerStats extends AbstractEntity {
 
-    private Long numGoals;
-    private boolean MOTM;
+    private int numGoals;
     @OneToOne
     private Player player;
 

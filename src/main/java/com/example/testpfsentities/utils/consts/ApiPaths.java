@@ -11,6 +11,7 @@ public final class ApiPaths {
     public final static String GET_PLAYERS = SLASH;
     public final static String GET_PLAYER_ID = PLAYERS + SLASH_ID;
     public final static String SAVE_PLAYER = "/add";
+    public final static String GET_GOALS_SCORED = "/get-goals-scored";
     public final static String SEARCH_PLAYERS = "/search";
     public final static String GET_NOTIFICATIONS_PLAYER = "/notification-player";
 
@@ -47,6 +48,7 @@ public final class ApiPaths {
     public static final String GET_NUMBER_OWNER_MATCHES = "/number-owner-matches";
     public final static String SEARCH_MATCH = "/search";
     public final static String SEARCH_MATCH_BY_DATE = "/search-date";
+    public final static String EVALUATE_MATCH = "/evaluate-match";
 
 
     public final static String TEAMS = "/teams";
@@ -62,7 +64,7 @@ public final class ApiPaths {
 
     public static final String OWNERS = "/owners";
     public final static String GET_OWNERS = SLASH;
-    public final static String  DELETE_OWNER = "/delete";
+    public final static String DELETE_OWNER = "/delete";
     public static final String SAVE_OWNER = "/save";
     public static final String OWNER_CONNECTED = "/connected";
     public static final String GET_NUMBER_OWNER_GROUNDS = "/number-owner-grounds";

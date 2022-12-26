@@ -52,13 +52,15 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
 //                .and();
 
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/h2-console/**","/owners/save/**").permitAll()
-                .antMatchers("/owners/**")
-                .hasAuthority(Role.OWNER.name())
+                .antMatchers("/h2-console/**","/owners/save").permitAll()
+//                .antMatchers("/h2-console/**","/owners/save").permitAll()
+//                .antMatchers("/owners/**")
+//                .hasAuthority(Role.OWNER.name())
                 .antMatchers("/players/**")
                 .hasAuthority(Role.PLAYER.name())
                 .antMatchers("/admins/**")
                 .hasAuthority(Role.ADMIN.name())
+                .antMatchers("/owners/save").permitAll()
                 .and()
                 .headers(
                         headers -> headers

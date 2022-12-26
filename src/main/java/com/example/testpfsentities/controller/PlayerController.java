@@ -51,5 +51,9 @@ public class PlayerController {
     }
 
 
+    @GetMapping(ApiPaths.GET_GOALS_SCORED)
+    public ResponseEntity<Integer> getGoalsScored(){
+        return ResponseEntity.ok().body(playerService.getGoalsScored());
+    }
 
 }
