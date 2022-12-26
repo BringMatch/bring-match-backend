@@ -1,5 +1,6 @@
 package com.example.testpfsentities.dto;
 
+import com.example.testpfsentities.entities.enums.MatchResult;
 import com.example.testpfsentities.entities.enums.MatchStatus;
 import com.example.testpfsentities.entities.enums.MatchType;
 import lombok.AllArgsConstructor;
@@ -33,4 +34,7 @@ public class MatchDto {
     private boolean draw;
     @Enumerated(EnumType.STRING)
     private MatchStatus matchStatus;
+
+    @Enumerated(EnumType.STRING)
+    private MatchResult matchResult;
 }

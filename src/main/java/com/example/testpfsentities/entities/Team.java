@@ -1,5 +1,7 @@
 package com.example.testpfsentities.entities;
 
+import com.example.testpfsentities.entities.enums.MatchResult;
+import com.example.testpfsentities.entities.enums.MatchStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -34,4 +36,7 @@ public class Team extends AbstractEntity {
 
     @Column(nullable = false)
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    private MatchResult matchResult;
 }

@@ -32,6 +32,10 @@ public final class ApiPaths {
     public final static String MATCHES = "/matches";
     public final static String GET_MATCHES = SLASH;
     public final static String GET_MATCHES_GROUND = "/ground" + SLASH;
+    public final static String GET_NUMBER_MATCHES_OF_A_PLAYER = "/player";
+    public final static String GET_NUMBER_MATCHES_WIN_OF_A_PLAYER = "/win/player";
+    public final static String GET_NUMBER_MATCHES_LOSE_OF_A_PLAYER = "/lose/player";
+    public final static String GET_NUMBER_MATCHES_DRAW_OF_A_PLAYER = "/draw/player";
     public final static String GET_LENGTH_TEAM_IN_A_MATCH = "/length-team-in-a-match";
     public final static String GET_MATCHES_OF_OWNER_GROUNDS = "/matches-of-owner-grounds";
     public final static String GET_MATCH_CODE_IF_PRIVATE = "/match-code";

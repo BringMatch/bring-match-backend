@@ -2,11 +2,13 @@ package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.*;
 import com.example.testpfsentities.entities.*;
+import com.example.testpfsentities.entities.enums.MatchResult;
 import com.example.testpfsentities.entities.enums.MatchStatus;
 import com.example.testpfsentities.mapper.MatchMapper;
 import com.example.testpfsentities.mapper.TeamMapper;
 import com.example.testpfsentities.mapper.TeamPlayerMapper;
 import com.example.testpfsentities.repository.MatchRepository;
+import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.service.*;
 import com.example.testpfsentities.utils.StringUtils;
 import com.example.testpfsentities.validations.MatchValidator;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class MatchServiceImpl implements MatchService {
+    private final PlayerRepository playerRepository;
     private final TeamMapper teamMapper;
     private final MatchRepository matchRepository;
     private final MatchMapper matchMapper;
@@ -98,7 +101,7 @@ public class MatchServiceImpl implements MatchService {
             calendar.setTime(date);
             calendar.add(Calendar.DATE, 1);
             Date modifiedDate = calendar.getTime();
-            matches = matchRepository.findByDate(currentDate,modifiedDate);
+            matches = matchRepository.findByDate(currentDate, modifiedDate);
         }
         return matchMapper.toDto(matches);
     }
@@ -107,7 +110,7 @@ public class MatchServiceImpl implements MatchService {
     public List<MatchDto> searchforMatches(MatchSearchDto matchSearchDto) {
 
         Date currentDate = new Date(System.currentTimeMillis() - 3600 * 1000);
-                List<Match> matches;
+        List<Match> matches;
 
         if (matchSearchDto.getDate() == null) {
             matches = matchRepository.findAllBycurrentDate(currentDate);
@@ -117,7 +120,7 @@ public class MatchServiceImpl implements MatchService {
             calendar.setTime(matchSearchDto.getDate());
             calendar.add(Calendar.DATE, 1);
             Date modifiedDate = calendar.getTime();
-            matches = matchRepository.findByDate(currentDate,modifiedDate);
+            matches = matchRepository.findByDate(currentDate, modifiedDate);
         }
 
         var grounds = groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(matchSearchDto.getTown(), matchSearchDto.getGround_name()));
@@ -143,13 +146,13 @@ public class MatchServiceImpl implements MatchService {
         teamValidator.validateInsertionTeam(matchDto, match);
         List<Team> teams = teamMapper.toBo(matchDto.getTeams());
         match.getTeams().addAll(teams);
-        for(Team team : match.getTeams()){
+        for (Team team : match.getTeams()) {
             log.info(team.getId());
         }
         Match matchSaved = matchRepository.save(match);
         TeamDto teamDto = matchDto.getTeams().get(0);
         teamService.assignPlayersWithTeams(matchSaved.getTeams(), teamDto);
-        teamService.setLengthTeamWithMaxLengthMatchWhenJoinAsTeam(match,matchDto);
+        teamService.setLengthTeamWithMaxLengthMatchWhenJoinAsTeam(match, matchDto);
         // this part is for notification
         // we should notify the owner match player that a new team has joined the game
 
@@ -246,7 +249,104 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public List<Match> getPendingMatches() {
-        return matchRepository.findAllByMatchStatus("PENDING");
+        return matchRepository.findAllByMatchStatus_Pending();
+    }
+
+    @Override
+    public Integer getNumberMatchesOfPlayer(String player_id) {
+        var matches = matchRepository.findAllByMatchStatus_Played();
+        int result = 0;
+        for (Match match : matches) {
+            for (Team team : match.getTeams()) {
+                for (TeamPlayer teamPlayer : team.getPlayersTeams()) {
+                    if (teamPlayer.getPlayer().getId().equals(player_id)) {
+                        result++;
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Integer getNumberMatchesWinOfPlayer(String player_id) {
+        var matches = matchRepository.findAllByMatchStatus_Played();
+        int result = 0;
+        for (Match match : matches) {
+            for (Team team : match.getTeams()) {
+                if (team.getMatchResult().equals(MatchResult.WIN)) {
+                    for (TeamPlayer teamPlayer : team.getPlayersTeams()) {
+                        if (teamPlayer.getPlayer().getId().equals(player_id)) {
+                            result++;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Integer getNumberMatchesLoseOfPlayer(String player_id) {
+        var matches = matchRepository.findAllByMatchStatus_Played();
+        int result = 0;
+        for (Match match : matches) {
+            for (Team team : match.getTeams()) {
+                if (team.getMatchResult().equals(MatchResult.LOSE)) {
+                    for (TeamPlayer teamPlayer : team.getPlayersTeams()) {
+                        if (teamPlayer.getPlayer().getId().equals(player_id)) {
+                            result++;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Integer getNumberMatchesDrawOfPlayer(String player_id) {
+        var matches = matchRepository.findAllByMatchStatus_Played();
+        int result = 0;
+        for (Match match : matches) {
+            for (Team team : match.getTeams()) {
+                if (team.getMatchResult().equals(MatchResult.DRAW)) {
+                    for (TeamPlayer teamPlayer : team.getPlayersTeams()) {
+                        if (teamPlayer.getPlayer().getId().equals(player_id)) {
+                            result++;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<MatchDto> getMatchesByPlayer(String player_id) {
+        var matches = matchRepository.findAllByMatchStatus_Played();
+        List<Match> finalFilteredListMatches = new ArrayList<>();
+        var matchesDto = matchMapper.toDto(matches);
+        for (MatchDto matchDto : matchesDto) {
+            Match match = findMatchById(matchDto.getId());
+            matchDto.setMatchResult(returnMatchResul(match, player_id));
+        }
+        return matchesDto;
+    }
+
+    private MatchResult returnMatchResul(Match match, String player_id) {
+        for (Team team : match.getTeams()) {
+            for (TeamPlayer teamPlayer : team.getPlayersTeams()) {
+                if (teamPlayer.getPlayer().getId().equals(player_id)) {
+                    return team.getMatchResult();
+                }
+            }
+        }
+        return null;
     }
 
 

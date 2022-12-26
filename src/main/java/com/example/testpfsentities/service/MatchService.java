@@ -50,4 +50,14 @@ public interface MatchService {
     Integer getLengthTeamInMatch(String match_id);
 
     List<Match> getPendingMatches();
+
+    Integer getNumberMatchesOfPlayer(String player_id);
+
+    Integer getNumberMatchesWinOfPlayer(String player_id);
+
+    Integer getNumberMatchesLoseOfPlayer(String player_id);
+
+    Integer getNumberMatchesDrawOfPlayer(String player_id);
+
+    List<MatchDto> getMatchesByPlayer(String player_id);
 }
