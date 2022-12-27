@@ -41,6 +41,7 @@ public class MatchServiceImpl implements MatchService {
     private final NotificationPlayerService notificationPlayerService;
     private final PlayerStatsService playerStatsService;
     private final PlayerStatsMapper playerStatsMapper;
+    private final UserService userService;
 
 
     @Override
@@ -81,13 +82,17 @@ public class MatchServiceImpl implements MatchService {
     public void evaluateMatch(EvaluationMatchDto evaluationMatchDto) {
 
         var globalStatsDto = evaluationMatchDto.getGlobalStatsDto();
-        GlobalStats globalStats = globalStatsMapper.toBo(globalStatsDto);
+        GlobalStats globalStats = new GlobalStats();
+        globalStats.setNumGoalsTeamOne(globalStatsDto.getNumGoalsTeamOne());
+        globalStats.setNumGoalsTeamTwo(globalStatsDto.getNumGoalsTeamTwo());
+        globalStats.setFinalScore(StringUtils.getFinalScore(globalStatsDto.getNumGoalsTeamOne(), globalStatsDto.getNumGoalsTeamTwo()));
+        var match = findMatchById(globalStatsDto.getMatch().getId());
+        globalStats.setMatch(match);
         globalStatsRepository.save(globalStats);
         var listPlayerStats = evaluationMatchDto.getPlayers();
         playerStatsRepository.saveAll(playerStatsMapper.toBo(listPlayerStats));
-
-//        var match = findMatchById(evaluationMatchDto.getGlobalStatsDto().getMatch().getId());
-//        playerStatsService.updateGoalsScoredWhenMatchEnds(match , listPlayerStats);
+        log.info("this is the id of match {}" , match.getId());
+        playerStatsService.updateGoalsScoredWhenMatchEnds(match, listPlayerStats);
     }
 
     @Override
@@ -263,13 +268,13 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public Integer getNumberMatchesOfPlayer() {
-
+        var player = userService.getPlayerConnected();
         var matches = matchRepository.findAllByMatchStatus_Played();
         int result = 0;
         for (Match match : matches) {
             for (Team team : match.getTeams()) {
                 for (TeamPlayer teamPlayer : team.getPlayersTeams()) {
-                    if (teamPlayer.getPlayer().getId().equals(player_id)) {
+                    if (teamPlayer.getPlayer().getId().equals(player.getId())) {
                         result++;
                         break;
                     }
@@ -282,12 +287,13 @@ public class MatchServiceImpl implements MatchService {
     @Override
     public Integer getNumberMatchesWinOfPlayer() {
         var matches = matchRepository.findAllByMatchStatus_Played();
+        var player = userService.getPlayerConnected();
         int result = 0;
         for (Match match : matches) {
             for (Team team : match.getTeams()) {
                 if (team.getMatchResult().equals(MatchResult.WIN)) {
                     for (TeamPlayer teamPlayer : team.getPlayersTeams()) {
-                        if (teamPlayer.getPlayer().getId().equals(player_id)) {
+                        if (teamPlayer.getPlayer().getId().equals(player.getId())) {
                             result++;
                             break;
                         }
@@ -301,13 +307,13 @@ public class MatchServiceImpl implements MatchService {
     @Override
     public Integer getNumberMatchesLoseOfPlayer() {
         var matches = matchRepository.findAllByMatchStatus_Played();
-
+        var player = userService.getPlayerConnected();
         int result = 0;
         for (Match match : matches) {
             for (Team team : match.getTeams()) {
                 if (team.getMatchResult().equals(MatchResult.LOSE)) {
                     for (TeamPlayer teamPlayer : team.getPlayersTeams()) {
-                        if (teamPlayer.getPlayer().getId().equals(player_id)) {
+                        if (teamPlayer.getPlayer().getId().equals(player.getId())) {
                             result++;
                             break;
                         }
@@ -321,12 +327,13 @@ public class MatchServiceImpl implements MatchService {
     @Override
     public Integer getNumberMatchesDrawOfPlayer() {
         var matches = matchRepository.findAllByMatchStatus_Played();
+        var player = userService.getPlayerConnected();
         int result = 0;
         for (Match match : matches) {
             for (Team team : match.getTeams()) {
                 if (team.getMatchResult().equals(MatchResult.DRAW)) {
                     for (TeamPlayer teamPlayer : team.getPlayersTeams()) {
-                        if (teamPlayer.getPlayer().getId().equals(player_id)) {
+                        if (teamPlayer.getPlayer().getId().equals(player.getId())) {
                             result++;
                             break;
                         }

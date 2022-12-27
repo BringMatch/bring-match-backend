@@ -33,5 +33,8 @@ public interface StringUtils {
     static List<String> getListAvailablePositionsInATeam() {
         return Arrays.asList(GK, CB, RB, LB, CDM, CM, LCM, RCM, CAM, RW, ST, LW, RM, LM);
     }
+    static String getFinalScore(Long goalsFirstTeam , Long goalSecondTeam){
+        return goalsFirstTeam + "-" + goalSecondTeam;
+    }
 }
 

@@ -34,7 +34,7 @@ public class MatchController {
     }
 
     @PostMapping(ApiPaths.EVALUATE_MATCH)
-    public void evaluateMatch(EvaluationMatchDto evaluationMatchDto) {
+    public void evaluateMatch(@RequestBody @Validated EvaluationMatchDto evaluationMatchDto) {
         matchService.evaluateMatch(evaluationMatchDto);
     }
 
