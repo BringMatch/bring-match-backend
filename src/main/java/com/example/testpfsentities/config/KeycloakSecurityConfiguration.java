@@ -27,6 +27,8 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
 
     private static final String[] APIS_HAVING_PLAYER_ROLE = {
             "/players/**",
+            "/matches/create-match",
+            "/matches/join-match-team"
     };
 
     private static final String[] APIS_HAVING_ADMIN_ROLE = {
@@ -34,7 +36,7 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
     };
 
     private static final String[] WHITE_LIST = {
-            "/h2-console/**", "/owners/save"
+            "/h2-console/**", "/owners/save", "/players/save"
     };
 
     /**
@@ -72,13 +74,13 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
 //                .and();
 
         http.csrf().disable().authorizeRequests()
+                .antMatchers(WHITE_LIST).permitAll()
                 .antMatchers(APIS_HAVING_PLAYER_ROLE)
                 .hasAuthority(Role.PLAYER.name())
                 .antMatchers(APIS_HAVING_ADMIN_ROLE)
                 .hasAuthority(Role.ADMIN.name())
                 .antMatchers(APIS_HAVING_OWNER_ROLE)
                 .hasAuthority(Role.OWNER.name())
-                .antMatchers(WHITE_LIST).permitAll()
                 .and()
                 .headers(
                         headers -> headers

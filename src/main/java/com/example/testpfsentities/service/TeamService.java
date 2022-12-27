@@ -19,7 +19,6 @@ public interface TeamService {
 
     void assignPlayersWithTeams(List<Team> team, TeamDto teamDto);
 
-    void validateInsertionPlayer(Team team, List<TeamPlayerDto> listDto);
 
     Team getTeamByName(String name);
 
@@ -33,6 +32,12 @@ public interface TeamService {
     Integer getLengthRemaining(String team_name);
 
     void setLengthTeamWithMaxLengthMatchWhenJoinAsTeam(Match match, MatchDto matchDto);
+
+    boolean checksTeamByNameInMatch(String name , MatchDto matchDto);
+
+    boolean checksTeamById(String id);
+
+    void addNewPlayerToListPlayerTeams(Team team ,List<TeamPlayer> list, List<TeamPlayerDto> teamPlayerDtoList);
 
 }
 

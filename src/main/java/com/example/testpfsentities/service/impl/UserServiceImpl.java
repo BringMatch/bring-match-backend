@@ -23,7 +23,10 @@ import com.example.testpfsentities.utils.consts.ErrorCodes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.CreatedResponseUtil;
+import org.keycloak.admin.client.resource.ClientResource;
+import org.keycloak.admin.client.resource.ClientsResource;
 import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -52,7 +55,7 @@ public class UserServiceImpl implements UserService {
     public void create(PlayerDto playerDto) throws BusinessException {
         Player user = playerMapper.toBo(playerDto);
         saveUserInProviderWithPermanentPassword(user);
-        var player = playerRepository.save(user);
+//        var player = playerRepository.save(user);
 
         String subject = "compte créé avec succes";
         String body = "Bienvenue chez Bring Match " + System.lineSeparator() +
@@ -89,9 +92,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserRepresentation findByEmailInProvider(String email) {
-        log.info("this is the email {}" , email);
+        log.info("this is the email {}", email);
         var list = admin.getUsersResource();
-        log.info("this is the length of all users {}" , list.list().size());
+        log.info("this is the length of all users {}", list.list().size());
         for (var item : list.list()) {
             if (item.getEmail().equals(email)) {
                 return item;
@@ -129,10 +132,32 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userBo.getLastName());
         user.setUsername(userBo.getUsername());
         user.setCredentials(Collections.singletonList(credential));
-        user.setEnabled(false);
+        if (userBo instanceof Owner) {
+            user.setEnabled(true);
+        } else {
+            user.setEnabled(true);
+        }
 
         admin.getUsersResource().list().add(user);
         Response response = admin.getUsersResource().create(user);
+
+        var list = admin.getRealmResource().clients().findAll();
+        log.info("this is the id of the client number zero {} ", list.get(1).getName());
+        log.info("this is the length {} ", (long) list.size());
+
+//        RoleRepresentation userClientRole = admin.getRealmResource().clients().get("${client_bring-match}") //
+//                .roles().get(userBo.getRoleName().name()).toRepresentation();
+//
+//        ClientRepresentation app1Client = admin.getRealmResource().clients() //
+//                .findByClientId("bring-match").get(0);
+//
+//        log.info("this is the representation of the client representation {}", app1Client.getId());
+//
+//        admin.getRealmResource().users().get(CreatedResponseUtil.getCreatedId(response))
+//                .roles()
+//                .clientLevel(app1Client.getId())
+//                .add(Collections.singletonList(userClientRole));
+
         addRoleToUser(response, admin, userBo);
         //addRoleToUser(userBo.getEmail(), userBo.getRoleName().name());
         // userBo.getRoles().stream().map(Role::name).forEach(roleName -> addRoleToUser(userBo.getEmail(), roleName));
@@ -141,9 +166,15 @@ public class UserServiceImpl implements UserService {
 
     private void addRoleToUser(Response response, AdminManagementBuilder admin, User userBo) {
         if (response.getStatus() == 201) {
+
             RoleRepresentation roleRepresentation = admin.getRealmResource().roles()
                     .get(userBo.getRoleName().name()).toRepresentation();
-            admin.getRealmResource().users().get(CreatedResponseUtil.getCreatedId(response)).roles().realmLevel().add(Arrays.asList(roleRepresentation));
+            admin.getRealmResource()
+                    .users()
+                    .get(CreatedResponseUtil.getCreatedId(response))
+                    .roles().realmLevel()
+                    .add(Collections.singletonList(roleRepresentation));
+
         } else if (response.getStatus() == 409) {
             throw new IllegalArgumentException("that User already exists");
         } else {

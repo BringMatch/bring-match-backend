@@ -10,7 +10,7 @@ public final class ApiPaths {
     public final static String KEYCLOAK = "/keycloak";
     public final static String GET_PLAYERS = SLASH;
     public final static String GET_PLAYER_ID = PLAYERS + SLASH_ID;
-    public final static String SAVE_PLAYER = "/add";
+    public final static String SAVE_PLAYER = "/save";
     public final static String GET_GOALS_SCORED = "/player/get-goals-scored";
     public final static String SEARCH_PLAYERS = "/search";
     public final static String GET_NOTIFICATIONS_PLAYER = "/notification-player";
@@ -31,8 +31,8 @@ public final class ApiPaths {
 
 
     public final static String MATCHES = "/matches";
-    public final static String GET_MATCHES = SLASH;
-    public final static String GET_MATCHES_GROUND = "/ground" + SLASH;
+    public final static String GET_MATCHES = MATCHES + SLASH;
+    public final static String GET_MATCHES_GROUND = "/ground" ;
     public final static String GET_NUMBER_MATCHES_OF_A_PLAYER = "/all-matches";
     public final static String GET_NUMBER_MATCHES_WIN_OF_A_PLAYER = "/win-matches";
     public final static String GET_NUMBER_MATCHES_LOSE_OF_A_PLAYER = "/lose-matches";

@@ -25,10 +25,11 @@ public interface TeamPlayerService {
 
     Collection<? extends TeamPlayer> map(List<TeamPlayerDto> teamPlayerDtos);
 
-    void validateTeamPlayer(Player player, Team team, TeamPlayerDto teamPlayerDto);
 
     void assignTeamsPlayersToTeam(Team team, List<TeamPlayerDto> teamPlayerDtoList);
 
     List<String> getCurrentTeamPositions();
+
+    TeamPlayer saveDto(Team team , TeamPlayerDto teamPlayer);
 
 }

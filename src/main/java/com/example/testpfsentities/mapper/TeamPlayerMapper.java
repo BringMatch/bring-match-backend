@@ -1,7 +1,9 @@
 package com.example.testpfsentities.mapper;
 
+import com.example.testpfsentities.dto.GlobalStatsDto;
 import com.example.testpfsentities.dto.TeamDto;
 import com.example.testpfsentities.dto.TeamPlayerDto;
+import com.example.testpfsentities.entities.GlobalStats;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.entities.TeamPlayer;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +32,8 @@ private final ModelMapper modelMapper;
                 .stream()
                 .map(element -> modelMapper.map(element, TeamPlayer.class))
                 .collect(Collectors.toList());
+    }
+    public TeamPlayer toBo(TeamPlayerDto teamPlayerDto) {
+        return modelMapper.map(teamPlayerDto, TeamPlayer.class);
     }
 }

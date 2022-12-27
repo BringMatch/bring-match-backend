@@ -8,9 +8,9 @@ import com.example.testpfsentities.mapper.PlayerMapper;
 import com.example.testpfsentities.mapper.TeamPlayerMapper;
 import com.example.testpfsentities.repository.TeamPlayerRepository;
 import com.example.testpfsentities.service.PlayerService;
+import com.example.testpfsentities.service.PlayerStatsService;
 import com.example.testpfsentities.service.TeamPlayerService;
 import com.example.testpfsentities.service.UserService;
-import com.example.testpfsentities.utils.StringUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +29,7 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
     private final PlayerMapper playerMapper;
     private final UserService userService;
     private final PlayerService playerService;
+    private final PlayerStatsService playerStatsService;
 
     private final TeamPlayerMapper teamPlayerMapper;
 
@@ -46,10 +47,11 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
     @Override
     public TeamPlayer saveTeamPlayer(TeamPlayer teamPlayer, Team team) {
         Player player = userService.getPlayerConnected();
-        log.info("welcome");
         teamPlayer.setPlayer(player);
         teamPlayer.setTeam(team);
-        return teamPlayerRepository.save(teamPlayer);
+//        playerStatsService.savePlayerStats();
+        return teamPlayer;
+//        return teamPlayerRepository.save(teamPlayer);
     }
 
 
@@ -63,31 +65,6 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
         return teamPlayerMapper.toBo(teamPlayerDtos);
     }
 
-    @Override
-    public void validateTeamPlayer(Player player, Team team, TeamPlayerDto teamPlayerDto) {
-        playerService.checksPlayerExist(player);
-        checksPlayerExistInTheTeam(player, team);
-        checksLengthTeamInferiorOrEqualToMaxLengthTeam(team);
-        checksPositionNameExistsInSystem(teamPlayerDto.getPosition());
-        checksPositionPlayerDtoFree(teamPlayerDto, team);
-    }
-
-    private void checksPositionNameExistsInSystem(String position) {
-        if (!StringUtils.getListAvailablePositionsInATeam().contains(position)) {
-            throw new IllegalArgumentException("position not existing in our db ! change the name of your position");
-        }
-    }
-
-    private void checksPositionPlayerDtoFree(TeamPlayerDto teamPlayerDto, Team team) {
-        var listTeamPlayers = team.getPlayersTeams();
-        List<String> listPositionsInTeam = new ArrayList<>();
-        for (TeamPlayer teamPlayer : listTeamPlayers) {
-            listPositionsInTeam.add(teamPlayer.getPosition());
-        }
-        if (listPositionsInTeam.contains(teamPlayerDto.getPosition())) {
-            throw new IllegalArgumentException("this position already exists in the team ! please choose another position !");
-        }
-    }
 
     @Override
     public void assignTeamsPlayersToTeam(Team team, List<TeamPlayerDto> teamPlayerDtoList) {
@@ -104,27 +81,16 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
         return finalCurrentTeamPosition;
     }
 
-
-    private void checksLengthTeamInferiorOrEqualToMaxLengthTeam(Team team) {
-        var listTeamPlayers = getListPlayersInTeam(team.getId());
-        if (team.getLength() == 0) {
-            throw new IllegalArgumentException("Maximum team members is reached out !");
-        }
+    @Override
+    public TeamPlayer saveDto(Team team ,TeamPlayerDto teamPlayerDto) {
+        var teamPlayer = teamPlayerMapper.toBo(teamPlayerDto);
+        var player = userService.getPlayerConnected();
+        teamPlayer.setPlayer(player);
+        teamPlayer.setTeam(team);
+        teamPlayer.setMatch_owner(false);
+        teamPlayer.setTeam_owner(false);
+        return teamPlayerRepository.save(teamPlayer);
     }
 
-    private void checksPlayerExistInTheTeam(Player player, Team team) {
-        var listTeamPlayers = getListPlayersInTeam(team.getId());
-        listTeamPlayers.forEach(teamPlayer -> {
-            if (teamPlayer.getPlayer().getId().equals(player.getId())) {
-                throw new IllegalArgumentException("player already exists in the team !");
-            }
-        });
-    }
-
-    private List<TeamPlayer> getListPlayersInTeam(String team_id) {
-        return teamPlayerRepository.findAll().stream()
-                .filter(teamPlayer -> teamPlayer.getTeam().getId().equals(team_id))
-                .collect(Collectors.toList());
-    }
 
 }

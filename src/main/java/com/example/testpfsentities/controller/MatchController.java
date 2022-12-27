@@ -23,12 +23,11 @@ public class MatchController {
     private final MatchService matchService;
 
     @PostMapping(ApiPaths.CREATE_MATCH)
-    @RolesAllowed(value = "PLAYER")
     public void createMatch(@RequestBody @Validated MatchDto matchDto) {
         matchService.createMatch(matchDto);
     }
 
-    @GetMapping("")
+    @GetMapping(ApiPaths.GET_MATCHES)
     public ResponseEntity<List<MatchDto>> getMatches() {
         return ResponseEntity.ok().body(matchService.getMatches());
     }
@@ -59,7 +58,7 @@ public class MatchController {
         return ResponseEntity.ok().body(matchService.countNumberTeams(match_id));
     }
 
-    @GetMapping(ApiPaths.GET_MATCHES_GROUND + "{ground_name}")
+    @GetMapping(ApiPaths.GET_MATCHES_GROUND + "/{ground_name}")
     public ResponseEntity<List<MatchDto>> getMatchesGround(@PathVariable(name = "ground_name") String ground_name) {
         return ResponseEntity.ok().body(matchService.getMatchesGround(ground_name));
     }

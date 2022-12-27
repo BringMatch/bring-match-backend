@@ -7,7 +7,6 @@ import com.example.testpfsentities.entities.enums.MatchStatus;
 import com.example.testpfsentities.mapper.*;
 import com.example.testpfsentities.repository.GlobalStatsRepository;
 import com.example.testpfsentities.repository.MatchRepository;
-import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.repository.PlayerStatsRepository;
 import com.example.testpfsentities.service.*;
 import com.example.testpfsentities.utils.StringUtils;
@@ -17,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,7 +25,6 @@ import java.util.stream.Collectors;
 public class MatchServiceImpl implements MatchService {
     private final PlayerStatsRepository playerStatsRepository;
     private final GlobalStatsRepository globalStatsRepository;
-    private final GlobalStatsMapper globalStatsMapper;
     private final TeamMapper teamMapper;
     private final MatchRepository matchRepository;
     private final MatchMapper matchMapper;
@@ -91,7 +87,7 @@ public class MatchServiceImpl implements MatchService {
         globalStatsRepository.save(globalStats);
         var listPlayerStats = evaluationMatchDto.getPlayers();
         playerStatsRepository.saveAll(playerStatsMapper.toBo(listPlayerStats));
-        log.info("this is the id of match {}" , match.getId());
+        log.info("this is the id of match {}", match.getId());
         playerStatsService.updateGoalsScoredWhenMatchEnds(match, listPlayerStats);
     }
 
@@ -140,7 +136,9 @@ public class MatchServiceImpl implements MatchService {
             matches = matchRepository.findByDate(currentDate, modifiedDate);
         }
 
-        var grounds = groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(matchSearchDto.getTown(), matchSearchDto.getGround_name()));
+        var grounds = groundService.getAllGroundsByTownAndRegion(
+                new GroundSearchDto(matchSearchDto.getTown(), matchSearchDto.getGround_name()));
+
         List<Match> matchDtoList = new ArrayList<>();
         for (Match match : matches) {
             for (GroundDto ground : grounds) {
@@ -161,41 +159,52 @@ public class MatchServiceImpl implements MatchService {
     public Match joinMatchAsTeam(MatchDto matchDto) {
         Match match = this.findMatchById(matchDto.getId());
         teamValidator.validateInsertionTeam(matchDto, match);
-        List<Team> teams = teamMapper.toBo(matchDto.getTeams());
-        match.getTeams().addAll(teams);
-        Match matchSaved = matchRepository.save(match);
+        var listTeams = match.getTeams();
+        listTeams.add(teamMapper.toBo(matchDto.getTeams().get(0)));
+        log.info("this is the id old one {}", match.getId());
+        //Match matchSaved = matchRepository.save(match);
+        log.info("this is the id new one {}", match.getId());
         TeamDto teamDto = matchDto.getTeams().get(0);
-        teamService.assignPlayersWithTeams(matchSaved.getTeams(), teamDto);
+        teamService.assignPlayersWithTeams(match.getTeams(), teamDto);
         teamService.setLengthTeamWithMaxLengthMatchWhenJoinAsTeam(match, matchDto);
+
+        var matchSaved = matchRepository.save(match);
         playerStatsService.savePlayerStats();
 
         // this part is for notification
         // we should notify the owner match player that a new team has joined the game
 
-//        notificationPlayerService.create(matchDto);
-        return match;
+        // notificationPlayerService.create(matchDto);
+
+        return matchSaved;
 
     }
 
 
     @Override
     public Match joinMatchAsPlayer(MatchDto matchDto) {
-        Match match = this.findMatchById(matchDto.getId());
-        List<TeamPlayerDto> teamPlayerDtoList = matchDto.getTeams().get(0).getPlayersTeams();
+
+        teamValidator.validateInsertionPlayerInTeam(matchDto);
+
+        Match match = findMatchById(matchDto.getId());
 
         var team = match.getTeams().stream()
                 .filter(teamed -> teamed.getName().equals(matchDto.getTeams().get(0).getName()))
                 .collect(Collectors.toList()).get(0);
 
-
-        // this is for verification of inserting the player inside the match
-        teamService.validateInsertionPlayer(team, matchDto.getTeams().get(0).getPlayersTeams());
-
         int current_length_team = team.getLength();
         team.setLength(current_length_team - 1);
-        TeamDto teamDto = matchDto.getTeams().get(0);
-        teamService.assignPlayersWithTeams(match.getTeams(), teamDto);
+
+        var listTeamPlayer = team.getPlayersTeams();
+        List<TeamPlayerDto> teamPlayerDtoList = matchDto.getTeams().get(0).getPlayersTeams();
+        teamService.addNewPlayerToListPlayerTeams(team, listTeamPlayer, teamPlayerDtoList);
+
+        //TeamDto teamDto = matchDto.getTeams().get(0);
+
+        //teamService.assignPlayersWithTeams(match.getTeams(), teamDto);
+
         playerStatsService.savePlayerStats();
+
         return matchRepository.save(match);
 
     }

@@ -8,6 +8,7 @@ import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.entities.TeamPlayer;
 import com.example.testpfsentities.mapper.TeamMapper;
+import com.example.testpfsentities.repository.MatchRepository;
 import com.example.testpfsentities.repository.TeamRepository;
 import com.example.testpfsentities.service.TeamPlayerService;
 import com.example.testpfsentities.service.TeamService;
@@ -29,7 +30,7 @@ public class TeamServiceImpl implements TeamService {
     private final TeamMapper teamMapper;
 
     private final TeamPlayerService teamPlayerService;
-    private final UserService userService;
+    private final MatchRepository matchRepository;
 
     @Override
     public Team createTeam(TeamDto teamDto) {
@@ -42,15 +43,6 @@ public class TeamServiceImpl implements TeamService {
         teamRepository.save(team);
     }
 
-    @Override
-    public void validateInsertionPlayer(Team team, List<TeamPlayerDto> teamPlayerDtos) {
-        if (team.getLength() == 0) {
-            throw new IllegalArgumentException("sorry you cannot join this match ! full positions");
-        }
-        Player player = userService.getPlayerConnected();
-        teamPlayerDtos.forEach(teamPlayerDto -> teamPlayerService
-                .validateTeamPlayer(player, team, teamPlayerDto));
-    }
 
     @Override
     public Team getTeamByName(String name) {
@@ -109,10 +101,38 @@ public class TeamServiceImpl implements TeamService {
         }
     }
 
+    @Override
+    public boolean checksTeamByNameInMatch(String name, MatchDto matchDto) {
+        Optional<Match> optionalMatch = matchRepository.findById(matchDto.getId());
+        if (optionalMatch.isEmpty()) {
+            throw new IllegalArgumentException("no match found !");
+        }
+        var listTeamsInMatch = optionalMatch.get().getTeams();
+        for (Team team : listTeamsInMatch) {
+            if (team.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checksTeamById(String id) {
+        Optional<Team> teamOptional = teamRepository.findById(id);
+        return teamOptional.isPresent();
+    }
+
+    @Override
+    public void addNewPlayerToListPlayerTeams(Team team, List<TeamPlayer> list, List<TeamPlayerDto> teamPlayerDtoList) {
+        var teamPlayerDto = teamPlayerDtoList.get(0);
+        var teamPlayer = teamPlayerService.saveDto(team, teamPlayerDto);
+        list.add(teamPlayer);
+    }
 
 
     @Override
     public void assignPlayersWithTeams(List<Team> teams, TeamDto teamDto) {
+
         Team team = teams.stream()
                 .filter(teamElement -> teamElement.getName().equals(teamDto.getName()))
                 .collect(Collectors.toList()).get(0);

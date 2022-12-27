@@ -14,4 +14,5 @@ import java.util.List;
 public class TeamPlayerDto {
     String id;
     String position;
+    PlayerDto player;
 }

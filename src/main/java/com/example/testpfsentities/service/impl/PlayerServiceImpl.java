@@ -33,6 +33,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public void save(PlayerDto playerDto) {
         playerRepository.save(playerMapper.toBo(playerDto));
+        userService.create(playerDto);
     }
 
     @Override
