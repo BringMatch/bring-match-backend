@@ -35,7 +35,7 @@ public class OwnerController {
 
     @GetMapping(ApiPaths.OWNER_CONNECTED)
     public ResponseEntity<OwnerDto> getOwnerConnected(){
-        return ResponseEntity.ok().body(userService.getOwnerConnected());
+        return ResponseEntity.ok().body(userService.getOwnerDtoConnected());
     }
 
     @DeleteMapping(ApiPaths.DELETE_OWNER + "/{owner_id}")

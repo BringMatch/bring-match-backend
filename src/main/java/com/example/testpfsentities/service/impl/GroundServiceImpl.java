@@ -90,12 +90,13 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
-    public List<GroundDto> getOwnerGrounds(String owner_id) {
-        var owner = groundRepository.findByOwner_Id(owner_id);
-        if (owner.size() == 0) {
+    public List<GroundDto> getOwnerGrounds() {
+        var owner = userService.getOwnerBoConnected();
+        var grounds = groundRepository.findByOwner_Id(owner.getId());
+        if (grounds.size() == 0) {
             throw new IllegalArgumentException("owner not existing");
         }
-        return owner.stream().map((groundMapper::toDto))
+        return grounds.stream().map((groundMapper::toDto))
                 .collect(Collectors.toList());
     }
 
@@ -117,7 +118,9 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
-    public Integer getNumberOwnerGrounds(String owner_id) {
+    public Integer getNumberOwnerGrounds() {
+        var owner = userService.getOwnerBoConnected();
+        String owner_id = owner.getId();
         log.info(String.valueOf(groundRepository.findByOwner_Id(owner_id).size()));
         boolean ownerExists = ownerService.checkOwnerExists(owner_id);
         if (!ownerExists) {
@@ -127,7 +130,9 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
-    public Integer getNumberGroundsOpen(String owner_id) {
+    public Integer getNumberGroundsOpen() {
+        var owner = userService.getOwnerBoConnected();
+        String owner_id = owner.getId();
         boolean ownerExists = ownerService.checkOwnerExists(owner_id);
         if (!ownerExists) {
             throw new IllegalArgumentException("owner not existing ");
@@ -136,7 +141,9 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
-    public Integer getNumberGroundsClosed(String owner_id) {
+    public Integer getNumberGroundsClosed() {
+        var owner = userService.getOwnerBoConnected();
+        String owner_id = owner.getId();
         boolean ownerExists = ownerService.checkOwnerExists(owner_id);
         if (!ownerExists) {
             throw new IllegalArgumentException("owner not existing ");

@@ -1,6 +1,7 @@
 package com.example.testpfsentities.config;
 
 import com.example.testpfsentities.entities.enums.Role;
+import com.example.testpfsentities.utils.consts.ApiPaths;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
@@ -16,6 +17,25 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 
 @KeycloakConfiguration
 public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
+
+    private static final String[] APIS_HAVING_OWNER_ROLE = {
+            "/owners/**",
+            ApiPaths.GET_NUMBER_OWNER_GROUNDS_CLOSED,
+            ApiPaths.GET_NUMBER_OWNER_GROUNDS_OPEN,
+            ApiPaths.GET_NUMBER_OWNER_GROUNDS,
+            ApiPaths.DELETE_GROUND};
+
+    private static final String[] APIS_HAVING_PLAYER_ROLE = {
+            "/players/**",
+    };
+
+    private static final String[] APIS_HAVING_ADMIN_ROLE = {
+            "/owners/**",
+    };
+
+    private static final String[] WHITE_LIST = {
+            "/h2-console/**", "/owners/save"
+    };
 
     /**
      * Registers the KeycloakAuthenticationProvider with the authentication manager.
@@ -52,15 +72,13 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
 //                .and();
 
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/h2-console/**","/owners/save").permitAll()
-//                .antMatchers("/h2-console/**","/owners/save").permitAll()
-//                .antMatchers("/owners/**")
-//                .hasAuthority(Role.OWNER.name())
-                .antMatchers("/players/**")
+                .antMatchers(APIS_HAVING_PLAYER_ROLE)
                 .hasAuthority(Role.PLAYER.name())
-                .antMatchers("/admins/**")
+                .antMatchers(APIS_HAVING_ADMIN_ROLE)
                 .hasAuthority(Role.ADMIN.name())
-                .antMatchers("/owners/save").permitAll()
+                .antMatchers(APIS_HAVING_OWNER_ROLE)
+                .hasAuthority(Role.OWNER.name())
+                .antMatchers(WHITE_LIST).permitAll()
                 .and()
                 .headers(
                         headers -> headers
@@ -69,20 +87,5 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
                 )
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        ;
-//        http.csrf().disable().
-//                authorizeRequests()
-//                .antMatchers("/h2-console/**")
-//                .permitAll().and()
-////                .antMatchers("/players/**")
-////                .hasRole("player")
-////                .antMatchers("/admins/**")
-////                .hasRole("ADMIN")
-////                //.anyRequest().denyAll().and()
-////                .anyRequest().authenticated().and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-//        http.headers().frameOptions().disable();
     }
 }

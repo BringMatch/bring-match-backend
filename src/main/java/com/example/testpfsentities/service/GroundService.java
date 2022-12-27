@@ -16,7 +16,7 @@ public interface GroundService {
     void saveGround(GroundDto groundDto);
     List<GroundDto>  getAllGroundsByTownAndRegion(GroundSearchDto groundSearchDto);
 
-    List<GroundDto> getOwnerGrounds(String owner_id);
+    List<GroundDto> getOwnerGrounds();
 
     List<Ground> getOwnerGroundsBo(String owner_id);
 
@@ -24,11 +24,11 @@ public interface GroundService {
 
     void deleteGround(String ground_id);
 
-    Integer getNumberOwnerGrounds(String owner_id);
+    Integer getNumberOwnerGrounds();
 
-    Integer getNumberGroundsOpen(String owner_id);
+    Integer getNumberGroundsOpen();
 
-    Integer getNumberGroundsClosed(String owner_id);
+    Integer getNumberGroundsClosed();
 
     boolean getGroundOpenStatusById(Ground ground);
     boolean getGroundFreeStatusById(Ground ground);

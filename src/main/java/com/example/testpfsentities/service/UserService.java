@@ -30,7 +30,7 @@ public interface UserService {
     void resetPassword(String password);
 
 
-    OwnerDto getOwnerConnected();
+    OwnerDto getOwnerDtoConnected();
     Owner getOwnerBoConnected();
 
     Player getPlayerConnected();

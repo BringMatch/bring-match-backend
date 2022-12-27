@@ -79,7 +79,7 @@ public final class ApiPaths {
     public final static String GET_GROUNDS = SLASH;
     public final static String UPDATE_GROUND = "/update-ground";
     public final static String SEARCH_GROUND = "/search";
-    public final static String GET_OPEN_FREE_GROUNDS = "/free-and-open";
+    public final static String GET_OPEN_AND_FREE_GROUNDS = "/free-and-open";
 
     public static final String GLOBAL_STATS = "/globalStats";
     public static final String SAVE_GLOBAL_STATS = "/save";

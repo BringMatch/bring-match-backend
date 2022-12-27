@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public OwnerDto getOwnerConnected() {
+    public OwnerDto getOwnerDtoConnected() {
         Optional<String> email = SecurityUtils.getUserEmail();
         if (email.isEmpty()) {
             throw new IllegalArgumentException("email not found !");

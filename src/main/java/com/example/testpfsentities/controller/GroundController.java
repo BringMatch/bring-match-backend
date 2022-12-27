@@ -36,9 +36,8 @@ public class GroundController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GroundDto>> getAllGrounds(@RequestParam(name = "owner_id") String owner_id) {
-        log.info(groundService.getOwnerGrounds(owner_id).toString());
-        return ResponseEntity.ok().body(groundService.getOwnerGrounds(owner_id));
+    public ResponseEntity<List<GroundDto>> getAllGrounds() {
+        return ResponseEntity.ok().body(groundService.getOwnerGrounds());
     }
 
     @PutMapping(ApiPaths.UPDATE_STATUS_GROUND)
@@ -51,19 +50,19 @@ public class GroundController {
         groundService.deleteGround(ground_id);
     }
 
-    @GetMapping(ApiPaths.GET_NUMBER_OWNER_GROUNDS + "/{owner_id}")
-    public ResponseEntity<Integer> getNumberOwnerGrounds(@PathVariable(name = "owner_id") String owner_id) {
-        return ResponseEntity.ok().body(groundService.getNumberOwnerGrounds(owner_id));
+    @GetMapping(ApiPaths.GET_NUMBER_OWNER_GROUNDS)
+    public ResponseEntity<Integer> getNumberOwnerGrounds() {
+        return ResponseEntity.ok().body(groundService.getNumberOwnerGrounds());
     }
 
-    @GetMapping(ApiPaths.GET_NUMBER_OWNER_GROUNDS_OPEN + "/{owner_id}")
-    public ResponseEntity<Integer> getNumberOwnerGroundsOpen(@PathVariable(name = "owner_id") String owner_id) {
-        return ResponseEntity.ok().body(groundService.getNumberGroundsOpen(owner_id));
+    @GetMapping(ApiPaths.GET_NUMBER_OWNER_GROUNDS_OPEN)
+    public ResponseEntity<Integer> getNumberOwnerGroundsOpen() {
+        return ResponseEntity.ok().body(groundService.getNumberGroundsOpen());
     }
 
-    @GetMapping(ApiPaths.GET_NUMBER_OWNER_GROUNDS_CLOSED + "/{owner_id}")
-    public ResponseEntity<Integer> getNumberOwnerGroundsClosed(@PathVariable(name = "owner_id") String owner_id) {
-        return ResponseEntity.ok().body(groundService.getNumberGroundsClosed(owner_id));
+    @GetMapping(ApiPaths.GET_NUMBER_OWNER_GROUNDS_CLOSED)
+    public ResponseEntity<Integer> getNumberOwnerGroundsClosed() {
+        return ResponseEntity.ok().body(groundService.getNumberGroundsClosed());
     }
 
     @GetMapping(ApiPaths.SEARCH_GROUND)
@@ -74,7 +73,7 @@ public class GroundController {
         return ResponseEntity.ok().body(groundService.getAllGroundsByTownAndRegion(new GroundSearchDto(town,name)));
     }
 
-    @GetMapping(ApiPaths.GET_OPEN_FREE_GROUNDS)
+    @GetMapping(ApiPaths.GET_OPEN_AND_FREE_GROUNDS)
     public ResponseEntity<List<GroundDto>> getOpenAndFreeGrounds(){
         return ResponseEntity.ok().body(groundService.getOpenAndFreeGrounds());
     }
