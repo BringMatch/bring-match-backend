@@ -41,7 +41,7 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
                 return playerStats.getNumGoals();
             }
         }
-        return null;
+        return 0;
     }
 
     @Override

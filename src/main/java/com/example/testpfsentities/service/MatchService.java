@@ -56,7 +56,7 @@ public interface MatchService {
 
     Integer getNumberMatchesDrawOfPlayer();
 
-    List<MatchDto> getMatchesByPlayer(String player_id);
+    List<MatchDto> getMatchesByPlayer();
 
     void sendNotificationOfMatchEvaluation(Match match,Player player);
 }

@@ -123,9 +123,9 @@ public class MatchController {
         return ResponseEntity.ok().body(matchService.getNumberMatchesDrawOfPlayer());
     }
 
-    @GetMapping(ApiPaths.GET_MATCHES + "{player_id}")
-    public ResponseEntity<List<MatchDto>> getMatchesByPlayer(@PathVariable(name = "player_id") String player_id){
-        return ResponseEntity.ok().body(matchService.getMatchesByPlayer(player_id));
+    @GetMapping(ApiPaths.GET_MATCHES_HISTORY)
+    public ResponseEntity<List<MatchDto>> getMatchesByPlayer(){
+        return ResponseEntity.ok().body(matchService.getMatchesByPlayer());
     }
 
 }

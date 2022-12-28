@@ -8,7 +8,6 @@ import com.example.testpfsentities.entities.enums.MatchStatus;
 import com.example.testpfsentities.mapper.*;
 import com.example.testpfsentities.repository.GlobalStatsRepository;
 import com.example.testpfsentities.repository.MatchRepository;
-import com.example.testpfsentities.repository.PlayerStatsRepository;
 import com.example.testpfsentities.service.*;
 import com.example.testpfsentities.utils.StringUtils;
 import com.example.testpfsentities.validations.MatchValidator;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class MatchServiceImpl implements MatchService {
-    private final PlayerStatsRepository playerStatsRepository;
     private final GlobalStatsRepository globalStatsRepository;
     private final TeamMapper teamMapper;
     private final MatchRepository matchRepository;
@@ -365,7 +363,9 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<MatchDto> getMatchesByPlayer(String player_id) {
+    public List<MatchDto> getMatchesByPlayer() {
+        var player = userService.getPlayerConnected();
+        String player_id = player.getId();
         var matches = matchRepository.findAllByMatchStatus_Played();
         List<Match> finalFilteredListMatches = new ArrayList<>();
         var matchesDto = matchMapper.toDto(matches);

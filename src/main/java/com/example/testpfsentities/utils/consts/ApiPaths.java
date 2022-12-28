@@ -31,8 +31,9 @@ public final class ApiPaths {
 
 
     public final static String MATCHES = "/matches";
+    public final static String GET_MATCHES_HISTORY = "/matches-history";
     public final static String GET_MATCHES = MATCHES + SLASH;
-    public final static String GET_MATCHES_GROUND = "/ground" ;
+    public final static String GET_MATCHES_GROUND = "/ground";
     public final static String GET_NUMBER_MATCHES_OF_A_PLAYER = "/all-matches";
     public final static String GET_NUMBER_MATCHES_WIN_OF_A_PLAYER = "/win-matches";
     public final static String GET_NUMBER_MATCHES_LOSE_OF_A_PLAYER = "/lose-matches";
