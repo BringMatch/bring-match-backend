@@ -1,6 +1,7 @@
 package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.*;
+import com.example.testpfsentities.email.EmailSenderForPlayer;
 import com.example.testpfsentities.entities.*;
 import com.example.testpfsentities.entities.enums.MatchResult;
 import com.example.testpfsentities.entities.enums.MatchStatus;
@@ -36,8 +37,8 @@ public class MatchServiceImpl implements MatchService {
     private final TeamService teamService;
     private final NotificationPlayerService notificationPlayerService;
     private final PlayerStatsService playerStatsService;
-    private final PlayerStatsMapper playerStatsMapper;
     private final UserService userService;
+    private final EmailSenderForPlayer emailSenderForPlayer;
 
 
     @Override
@@ -45,9 +46,7 @@ public class MatchServiceImpl implements MatchService {
         matchValidator.validateCreation(matchDto);
         String ground_name = matchDto.getGroundName();
         Ground ground = groundService.findByName(ground_name);
-
         Match match = matchMapper.toBo(matchDto);
-
         Reservation reservation = reservationService.create(matchDto, ground);
 
         if (matchDto.getPrivateMatch()) {
@@ -55,7 +54,6 @@ public class MatchServiceImpl implements MatchService {
         }
 
         match.setGround(ground);
-        ground.setFree(false);
         match.setMatchStatus(MatchStatus.NOT_PLAYED);
         Match match1 = matchRepository.save(match);
 
@@ -65,9 +63,21 @@ public class MatchServiceImpl implements MatchService {
 
         NotificationOwner notificationOwner = notificationOwnerService.create(reservation, ground);
         notificationOwnerService.save(notificationOwner);
-
+        sendMailToOwnerMatchIfMatchIsPrivate(match1);
     }
 
+    void sendMailToOwnerMatchIfMatchIsPrivate(Match match) {
+        if (match.getPrivateMatch()) {
+            String subject = "Creation of Match";
+            String Body = "Bienvenue chez Bring Match " + System.lineSeparator() +
+                    "Merci pour votre creation du match " + System.lineSeparator() +
+                    "votre match est created" + System.lineSeparator() +
+                    "avec le id : " + match.getId() + System.lineSeparator() +
+                    "et le pass is : " + match.getMatchCode();
+            var player = userService.getPlayerConnected();
+            emailSenderForPlayer.sendEmail(player.getEmail(), subject, Body);
+        }
+    }
 
     @Override
     public List<MatchDto> getMatches() {
@@ -86,9 +96,7 @@ public class MatchServiceImpl implements MatchService {
         globalStats.setMatch(match);
         globalStatsRepository.save(globalStats);
         var listPlayerStats = evaluationMatchDto.getPlayers();
-        playerStatsRepository.saveAll(playerStatsMapper.toBo(listPlayerStats));
-        log.info("this is the id of match {}", match.getId());
-        playerStatsService.updateGoalsScoredWhenMatchEnds(match, listPlayerStats);
+        playerStatsService.updateGoalsScoredWhenMatchEnds(listPlayerStats);
     }
 
     @Override
@@ -165,18 +173,20 @@ public class MatchServiceImpl implements MatchService {
         //Match matchSaved = matchRepository.save(match);
         log.info("this is the id new one {}", match.getId());
         TeamDto teamDto = matchDto.getTeams().get(0);
+        match.setTeams(listTeams);
         teamService.assignPlayersWithTeams(match.getTeams(), teamDto);
         teamService.setLengthTeamWithMaxLengthMatchWhenJoinAsTeam(match, matchDto);
 
-        var matchSaved = matchRepository.save(match);
-        playerStatsService.savePlayerStats();
+//        var matchSaved = matchRepository.save(match);
+        var playerConnected = userService.getPlayerConnected();
+        //notificationPlayerService.create(match, playerConnected);
+//        playerStatsService.savePlayerStats();
 
         // this part is for notification
         // we should notify the owner match player that a new team has joined the game
 
-        // notificationPlayerService.create(matchDto);
 
-        return matchSaved;
+        return match;
 
     }
 
@@ -203,10 +213,11 @@ public class MatchServiceImpl implements MatchService {
 
         //teamService.assignPlayersWithTeams(match.getTeams(), teamDto);
 
+        var matchSaved = matchRepository.save(match);
         playerStatsService.savePlayerStats();
-
-        return matchRepository.save(match);
-
+        var playerConnected = userService.getPlayerConnected();
+        notificationPlayerService.create(matchSaved, playerConnected);
+        return matchSaved;
     }
 
     @Override
@@ -381,6 +392,5 @@ public class MatchServiceImpl implements MatchService {
         }
         return null;
     }
-
 
 }

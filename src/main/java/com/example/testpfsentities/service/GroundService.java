@@ -31,7 +31,6 @@ public interface GroundService {
     Integer getNumberGroundsClosed();
 
     boolean getGroundOpenStatusById(Ground ground);
-    boolean getGroundFreeStatusById(Ground ground);
 
     List<GroundDto> getOpenAndFreeGrounds();
 }

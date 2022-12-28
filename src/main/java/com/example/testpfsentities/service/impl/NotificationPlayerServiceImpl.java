@@ -36,6 +36,7 @@ public class NotificationPlayerServiceImpl implements NotificationPlayerService 
         notificationPlayer.setDelivered(true);
         notificationPlayer.setCreatedAt(Date.from(Instant.now()));
         notificationPlayer.setRead(false);
+        notificationPlayer.setMessage(player.getUsername() + " has join the match which held at " + match.getDate());
         notificationPlayer.setOwner_match(player);
         notificationPlayer.setMatch(match);
         return notificationPlayerRepository.save(notificationPlayer);

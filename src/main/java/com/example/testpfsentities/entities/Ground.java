@@ -37,8 +37,6 @@ public class Ground extends AbstractEntity {
     private int endHour;
     private String town;
 
-    //@Column(columnDefinition = "boolean default true")
-    private boolean free;
     private String region;
 
 

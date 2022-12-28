@@ -12,6 +12,6 @@ public interface PlayerStatsService {
 
     Integer getGoalsScoredByPlayer(Player player);
 
-    void updateGoalsScoredWhenMatchEnds(Match match , List<PlayerStatsDto> list);
+    void updateGoalsScoredWhenMatchEnds(List<PlayerStatsDto> list);
 
 }

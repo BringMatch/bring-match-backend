@@ -2,7 +2,10 @@ package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.PlayerStatsDto;
 import com.example.testpfsentities.entities.*;
+import com.example.testpfsentities.mapper.PlayerStatsMapper;
+import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.repository.PlayerStatsRepository;
+import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.service.PlayerStatsService;
 import com.example.testpfsentities.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,9 @@ import java.util.List;
 public class PlayerStatsServiceImpl implements PlayerStatsService {
     private final PlayerStatsRepository playerStatsRepository;
     private final UserService userService;
+//    private final PlayerService playerService;
+    private final PlayerStatsMapper playerStatsMapper;
+    private final PlayerRepository playerRepository;
 
     @Override
     public void savePlayerStats() {
@@ -39,8 +45,13 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
     }
 
     @Override
-    public void updateGoalsScoredWhenMatchEnds(Match match , List<PlayerStatsDto> list) {
-
+    public void updateGoalsScoredWhenMatchEnds(List<PlayerStatsDto> list) {
+        for (PlayerStatsDto playerStatsDto : list) {
+            var player = playerRepository.findById(playerStatsDto.getPlayer().getId()).get();
+            var playerStat = playerStatsMapper.toBo(playerStatsDto);
+            playerStat.setPlayer(player);
+            playerStatsRepository.save(playerStat);
+        }
     }
 
 

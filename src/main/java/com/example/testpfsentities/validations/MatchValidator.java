@@ -2,6 +2,7 @@ package com.example.testpfsentities.validations;
 
 import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.entities.Ground;
+import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.service.GroundService;
 import com.example.testpfsentities.service.PlayerService;
@@ -10,6 +11,15 @@ import com.example.testpfsentities.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor()
@@ -29,29 +39,43 @@ public class MatchValidator {
         // so we have to check if the hour is between the start and the end hour, and also we must check if the ground is closed or not !
         Ground ground = groundService.findByName(matchDto.getGroundName());
 
-        int startHour = matchDto.getStartHour();
-        int endHour = startHour + matchDto.getDuration();
 
         boolean open = groundService.getGroundOpenStatusById(ground);
-        boolean free = groundService.getGroundFreeStatusById(ground);
 
-        if (!free) {
-            throw new IllegalArgumentException("the ground is not free for the moment ! please come back later !");
-        }
 
         if (!open) {
             throw new IllegalArgumentException("the ground is now closed ! we cannot create a match for you !");
         }
 
-        if (startHour < ground.getStartHour()
-                || endHour > ground.getEndHour()
-                || startHour > ground.getEndHour()
-                || endHour < ground.getStartHour()) {
-            throw new IllegalArgumentException("check your start and end hour ! the ground finishes at " + ground.getEndHour());
-        }
+        // check if the date is free for the match !
+        checkGroundFree(matchDto, ground);
+
         Player player = userService.getPlayerConnected();
-        if (player.equals(null)) {
+        if (player == null) {
             throw new IllegalArgumentException("player not exist");
         }
+
+
+    }
+
+    private void checkGroundFree(MatchDto matchDto, Ground ground) {
+        List<Match> matchesList = ground.getMatches();
+        for (Match match : matchesList) {
+            var newDateAfterDuration = returnDateAfterDuration(match);
+            log.info("this is the new date {}", newDateAfterDuration);
+            if (matchDto.getDate().getTime() < newDateAfterDuration.getTime() &&
+                    matchDto.getDate().getTime() >= match.getDate().getTime()
+            ) {
+                throw new IllegalArgumentException("match is already full in this time ! Please try another time");
+            }
+        }
+    }
+
+    private Date returnDateAfterDuration(Match match) {
+        var dateMatch = match.getDate();
+        Calendar date = Calendar.getInstance();
+        date.setTime(dateMatch);
+        long timeInSecs = date.getTimeInMillis();
+        return new Date(timeInSecs + ((long) match.getDuration() * 60 * 1000));
     }
 }

@@ -64,7 +64,6 @@ public class GroundServiceImpl implements GroundService {
         var owner = userService.getOwnerBoConnected();
         if (owner != null){
             var ground = groundRepository.save(groundMapper.toBo(groundDto));
-            ground.setFree(true);
             ground.setOpen(true);
             ground.setOwner(owner);
             groundRepository.save(ground);
@@ -158,17 +157,13 @@ public class GroundServiceImpl implements GroundService {
         return ground.isOpen();
     }
 
-    @Override
-    public boolean getGroundFreeStatusById(Ground ground) {
-        return ground.isFree();
-    }
 
     @Override
     public List<GroundDto> getOpenAndFreeGrounds() {
         var listGrounds = groundRepository.findAll();
         List<Ground> finalGroundList = new ArrayList<>();
         for (Ground ground : listGrounds) {
-            if (ground.isFree() && ground.isOpen()) {
+            if ( ground.isOpen()) {
                 finalGroundList.add(ground);
             }
         }
