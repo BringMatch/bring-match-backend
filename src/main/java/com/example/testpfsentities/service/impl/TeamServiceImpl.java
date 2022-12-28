@@ -7,6 +7,7 @@ import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.entities.TeamPlayer;
+import com.example.testpfsentities.entities.enums.MatchResult;
 import com.example.testpfsentities.mapper.TeamMapper;
 import com.example.testpfsentities.repository.MatchRepository;
 import com.example.testpfsentities.repository.TeamRepository;
@@ -137,6 +138,8 @@ public class TeamServiceImpl implements TeamService {
                 .filter(teamElement -> teamElement.getName().equals(teamDto.getName()))
                 .collect(Collectors.toList()).get(0);
 
+        team.setMatchResult(MatchResult.DRAW);
+        teamRepository.save(team);
         boolean updateMatchOwner = teams.size() == 1;
         boolean updateTeamOwner = team.getPlayersTeams().size() == 1;
 
