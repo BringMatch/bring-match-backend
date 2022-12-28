@@ -4,9 +4,11 @@ import com.example.testpfsentities.dto.MatchDto;
 import com.example.testpfsentities.entities.Ground;
 import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.Player;
+import com.example.testpfsentities.entities.enums.MatchStatus;
 import com.example.testpfsentities.service.GroundService;
 import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.service.UserService;
+import com.example.testpfsentities.utils.DateUtils;
 import com.example.testpfsentities.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,22 +62,18 @@ public class MatchValidator {
 
     private void checkGroundFree(MatchDto matchDto, Ground ground) {
         List<Match> matchesList = ground.getMatches();
-        for (Match match : matchesList) {
-            var newDateAfterDuration = returnDateAfterDuration(match);
+        matchesList.forEach(match -> {
+            var newDateAfterDuration = DateUtils.returnDateAfterDuration(match.getDate(), match.getDuration());
             log.info("this is the new date {}", newDateAfterDuration);
-            if (matchDto.getDate().getTime() < newDateAfterDuration.getTime() &&
+            if (matchDto.getDate().getTime() < newDateAfterDuration.getTime()
+                    &&
                     matchDto.getDate().getTime() >= match.getDate().getTime()
+                    &&
+                    match.getMatchStatus().equals(MatchStatus.PENDING)
             ) {
                 throw new IllegalArgumentException("match is already full in this time ! Please try another time");
             }
-        }
+        });
     }
 
-    private Date returnDateAfterDuration(Match match) {
-        var dateMatch = match.getDate();
-        Calendar date = Calendar.getInstance();
-        date.setTime(dateMatch);
-        long timeInSecs = date.getTimeInMillis();
-        return new Date(timeInSecs + ((long) match.getDuration() * 60 * 1000));
-    }
 }

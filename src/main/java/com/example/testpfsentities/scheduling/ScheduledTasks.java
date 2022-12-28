@@ -11,6 +11,7 @@ import com.example.testpfsentities.entities.enums.MatchStatus;
 import com.example.testpfsentities.repository.MatchRepository;
 import com.example.testpfsentities.service.MatchService;
 import com.example.testpfsentities.service.PlayerService;
+import com.example.testpfsentities.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,7 @@ public class ScheduledTasks {
                 int otherYear = cal2.get(Calendar.YEAR);
                 int otherMonth = cal2.get(Calendar.MONTH);
                 int otherDay = cal2.get(Calendar.DAY_OF_MONTH);
-                if (currentYear == otherYear && currentMonth == otherMonth && currentDay == otherDay){
+                if (currentYear == otherYear && currentMonth == otherMonth && currentDay == otherDay) {
                     if (match.getDate().getHours() == currentDate.getHours()
                             && match.getDate().getMinutes() == currentDate.getMinutes()
                             && match.getDate().getSeconds() == currentDate.getSeconds()
@@ -68,48 +69,53 @@ public class ScheduledTasks {
             log.info("no match has selected");
         }
     }
+
+//    @Scheduled(cron = "* * * * * *")
+//    public void changeMatchStatusToPending() {
+//        Date currentDate = new Date();
+//        Calendar cal1 = Calendar.getInstance();
+//        cal1.setTime(currentDate);
+//        int currentYear = cal1.get(Calendar.YEAR);
+//        int currentMonth = cal1.get(Calendar.MONTH);
+//        int currentDay = cal1.get(Calendar.DAY_OF_MONTH);
+//        try {
+//            List<Match> listMatches = matchRepository.findAll();
+//            for (Match match : listMatches) {
+//                Calendar cal2 = Calendar.getInstance();
+//                cal2.setTime(match.getDate());
+//                int otherYear = cal2.get(Calendar.YEAR);
+//                int otherMonth = cal2.get(Calendar.MONTH);
+//                int otherDay = cal2.get(Calendar.DAY_OF_MONTH);
+//                //add duration to start date of the match
+//                cal2.add(Calendar.MINUTE, match.getDuration());
+//                Date DatePlusDuration = cal2.getTime();
+//                if (currentYear == otherYear && currentMonth == otherMonth && currentDay == otherDay) {
+//                    if (currentDate.after(match.getDate()) && currentDate.before(DatePlusDuration)) {
+//                        match.setMatchStatus(MatchStatus.PENDING);
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            log.info("no match is playing now");
+//        }
+//    }
+
     @Scheduled(cron = "* * * * * *")
-    public void changeMatchStatusTopending(){
-        Date currentDate  = new Date();
-        Calendar cal1 = Calendar.getInstance();
-        cal1.setTime(currentDate);
-        int currentYear = cal1.get(Calendar.YEAR);
-        int currentMonth = cal1.get(Calendar.MONTH);
-        int currentDay = cal1.get(Calendar.DAY_OF_MONTH);
-        try {
-            List<Match> listMatches = matchRepository.findAll();
-            for (Match match : listMatches) {
-                Calendar cal2 = Calendar.getInstance();
-                cal2.setTime(match.getDate());
-                int otherYear = cal2.get(Calendar.YEAR);
-                int otherMonth = cal2.get(Calendar.MONTH);
-                int otherDay = cal2.get(Calendar.DAY_OF_MONTH);
-                //add duration to start date of the match
-                cal2.add(Calendar.MINUTE,match.getDuration());
-                Date DatePlusDuration=cal2.getTime();
-                if (currentYear == otherYear && currentMonth == otherMonth && currentDay == otherDay)
-                {
-                   if (currentDate.after(match.getDate()) && currentDate.before(DatePlusDuration)){
-                       match.setMatchStatus(MatchStatus.PENDING);
-                   }
-                }
+    public void updateMatchStatus() {
+        // here we must change the status from not started -> to pending , to played !
+        var matchesList = matchRepository.findAll();
+        Date date = new Date();
+        for (Match match : matchesList) {
+            var newDateAfterDuration = DateUtils.returnDateAfterDuration(match.getDate(), match.getDuration());
+            if (DateUtils.compareTwoDates(match.getDate(), date) && DateUtils.compareTwoDates(date, newDateAfterDuration)) {
+                match.setMatchStatus(MatchStatus.PENDING);
+                matchRepository.save(match);
+            } else if (DateUtils.compareTwoDates(newDateAfterDuration, date)) {
+                match.setMatchStatus(MatchStatus.PLAYED);
+                matchRepository.save(match);
             }
-        } catch (Exception e) {
-            log.info("no match is playing now");
         }
     }
-
-//    @Scheduled(cron = "* * * * *")
-//    public void updateMatchStatus(){
-//        // here we must change the status from not started -> to pending , to played !
-//    }
-
-//    @Scheduled(cron = "* * * * *")
-//    public void changeFreeStatusGround() {
-//        Date now = new Date();
-//        var list = matchService.getPendingMatches();
-//        // first we must get all matches that are
-//    }
 
 
 }
