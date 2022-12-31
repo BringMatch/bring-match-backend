@@ -19,6 +19,7 @@ public interface TeamPlayerService {
     void saveAll(Set<TeamPlayer> playersTeams);
 
     TeamPlayer saveTeamPlayer(TeamPlayer teamPlayer, Team team);
+    TeamPlayer saveTeamPlayerWhenJoinAsTeam(TeamPlayer teamPlayer, Team team);
 
     TeamPlayer getTeamPlayer();
 
@@ -30,6 +31,6 @@ public interface TeamPlayerService {
 
     List<String> getCurrentTeamPositions();
 
-    TeamPlayer saveDto(Team team , TeamPlayerDto teamPlayer);
+    TeamPlayer save(Team team , TeamPlayerDto teamPlayer);
 
 }

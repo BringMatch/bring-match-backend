@@ -53,10 +53,11 @@ public class MatchServiceImpl implements MatchService {
 
         match.setGround(ground);
         match.setMatchStatus(MatchStatus.NOT_PLAYED);
+        match.getTeams().get(0).setLength(matchDto.getNumberTeamPlayers() - 1);
+        match.getTeams().get(0).setMatchResult(MatchResult.DRAW);
         Match match1 = matchRepository.save(match);
 
         teamService.assignPlayersWithTeams(match1.getTeams(), matchDto.getTeams().get(0));
-        teamService.assignLengthTeamWithMatchLength(match1.getTeams(), matchDto.getNumberTeamPlayers());
         playerStatsService.savePlayerStats();
 
         NotificationOwner notificationOwner = notificationOwnerService.create(reservation, ground);
@@ -166,25 +167,22 @@ public class MatchServiceImpl implements MatchService {
         Match match = this.findMatchById(matchDto.getId());
         teamValidator.validateInsertionTeam(matchDto, match);
         var listTeams = match.getTeams();
-        listTeams.add(teamMapper.toBo(matchDto.getTeams().get(0)));
-        log.info("this is the id old one {}", match.getId());
-        //Match matchSaved = matchRepository.save(match);
-        log.info("this is the id new one {}", match.getId());
-        TeamDto teamDto = matchDto.getTeams().get(0);
+        Team newTeam = teamMapper.toBo(matchDto.getTeams().get(0));
+        newTeam.setMatchResult(MatchResult.DRAW);
+        newTeam.setLength(match.getNumberTeamPlayers() - 1);
+        listTeams.add(newTeam);
         match.setTeams(listTeams);
-        teamService.assignPlayersWithTeams(match.getTeams(), teamDto);
-        teamService.setLengthTeamWithMaxLengthMatchWhenJoinAsTeam(match, matchDto);
+        Match matchSaved = matchRepository.save(match);
 
-//        var matchSaved = matchRepository.save(match);
+        TeamDto teamDto = matchDto.getTeams().get(0);
+        teamService.assignPlayersWithTeamsWhenJoinAsTeam(matchSaved.getTeams(), teamDto);
+
         var playerConnected = userService.getPlayerConnected();
-        //notificationPlayerService.create(match, playerConnected);
-//        playerStatsService.savePlayerStats();
+        notificationPlayerService.create(match, playerConnected);
+        playerStatsService.savePlayerStats();
 
-        // this part is for notification
-        // we should notify the owner match player that a new team has joined the game
+        return matchSaved;
 
-
-        return match;
 
     }
 
@@ -204,13 +202,10 @@ public class MatchServiceImpl implements MatchService {
         team.setLength(current_length_team - 1);
 
         var listTeamPlayer = team.getPlayersTeams();
-        List<TeamPlayerDto> teamPlayerDtoList = matchDto.getTeams().get(0).getPlayersTeams();
-        teamService.addNewPlayerToListPlayerTeams(team, listTeamPlayer, teamPlayerDtoList);
-
+        TeamPlayerDto teamPlayerDto = matchDto.getTeams().get(0).getPlayersTeams().get(0);
+        teamService.addNewPlayerToListPlayerTeams(team, listTeamPlayer, teamPlayerDto);
         //TeamDto teamDto = matchDto.getTeams().get(0);
-
         //teamService.assignPlayersWithTeams(match.getTeams(), teamDto);
-
         var matchSaved = matchRepository.save(match);
         playerStatsService.savePlayerStats();
         var playerConnected = userService.getPlayerConnected();

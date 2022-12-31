@@ -162,6 +162,7 @@ public class UserServiceImpl implements UserService {
         //addRoleToUser(userBo.getEmail(), userBo.getRoleName().name());
         // userBo.getRoles().stream().map(Role::name).forEach(roleName -> addRoleToUser(userBo.getEmail(), roleName));
         log.info("user saved in provider");
+        userBo.getId();
     }
 
     private void addRoleToUser(Response response, AdminManagementBuilder admin, User userBo) {

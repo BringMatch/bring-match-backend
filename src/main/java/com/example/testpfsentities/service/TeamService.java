@@ -19,6 +19,8 @@ public interface TeamService {
 
     void assignPlayersWithTeams(List<Team> team, TeamDto teamDto);
 
+    void assignPlayersWithTeamsWhenJoinAsTeam(List<Team> team, TeamDto teamDto);
+
 
     Team getTeamByName(String name);
 
@@ -27,7 +29,6 @@ public interface TeamService {
 
     List<String> getFreePositions(String team_id);
 
-    void assignLengthTeamWithMatchLength(List<Team> teams , int length);
 
     Integer getLengthRemaining(String team_name);
 
@@ -37,7 +38,7 @@ public interface TeamService {
 
     boolean checksTeamById(String id);
 
-    void addNewPlayerToListPlayerTeams(Team team ,List<TeamPlayer> list, List<TeamPlayerDto> teamPlayerDtoList);
+    void addNewPlayerToListPlayerTeams(Team team ,List<TeamPlayer> list, TeamPlayerDto teamPlayerDtoList);
 
 }
 

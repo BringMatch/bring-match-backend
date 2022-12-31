@@ -1,9 +1,3 @@
-// player
-	player stats !
-	global sgtats of course !
+// join as player & team
 
-// using the jwt to make the admin from who we will get his ide
- and then update the status of the notification 
- if accepted or refused !
-
-// remove pending from the owner entity!
+https://join.slack.com/t/alx-c3/shared_invite/zt-1m9rp4btv-N8SNDxlCvqGwC9lqxjfCCQ

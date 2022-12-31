@@ -1,7 +1,6 @@
 package com.example.testpfsentities.email;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -9,8 +8,11 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class EmailSenderForOwner {
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
+
+    public EmailSenderForOwner(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
     public void sendEmail(String to, String subject, String body) {
         SimpleMailMessage msg = new SimpleMailMessage();

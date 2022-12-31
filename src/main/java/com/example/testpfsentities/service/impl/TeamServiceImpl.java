@@ -76,14 +76,6 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void assignLengthTeamWithMatchLength(List<Team> teams, int length) {
-        Team firstTeam = teams.get(0);
-        firstTeam.setLength(length - 1);
-        teamRepository.save(firstTeam);
-    }
-
-
-    @Override
     public Integer getLengthRemaining(String team_name) {
         Team team = getTeamByName(team_name);
         return team.getLength();
@@ -124,9 +116,8 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void addNewPlayerToListPlayerTeams(Team team, List<TeamPlayer> list, List<TeamPlayerDto> teamPlayerDtoList) {
-        var teamPlayerDto = teamPlayerDtoList.get(0);
-        var teamPlayer = teamPlayerService.saveDto(team, teamPlayerDto);
+    public void addNewPlayerToListPlayerTeams(Team team, List<TeamPlayer> list, TeamPlayerDto teamPlayerDto) {
+        var teamPlayer = teamPlayerService.save(team, teamPlayerDto);
         list.add(teamPlayer);
     }
 
@@ -137,9 +128,8 @@ public class TeamServiceImpl implements TeamService {
         Team team = teams.stream()
                 .filter(teamElement -> teamElement.getName().equals(teamDto.getName()))
                 .collect(Collectors.toList()).get(0);
+        log.info("this the team name of second team {}" , team.getName());
 
-        team.setMatchResult(MatchResult.DRAW);
-        teamRepository.save(team);
         boolean updateMatchOwner = teams.size() == 1;
         boolean updateTeamOwner = team.getPlayersTeams().size() == 1;
 
@@ -155,6 +145,32 @@ public class TeamServiceImpl implements TeamService {
                 teamPlayer.setTeam_owner(false);
             }
             teamPlayerService.saveTeamPlayer(teamPlayer, team);
+        });
+    }
+
+    @Override
+    public void assignPlayersWithTeamsWhenJoinAsTeam(List<Team> teams, TeamDto teamDto) {
+        Team team = teams.stream()
+                .filter(teamElement -> teamElement.getName().equals(teamDto.getName()))
+                .collect(Collectors.toList()).get(0);
+
+        log.info("this the team name of second team {}" , team.getName());
+
+        boolean updateMatchOwner = teams.size() == 1;
+        boolean updateTeamOwner = team.getPlayersTeams().size() == 1;
+
+        team.getPlayersTeams().forEach(teamPlayer -> {
+            if (updateMatchOwner) {
+                teamPlayer.setTeam_owner(true);
+                teamPlayer.setMatch_owner(true);
+            } else if (updateTeamOwner) {
+                teamPlayer.setMatch_owner(false);
+                teamPlayer.setTeam_owner(true);
+            } else {
+                teamPlayer.setMatch_owner(false);
+                teamPlayer.setTeam_owner(false);
+            }
+            teamPlayerService.saveTeamPlayerWhenJoinAsTeam(teamPlayer, team);
         });
     }
 }

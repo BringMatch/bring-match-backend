@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Data
@@ -54,6 +53,14 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
 //        return teamPlayerRepository.save(teamPlayer);
     }
 
+    @Override
+    public TeamPlayer saveTeamPlayerWhenJoinAsTeam(TeamPlayer teamPlayer, Team team) {
+        Player player = userService.getPlayerConnected();
+        teamPlayer.setPlayer(player);
+        teamPlayer.setTeam(team);
+        return teamPlayerRepository.save(teamPlayer);
+    }
+
 
     @Override
     public TeamPlayer getTeamPlayer() {
@@ -82,14 +89,15 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
     }
 
     @Override
-    public TeamPlayer saveDto(Team team ,TeamPlayerDto teamPlayerDto) {
+    public TeamPlayer save(Team team ,TeamPlayerDto teamPlayerDto) {
         var teamPlayer = teamPlayerMapper.toBo(teamPlayerDto);
         var player = userService.getPlayerConnected();
         teamPlayer.setPlayer(player);
         teamPlayer.setTeam(team);
         teamPlayer.setMatch_owner(false);
         teamPlayer.setTeam_owner(false);
-        return teamPlayerRepository.save(teamPlayer);
+        return teamPlayer;
+        //return teamPlayerRepository.save(teamPlayer);
     }
 
 
