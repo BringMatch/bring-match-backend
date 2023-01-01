@@ -6,7 +6,6 @@ import com.example.testpfsentities.utils.consts.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,8 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationPlayerController {
     private final NotificationPlayerService notificationPlayerService;
-    @GetMapping(ApiPaths.GET_NOTIFICATIONS_PLAYER + "/{player_id}")
-    public ResponseEntity<List<NotificationPlayerDto>> getNotificationsPlayer(@PathVariable(name = "player_id") String player_id){
-        return ResponseEntity.ok().body(notificationPlayerService.getNotifications(player_id));
+    @GetMapping(ApiPaths.GET_NOTIFICATIONS_PLAYER)
+    public ResponseEntity<List<NotificationPlayerDto>> getNotificationsPlayer(){
+        return ResponseEntity.ok().body(notificationPlayerService.getNotifications());
     }
 }

@@ -9,6 +9,7 @@ import com.example.testpfsentities.mapper.NotificationPlayerMapper;
 import com.example.testpfsentities.repository.NotificationPlayerRepository;
 import com.example.testpfsentities.service.NotificationPlayerService;
 import com.example.testpfsentities.service.PlayerService;
+import com.example.testpfsentities.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class NotificationPlayerServiceImpl implements NotificationPlayerService 
     private final NotificationPlayerRepository notificationPlayerRepository;
     private final NotificationPlayerMapper notificationPlayerMapper;
     private final PlayerService playerService;
+    private final UserService userService;
 
     @Override
     public void save(NotificationPlayer notificationPlayer) {
@@ -44,11 +46,11 @@ public class NotificationPlayerServiceImpl implements NotificationPlayerService 
     }
 
     @Override
-    public List<NotificationPlayerDto> getNotifications(String player_id) {
-        playerService.findPlayerById(player_id);
+    public List<NotificationPlayerDto> getNotifications() {
+        var player = userService.getPlayerConnected();
         List<NotificationPlayer> listNotificationPlayer = new ArrayList<>();
         for (NotificationPlayer notificationPlayer : notificationPlayerRepository.findAll()) {
-            if (notificationPlayer.getOwner_match().getId().equals(player_id)) {
+            if (notificationPlayer.getOwner_match().getId().equals(player.getId())) {
                 listNotificationPlayer.add(notificationPlayer);
             }
         }
