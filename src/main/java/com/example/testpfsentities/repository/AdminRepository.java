@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, String> {
@@ -15,4 +17,5 @@ public interface AdminRepository extends JpaRepository<Admin, String> {
     List<Admin> findFirstAdmin();
 
 
+    Optional<Admin> findByEmail(String s);
 }

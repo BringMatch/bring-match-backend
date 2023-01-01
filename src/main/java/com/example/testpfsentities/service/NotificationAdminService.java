@@ -1,5 +1,6 @@
 package com.example.testpfsentities.service;
 
+import com.example.testpfsentities.dto.NotificationAdminDto;
 import com.example.testpfsentities.entities.Admin;
 import com.example.testpfsentities.entities.NotificationAdmin;
 import com.example.testpfsentities.entities.Owner;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Service
 public interface NotificationAdminService  {
-    List<NotificationAdmin> findAll();
+    List<NotificationAdminDto> findAll();
 
     void save(Admin admin , Owner owner);
 

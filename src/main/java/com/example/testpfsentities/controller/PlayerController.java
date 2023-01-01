@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(ApiPaths.PLAYERS)
+@CrossOrigin
 public class PlayerController {
     private final PlayerService playerService;
 

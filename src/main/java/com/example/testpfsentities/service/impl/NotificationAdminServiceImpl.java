@@ -1,24 +1,35 @@
 package com.example.testpfsentities.service.impl;
 
+import com.example.testpfsentities.dto.NotificationAdminDto;
 import com.example.testpfsentities.entities.Admin;
 import com.example.testpfsentities.entities.NotificationAdmin;
 import com.example.testpfsentities.entities.Owner;
+import com.example.testpfsentities.mapper.NotificationAdminMapper;
 import com.example.testpfsentities.repository.NotificationAdminRepository;
 import com.example.testpfsentities.service.NotificationAdminService;
+import com.example.testpfsentities.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class NotificationAdminServiceImpl implements NotificationAdminService {
     private final NotificationAdminRepository notificationAdminRepository;
+    private final UserService userService;
+    private final NotificationAdminMapper notificationAdminMapper;
 
     @Override
-    public List<NotificationAdmin> findAll() {
-        return notificationAdminRepository.findAll();
+    public List<NotificationAdminDto> findAll() {
+        var admin = userService.getAdminConnected();
+        var list = notificationAdminRepository.findAll();
+        return notificationAdminMapper.toDto(list
+                .stream()
+                .filter(notificationAdmin -> notificationAdmin.getUserTo().getId().equals(admin.getId()))
+                .collect(Collectors.toList()));
     }
 
     @Override

@@ -39,9 +39,9 @@ public class AdminController {
         adminService.updateStatusNotification(notif_id);
     }
 
-    @PutMapping(ApiPaths.UPDATE_STATUS_OWNER_TRUE + "/{notification_id}")
-    public void updateActiveStatusOwnerWithTrue(@PathVariable(name = "notification_id") String notification_id) {
-        adminService.updateStatusOwnerWithTrue(notification_id);
+    @PutMapping(ApiPaths.UPDATE_STATUS_OWNER_TRUE + "/{owner_id}")
+    public void updateActiveStatusOwnerWithTrue(@PathVariable(name = "owner_id") String owner_id) {
+        adminService.updateStatusOwnerWithTrue(owner_id);
     }
 
     @PutMapping(ApiPaths.UPDATE_STATUS_OWNER_FALSE + "/{notification_id}")
@@ -49,19 +49,30 @@ public class AdminController {
         adminService.updateStatusOwnerWithFalse(notification_id);
     }
 
-    @GetMapping(ApiPaths.GET_ACCEPTED_OWNERS + "/{admin_id}")
-    public ResponseEntity<List<OwnerDto>> getAcceptedOwners(@PathVariable(name = "admin_id")String admin_id){
-        return ResponseEntity.ok().body(adminService.getAcceptedOwners(admin_id));
+
+    @GetMapping(ApiPaths.GET_NUMBER_ALL_OWNERS)
+    public ResponseEntity<Integer> getAcceptedOwners() {
+        return ResponseEntity.ok().body(adminService.getAcceptedOwners().size());
     }
 
-    @GetMapping(ApiPaths.GET_REFUSED_OWNERS + "/{admin_id}")
-    public ResponseEntity<List<OwnerDto>> getRefusedOwners(@PathVariable(name = "admin_id")String admin_id){
-        return ResponseEntity.ok().body(adminService.getRefusedOwners(admin_id));
+    @GetMapping(ApiPaths.GET_NUMBER_REFUSED_OWNERS)
+    public ResponseEntity<Integer> getRefusedOwners() {
+        return ResponseEntity.ok().body(adminService.getRefusedOwners().size());
     }
 
-    @GetMapping(ApiPaths.GET_ALL_OWNERS + "/{admin_id}")
-    public ResponseEntity<List<OwnerDto>> getAllOwners(@PathVariable(name = "admin_id")String admin_id){
-        return ResponseEntity.ok().body(adminService.getAllOwners(admin_id));
+    @GetMapping(ApiPaths.GET_NUMBER_ACCEPTED_OWNERS)
+    public ResponseEntity<Integer> getNumberOwners() {
+        return ResponseEntity.ok().body(adminService.getAllOwners().size());
+    }
+
+    @GetMapping(ApiPaths.GET_NUMBER_PLAYERS_SAVED)
+    public ResponseEntity<Integer> getAllPlayers() {
+        return ResponseEntity.ok().body(adminService.getAllPlayers());
+    }
+
+    @GetMapping(ApiPaths.OWNERS)
+    public ResponseEntity<List<OwnerDto>> getAdminOwners() {
+        return ResponseEntity.ok().body(adminService.getAllOwners());
     }
 
 }

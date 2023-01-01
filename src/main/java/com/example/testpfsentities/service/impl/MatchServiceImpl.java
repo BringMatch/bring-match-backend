@@ -189,11 +189,8 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public Match joinMatchAsPlayer(MatchDto matchDto) {
-
-        teamValidator.validateInsertionPlayerInTeam(matchDto);
-
         Match match = findMatchById(matchDto.getId());
-
+        teamValidator.validateInsertionPlayerInTeam(match,matchDto);
         var team = match.getTeams().stream()
                 .filter(teamed -> teamed.getName().equals(matchDto.getTeams().get(0).getName()))
                 .collect(Collectors.toList()).get(0);

@@ -1,5 +1,6 @@
 package com.example.testpfsentities.controller;
 
+import com.example.testpfsentities.dto.NotificationAdminDto;
 import com.example.testpfsentities.entities.NotificationAdmin;
 import com.example.testpfsentities.service.NotificationAdminService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
@@ -16,7 +17,7 @@ public class NotificationAdminController {
     private final NotificationAdminService notificationAdminService;
 
     @GetMapping(ApiPaths.GET_NOTIF_ADMINS)
-    public ResponseEntity<List<NotificationAdmin>> getListNotification() {
+    public ResponseEntity<List<NotificationAdminDto>> getListNotification() {
         return ResponseEntity.ok().body(notificationAdminService.findAll());
     }
 

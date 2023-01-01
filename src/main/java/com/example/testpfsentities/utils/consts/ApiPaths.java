@@ -25,9 +25,10 @@ public final class ApiPaths {
     public static final String UPDATE_NOTIF_ADMIN_READ_STATUS = "/updateNotification";
     public static final String UPDATE_STATUS_OWNER_TRUE = "/updateOwnerTrue";
     public static final String UPDATE_STATUS_OWNER_FALSE = "/updateOwnerFalse";
-    public static final String GET_ACCEPTED_OWNERS = "/accepted-owners";
-    public static final String GET_REFUSED_OWNERS = "/refused-owners";
-    public static final String GET_ALL_OWNERS = "/all-owners";
+    public static final String GET_NUMBER_ACCEPTED_OWNERS = "/number-accepted-owners";
+    public static final String GET_NUMBER_REFUSED_OWNERS = "/number-refused-owners";
+    public static final String GET_NUMBER_ALL_OWNERS = "/number-owners";
+    public static final String GET_NUMBER_PLAYERS_SAVED = "/number-players-saved";
 
 
     public final static String MATCHES = "/matches";

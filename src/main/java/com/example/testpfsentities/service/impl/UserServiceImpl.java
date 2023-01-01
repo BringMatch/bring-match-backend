@@ -1,10 +1,12 @@
 package com.example.testpfsentities.service.impl;
 
+import com.amazonaws.services.apigateway.model.Op;
 import com.example.testpfsentities.config.AdminManagementBuilder;
 import com.example.testpfsentities.dto.OwnerDto;
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.UserDto;
 import com.example.testpfsentities.email.EmailSenderForOwner;
+import com.example.testpfsentities.entities.Admin;
 import com.example.testpfsentities.entities.Owner;
 import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.User;
@@ -12,6 +14,7 @@ import com.example.testpfsentities.exceptions.BusinessException;
 import com.example.testpfsentities.mail.OwnerSenderEmail;
 import com.example.testpfsentities.mapper.OwnerMapper;
 import com.example.testpfsentities.mapper.PlayerMapper;
+import com.example.testpfsentities.repository.AdminRepository;
 import com.example.testpfsentities.repository.OwnerRepository;
 import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.repository.UserRepository;
@@ -41,6 +44,7 @@ import java.util.*;
 @Slf4j
 
 public class UserServiceImpl implements UserService {
+    private final AdminRepository adminRepository;
     private final OwnerRepository ownerRepository;
     private final AdminManagementBuilder admin;
     private final PlayerMapper playerMapper;
@@ -132,6 +136,9 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userBo.getLastName());
         user.setUsername(userBo.getUsername());
         user.setCredentials(Collections.singletonList(credential));
+//        HashMap<String, List<String>> clientRoles = new HashMap<>();
+//        clientRoles.put("bring-match-front", List.of("OWNER"));
+//        user.setClientRoles(clientRoles);
         if (userBo instanceof Owner) {
             user.setEnabled(true);
         } else {
@@ -141,9 +148,12 @@ public class UserServiceImpl implements UserService {
         admin.getUsersResource().list().add(user);
         Response response = admin.getUsersResource().create(user);
 
-        var list = admin.getRealmResource().clients().findAll();
-        log.info("this is the id of the client number zero {} ", list.get(1).getName());
-        log.info("this is the length {} ", (long) list.size());
+//        var list = admin.getRealmResource().clients().findAll();
+//        log.info("this is the id of the client number zero {} ", list.get(1).getName());
+//        for (var item : list) {
+//            log.info("this is the name {}", item.getName());
+//        }
+//        log.info("this is the length {} ", (long) list.size());
 
 //        RoleRepresentation userClientRole = admin.getRealmResource().clients().get("${client_bring-match}") //
 //                .roles().get(userBo.getRoleName().name()).toRepresentation();
@@ -169,11 +179,13 @@ public class UserServiceImpl implements UserService {
         if (response.getStatus() == 201) {
 
             RoleRepresentation roleRepresentation = admin.getRealmResource().roles()
-                    .get(userBo.getRoleName().name()).toRepresentation();
-            admin.getRealmResource()
+                    .get(userBo.getRole().name()).toRepresentation();
+
+            var user = admin.getRealmResource()
                     .users()
-                    .get(CreatedResponseUtil.getCreatedId(response))
-                    .roles().realmLevel()
+                    .get(CreatedResponseUtil.getCreatedId(response));
+
+            user.roles().realmLevel()
                     .add(Collections.singletonList(roleRepresentation));
 
         } else if (response.getStatus() == 409) {
@@ -245,7 +257,25 @@ public class UserServiceImpl implements UserService {
         if (email.isEmpty()) {
             throw new IllegalArgumentException("email not found !");
         }
-        return playerRepository.findByEmail(email.get()).get();
+        Optional<Player> optionPlayer = playerRepository.findByEmail(email.get());
+        if (optionPlayer.isEmpty()) {
+            throw new IllegalArgumentException("admin not found !");
+        }
+        return optionPlayer.get();
+    }
+
+    @Override
+    public Admin getAdminConnected() {
+        Optional<String> email = SecurityUtils.getUserEmail();
+        if (email.isEmpty()) {
+            throw new IllegalArgumentException("email not found !");
+        }
+
+        Optional<Admin> optionalAdmin = adminRepository.findByEmail(email.get());
+        if (optionalAdmin.isEmpty()) {
+            throw new IllegalArgumentException("admin not found !");
+        }
+        return optionalAdmin.get();
     }
 
     private void setUserPassword(CredentialRepresentation credential, String email) {

@@ -16,14 +16,16 @@ public interface AdminService {
 
     void updateStatusNotification(String notif_id);
 
-    void updateStatusOwnerWithTrue(String notification_id);
+    void updateStatusOwnerWithTrue(String owner_id);
 
     void updateStatusOwnerWithFalse(String owner_id);
 
     Admin save(Owner owner);
 
-    List<OwnerDto> getAcceptedOwners(String admin_id);
+    List<OwnerDto> getAcceptedOwners();
 
-    List<OwnerDto> getRefusedOwners(String admin_id);
-    List<OwnerDto> getAllOwners(String admin_id);
+    List<OwnerDto> getRefusedOwners();
+    List<OwnerDto> getAllOwners();
+
+    Integer getAllPlayers();
 }

@@ -26,6 +26,10 @@ public class TeamValidator {
 
     public void validateInsertionTeam(MatchDto matchDto, Match match) {
 
+        if (match.getTeams().size() == 2) {
+            throw new IllegalArgumentException("you cannot join match ! it has already two teams !");
+        }
+
         // 0 : we must check if the match is private the user must provide the right code
         if (match.getPrivateMatch()) {
             if (!matchDto.getMatchCode().equals(match.getMatchCode())) {
@@ -55,15 +59,20 @@ public class TeamValidator {
         //playerService.checksPlayerExist(matchDto.getTeams().get(0).getPlayersTeams().get(0).getPlayer());
     }
 
-    public void validateInsertionPlayerInTeam(MatchDto matchDto) {
+    public void validateInsertionPlayerInTeam(Match match, MatchDto matchDto) {
         var teamDto = matchDto.getTeams().get(0);
-        if (!teamService.checksTeamByNameInMatch(teamDto.getName(),matchDto)) {
+        if (!teamService.checksTeamByNameInMatch(teamDto.getName(), matchDto)) {
             throw new IllegalArgumentException("name of team not existing !");
         }
         if (!teamService.checksTeamById(teamDto.getId())) {
             throw new IllegalArgumentException("id team not found !");
         }
-        Match match = matchRepository.findById(matchDto.getId()).get();
+
+        if (match.getPrivateMatch()) {
+            if (!matchDto.getMatchCode().equals(match.getMatchCode())) {
+                throw new IllegalArgumentException("please check the code before you join the match !");
+            }
+        }
 
         var team = match.getTeams().stream()
                 .filter(teamed -> teamed.getName().equals(matchDto.getTeams().get(0).getName()))

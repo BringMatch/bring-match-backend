@@ -36,8 +36,6 @@ public class User extends AbstractEntity {
     @Column(unique = true)
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private Role roleName;
     private String username;
 
     @Column(columnDefinition = "boolean default false")

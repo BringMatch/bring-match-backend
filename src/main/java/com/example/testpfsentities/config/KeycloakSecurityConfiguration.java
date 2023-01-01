@@ -72,8 +72,7 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
         super.configure(http);
 //        http.cors().and().authorizeRequests().antMatchers("/owners/**").hasAuthority(Role.OWNER.name())
 //                .and();
-
-        http.csrf().disable().authorizeRequests()
+        http.csrf().disable().cors().and().authorizeRequests()
                 .antMatchers(WHITE_LIST).permitAll()
                 .antMatchers(APIS_HAVING_PLAYER_ROLE)
                 .hasAuthority(Role.PLAYER.name())

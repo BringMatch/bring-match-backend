@@ -8,7 +8,6 @@ import com.example.testpfsentities.service.UserService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +43,8 @@ public class KeycloakController {
      * this will return the clients inside our realm  !
      */
     @GetMapping("/realm-clients")
-    public List<ClientRepresentation> getRealmClients() {
-        return adminManagementBuilder.getClientResource().findAll();
+    public List<String> getRealmClients() {
+        return adminManagementBuilder.getClientResource().findAll().get(0).getDefaultClientScopes();
     }
 
     @GetMapping(path = "/{userName}")

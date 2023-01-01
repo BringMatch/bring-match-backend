@@ -10,6 +10,7 @@ import com.example.testpfsentities.mapper.OwnerMapper;
 import com.example.testpfsentities.repository.AdminRepository;
 import com.example.testpfsentities.repository.NotificationAdminRepository;
 import com.example.testpfsentities.repository.OwnerRepository;
+import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.service.AdminService;
 import com.example.testpfsentities.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class AdminServiceImpl implements AdminService {
     private final EmailSenderForOwner emailSenderForOwner;
     private final OwnerMapper ownerMapper;
     private final UserService userService;
+    private final PlayerRepository playerRepository;
 
     @Override
     public void initAdmin() {
@@ -41,7 +43,8 @@ public class AdminServiceImpl implements AdminService {
 //        admin.setFirstName("ajaoua");
 //        admin.setLastName("ajaqsdfoua");
 //        admin.setPhoneNumber("45454");
-//        admin.setRoleName(Role.ADMIN);
+//        admin.setUsername("yessine");
+//        admin.setRole(Role.ADMIN);
 //        admin.setCreatedAt(Date.from(Instant.now()));
 //        adminRepository.save(admin);
     }
@@ -63,9 +66,8 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public void updateStatusOwnerWithTrue(String notification_id) {
-        NotificationAdmin notificationAdmin = findNotificationAdminById(notification_id);
-        Optional<Owner> ownerOptional = ownerRepository.findById(notificationAdmin.getUserFrom().getId());
+    public void updateStatusOwnerWithTrue(String owner_id) {
+        Optional<Owner> ownerOptional = ownerRepository.findById(owner_id);
         if (ownerOptional.isEmpty()) {
             throw new IllegalArgumentException("Owner not existing !");
         }
@@ -94,9 +96,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void updateStatusOwnerWithFalse(String notification_id) {
-        NotificationAdmin notificationAdmin = findNotificationAdminById(notification_id);
-        Optional<Owner> ownerOptional = ownerRepository.findById(notificationAdmin.getUserFrom().getId());
+    public void updateStatusOwnerWithFalse(String owner_id) {
+        Optional<Owner> ownerOptional = ownerRepository.findById(owner_id);
         if (ownerOptional.isEmpty()) {
             throw new IllegalArgumentException("Owner not existing !");
         }
@@ -124,8 +125,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<OwnerDto> getAcceptedOwners(String admin_id) {
-        Admin admin = findAdminById(admin_id);
+    public List<OwnerDto> getAcceptedOwners() {
+        var admin = userService.getAdminConnected();
         List<Owner> listAcceptedOwners = new ArrayList<>();
         for (Owner owner : admin.getOwners()) {
             if (owner.isActive()) {
@@ -136,8 +137,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<OwnerDto> getRefusedOwners(String admin_id) {
-        Admin admin = findAdminById(admin_id);
+    public List<OwnerDto> getRefusedOwners() {
+        var admin = userService.getAdminConnected();
         List<Owner> listAcceptedOwners = new ArrayList<>();
         for (Owner owner : admin.getOwners()) {
             if (!owner.isActive()) {
@@ -148,18 +149,15 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<OwnerDto> getAllOwners(String admin_id) {
-        Admin admin = findAdminById(admin_id);
+    public List<OwnerDto> getAllOwners() {
+        var admin = userService.getAdminConnected();
         List<Owner> listAcceptedOwners = new ArrayList<>(admin.getOwners());
         return ownerMapper.toDto(listAcceptedOwners);
     }
 
-    private Admin findAdminById(String admin_id) {
-        Optional<Admin> optionalAdmin = adminRepository.findById(admin_id);
-        if (optionalAdmin.isEmpty()) {
-            throw new IllegalArgumentException("admin not found ");
-        }
-        return optionalAdmin.get();
+    @Override
+    public Integer getAllPlayers() {
+        return playerRepository.findAll().size();
     }
 
 }
