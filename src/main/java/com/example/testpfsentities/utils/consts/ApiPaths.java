@@ -36,9 +36,9 @@ public final class ApiPaths {
     public final static String GET_MATCHES = MATCHES + SLASH;
     public final static String GET_MATCHES_GROUND = "/ground";
     public final static String GET_NUMBER_MATCHES_OF_A_PLAYER = "/all-matches";
-    public final static String GET_NUMBER_MATCHES_WIN_OF_A_PLAYER = "/win-matches";
-    public final static String GET_NUMBER_MATCHES_LOSE_OF_A_PLAYER = "/lose-matches";
-    public final static String GET_NUMBER_MATCHES_DRAW_OF_A_PLAYER = "/draw-matches";
+    public final static String GET_NUMBER_MATCHES_WIN_OF_A_PLAYER = "/player/win-matches";
+    public final static String GET_NUMBER_MATCHES_LOSE_OF_A_PLAYER = "/player/lose-matches";
+    public final static String GET_NUMBER_MATCHES_DRAW_OF_A_PLAYER = "/player/draw-matches";
     public final static String GET_LENGTH_TEAM_IN_A_MATCH = "/length-team-in-a-match";
     public final static String GET_MATCHES_OF_OWNER_GROUNDS = "/matches-of-owner-grounds";
     public final static String GET_MATCH_CODE_IF_PRIVATE = "/match-code";
@@ -47,7 +47,7 @@ public final class ApiPaths {
     public final static String JOIN_MATCH_AS_TEAM = "/join-match-team";
     public static final String DELETE_MATCH = MATCHES + "/delete-match";
     public static final String GET_CURRENT_NUMBER_TEAMS = "/number-teams";
-    public static final String GET_NUMBER_OWNER_MATCHES = "/number-owner-matches";
+    public static final String GET_NUMBER_OWNER_MATCHES = "/owner/number-owner-matches";
     public final static String SEARCH_MATCH = "/search";
     public final static String SEARCH_MATCH_BY_DATE = "/search-date";
     public final static String EVALUATE_MATCH = "/evaluate-match";
@@ -69,9 +69,9 @@ public final class ApiPaths {
     public final static String DELETE_OWNER = "/delete";
     public static final String SAVE_OWNER = "/save";
     public static final String OWNER_CONNECTED = "/connected";
-    public static final String GET_NUMBER_OWNER_GROUNDS = "/number-owner-grounds";
-    public static final String GET_NUMBER_OWNER_GROUNDS_OPEN = "/number-owner-grounds-open";
-    public static final String GET_NUMBER_OWNER_GROUNDS_CLOSED = "/number-owner-grounds-closed";
+    public static final String GET_NUMBER_OWNER_GROUNDS = "/owner/number-owner-grounds";
+    public static final String GET_NUMBER_OWNER_GROUNDS_OPEN = "/owner/number-owner-grounds-open";
+    public static final String GET_NUMBER_OWNER_GROUNDS_CLOSED = "/owner/number-owner-grounds-closed";
 
 
     public static final String GROUNDS = "/grounds";

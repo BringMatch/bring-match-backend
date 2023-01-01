@@ -8,6 +8,7 @@ import org.keycloak.admin.client.resource.ClientsResource;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,6 +19,8 @@ public class AdminManagementBuilder {
 
     @Value("${keycloak.realm}")
     private String realm;
+
+    private String normalRealm = "Applications";
 
     @Value("${management.admin.clientId}")
     private String clientId;
@@ -42,6 +45,14 @@ public class AdminManagementBuilder {
 
     public RealmResource getRealmResource() {
         return newKeycloakBuilderWithClientCredentials().realm(realm);
+    }
+
+//    public RealmResource getNormalRealmResource(){
+//        return newKeycloakBuilderWithClientCredentials().realm(normalRealm);
+//    }
+
+    public UsersResource getNormalRealmUsersResource() {
+        return newKeycloakBuilderWithClientCredentials().realm(normalRealm).users();
     }
 
     private Keycloak newKeycloakBuilderWithClientCredentials() {

@@ -63,9 +63,9 @@ public class MatchController {
         return ResponseEntity.ok().body(matchService.getMatchesGround(ground_name));
     }
 
-    @GetMapping(ApiPaths.GET_NUMBER_OWNER_MATCHES + "/{owner_id}")
-    public ResponseEntity<Integer> getNumberOwnerMatches(@PathVariable(name = "owner_id") String owner_id) {
-        return ResponseEntity.ok().body(matchService.getNumberOwnerMatches(owner_id));
+    @GetMapping(ApiPaths.GET_NUMBER_OWNER_MATCHES)
+    public ResponseEntity<Integer> getNumberOwnerMatches() {
+        return ResponseEntity.ok().body(matchService.getNumberOwnerMatches());
     }
 
     @GetMapping(ApiPaths.SEARCH_MATCH)

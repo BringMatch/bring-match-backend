@@ -3,10 +3,8 @@ package com.example.testpfsentities.service;
 import com.example.testpfsentities.dto.*;
 import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.Player;
-import com.example.testpfsentities.entities.Team;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +34,7 @@ public interface MatchService {
 
     List<MatchDto> getMatchesGround(String ground_name);
 
-    Integer getNumberOwnerMatches(String owner_id);
+    Integer getNumberOwnerMatches();
 
     List<MatchDto> getMatchesOfOwnerGrounds(MatchDto matchDto);
 

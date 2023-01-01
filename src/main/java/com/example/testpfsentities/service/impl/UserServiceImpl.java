@@ -136,6 +136,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userBo.getLastName());
         user.setUsername(userBo.getUsername());
         user.setCredentials(Collections.singletonList(credential));
+        user.setEmailVerified(true);
 //        HashMap<String, List<String>> clientRoles = new HashMap<>();
 //        clientRoles.put("bring-match-front", List.of("OWNER"));
 //        user.setClientRoles(clientRoles);

@@ -232,8 +232,9 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Integer getNumberOwnerMatches(String owner_id) {
-        List<Ground> grounds = groundService.getOwnerGroundsBo(owner_id);
+    public Integer getNumberOwnerMatches() {
+        var owner = userService.getOwnerBoConnected();
+        List<Ground> grounds = groundService.getOwnerGroundsBo(owner.getId());
         grounds.forEach(ground -> log.info(ground.getName()));
         return grounds.stream().mapToInt(ground -> getMatchesGround(ground.getName()).size()).sum();
     }
