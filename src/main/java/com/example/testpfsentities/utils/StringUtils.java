@@ -20,6 +20,11 @@ public interface StringUtils {
     String LW = "LW";
     String ST = "ST";
 
+    String GARDIEN = "Gardien";
+    String DEFENSEUR = "Défenseur";
+    String MILIEU = "Milieu";
+    String ATTAQUANT = "Attaquant";
+
     static String getRandomNumberString() {
         // It will generate 6 digit random Number.
         // from 0 to 999999
@@ -31,9 +36,11 @@ public interface StringUtils {
     }
 
     static List<String> getListAvailablePositionsInATeam() {
-        return Arrays.asList(GK, CB, RB, LB, CDM, CM, LCM, RCM, CAM, RW, ST, LW, RM, LM);
+//        return Arrays.asList(GK, CB, RB, LB, CDM, CM, LCM, RCM, CAM, RW, ST, LW, RM, LM);
+        return Arrays.asList(GARDIEN, DEFENSEUR, MILIEU, ATTAQUANT);
     }
-    static String getFinalScore(Long goalsFirstTeam , Long goalSecondTeam){
+
+    static String getFinalScore(Long goalsFirstTeam, Long goalSecondTeam) {
         return goalsFirstTeam + "-" + goalSecondTeam;
     }
 }

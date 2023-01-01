@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class NotificationPlayer extends Notification {
     @ManyToOne
-    private Player owner_match;
+    private Player player;
 
     @OneToOne
     private Match match;

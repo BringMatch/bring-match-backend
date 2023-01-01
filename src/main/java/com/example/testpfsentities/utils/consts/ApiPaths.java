@@ -14,6 +14,7 @@ public final class ApiPaths {
     public final static String GET_GOALS_SCORED = "/player/get-goals-scored";
     public final static String SEARCH_PLAYERS = "/search";
     public final static String GET_NOTIFICATIONS_PLAYER = "/notification-player";
+    public final static String GET_LAST_FIVE_NOTIFICATIONS_PLAYER = "/notification-player/5";
 
 
     public final static String ADMINS = "/admins";

@@ -40,7 +40,7 @@ public class NotificationPlayerServiceImpl implements NotificationPlayerService 
         notificationPlayer.setCreatedAt(Date.from(Instant.now()));
         notificationPlayer.setRead(false);
         notificationPlayer.setMessage(player.getUsername() + " has join the match which held at " + match.getDate());
-        notificationPlayer.setOwner_match(owner_match_player);
+        notificationPlayer.setPlayer(owner_match_player);
         notificationPlayer.setMatch(match);
         return notificationPlayerRepository.save(notificationPlayer);
     }
@@ -50,11 +50,18 @@ public class NotificationPlayerServiceImpl implements NotificationPlayerService 
         var player = userService.getPlayerConnected();
         List<NotificationPlayer> listNotificationPlayer = new ArrayList<>();
         for (NotificationPlayer notificationPlayer : notificationPlayerRepository.findAll()) {
-            if (notificationPlayer.getOwner_match().getId().equals(player.getId())) {
+            if (notificationPlayer.getPlayer().getId().equals(player.getId())) {
                 listNotificationPlayer.add(notificationPlayer);
             }
         }
         return notificationPlayerMapper.toDto(listNotificationPlayer);
+    }
+
+    @Override
+    public List<NotificationPlayerDto> getNotifications(int max) {
+        var player = userService.getPlayerConnected();
+        var list = notificationPlayerRepository.findNotificationPlayerByOwner_matchAnd(player);
+        return notificationPlayerMapper.toDto(list.subList(Math.max(list.size() - max, 0), list.size()));
     }
 
     @Override

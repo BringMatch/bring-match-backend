@@ -14,6 +14,7 @@ public interface NotificationPlayerService {
     NotificationPlayer create(Match match , Player player );
 
     List<NotificationPlayerDto> getNotifications();
+    List<NotificationPlayerDto> getNotifications(int max);
 
     void updateNotificationState(String notification_player_id);
 

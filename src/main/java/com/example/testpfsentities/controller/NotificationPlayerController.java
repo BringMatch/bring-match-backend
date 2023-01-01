@@ -20,4 +20,9 @@ public class NotificationPlayerController {
     public ResponseEntity<List<NotificationPlayerDto>> getNotificationsPlayer(){
         return ResponseEntity.ok().body(notificationPlayerService.getNotifications());
     }
+
+    @GetMapping(ApiPaths.GET_LAST_FIVE_NOTIFICATIONS_PLAYER)
+    public ResponseEntity<List<NotificationPlayerDto>> getLastFiveNotificationPlayer(){
+        return ResponseEntity.ok().body(notificationPlayerService.getNotifications(5));
+    }
 }

@@ -8,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationPlayerDto extends NotificationDto{
-    private PlayerDto owner_match;
+    private PlayerDto player;
     private MatchDto match;
 }
