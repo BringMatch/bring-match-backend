@@ -24,6 +24,8 @@ public interface TeamService {
 
     Team getTeamByName(String name);
 
+    Team getTeamById(String team_id);
+
     void assignTeamsPlayersToTeam(Team team, List<TeamPlayerDto> teamPlayerDtoList);
 
 

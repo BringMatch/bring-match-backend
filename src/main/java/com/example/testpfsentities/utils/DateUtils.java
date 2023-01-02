@@ -1,5 +1,7 @@
 package com.example.testpfsentities.utils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,6 +14,17 @@ public interface DateUtils {
     }
 
     static boolean compareTwoDates(Date firstDate, Date secondDate) {
-        return firstDate.getTime() <= secondDate.getTime();
+        return firstDate.toInstant().isBefore(secondDate.toInstant());
+    }
+
+    static boolean compareTwoDatesShouldEqual(Date firstDate, Date secondDate) {
+        return firstDate.getSeconds() == secondDate.getSeconds()
+                && firstDate.getMinutes() == secondDate.getMinutes()
+                && firstDate.getHours() == secondDate.getHours()
+                && firstDate.getDay() == secondDate.getDay()
+                && firstDate.getMonth() == secondDate.getMonth()
+                && firstDate.getYear() == secondDate.getYear()
+                ;
+//        return firstDate.getTime() == secondDate.getTime();
     }
 }

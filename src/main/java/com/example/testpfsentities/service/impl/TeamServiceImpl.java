@@ -55,6 +55,15 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public Team getTeamById(String team_id) {
+        Optional<Team> teamOptional = teamRepository.findById(team_id);
+        if (teamOptional.isEmpty()) {
+            throw new IllegalArgumentException("team not found !");
+        }
+        return teamOptional.get();
+    }
+
+    @Override
     public void assignTeamsPlayersToTeam(Team team, List<TeamPlayerDto> teamPlayerDtoList) {
         teamPlayerService.assignTeamsPlayersToTeam(team, teamPlayerDtoList);
     }

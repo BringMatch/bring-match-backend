@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class GlobalStatsDto {
     private String id;
-    private Long numGoalsTeamOne;
-    private Long numGoalsTeamTwo;
+//    private Long numGoalsTeamOne;
+//    private Long numGoalsTeamTwo;
     private MatchDto match;
 }

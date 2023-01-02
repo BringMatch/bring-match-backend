@@ -16,12 +16,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class MatchServiceImpl implements MatchService {
     private final GlobalStatsRepository globalStatsRepository;
     private final TeamMapper teamMapper;
@@ -84,18 +86,33 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public void evaluateMatch(EvaluationMatchDto evaluationMatchDto) {
+    public void evaluateMatch(EvaluationMatchDto evaluationMatchDto, String notification_player_id) {
 
         var globalStatsDto = evaluationMatchDto.getGlobalStatsDto();
+
         GlobalStats globalStats = new GlobalStats();
-        globalStats.setNumGoalsTeamOne(globalStatsDto.getNumGoalsTeamOne());
-        globalStats.setNumGoalsTeamTwo(globalStatsDto.getNumGoalsTeamTwo());
-        globalStats.setFinalScore(StringUtils.getFinalScore(globalStatsDto.getNumGoalsTeamOne(), globalStatsDto.getNumGoalsTeamTwo()));
+//        globalStats.setNumGoalsTeamOne(globalStatsDto.getNumGoalsTeamOne());
+//        globalStats.setNumGoalsTeamTwo(globalStatsDto.getNumGoalsTeamTwo());
+
         var match = findMatchById(globalStatsDto.getMatch().getId());
+        var teamOneDto = globalStatsDto.getMatch().getTeams().get(0);
+        //var teamTwoDto = globalStatsDto.getMatch().getTeams().get(1);
+
+        Team teamOne = teamService.getTeamById(teamOneDto.getId());
+        //Team teamTwo = teamService.getTeamByName(teamTwoDto.getName());
+        int teamOneGoals = teamOneDto.getNumberGoals();
+        //int teamTwoGoals = teamTwoDto.getNumberGoals();
+        globalStats.setFinalScore(StringUtils.getFinalScore(teamOneGoals, teamOneGoals));
+        teamOne.setNumberGoals(teamOneGoals);
+        //teamTwo.setNumberGoals(teamTwoGoals);
+
         globalStats.setMatch(match);
         globalStatsRepository.save(globalStats);
+        //matchRepository.save(match);
+
         var listPlayerStats = evaluationMatchDto.getPlayers();
         playerStatsService.updateGoalsScoredWhenMatchEnds(listPlayerStats);
+        notificationPlayerService.updateNotificationState(notification_player_id);
     }
 
     @Override
@@ -190,7 +207,7 @@ public class MatchServiceImpl implements MatchService {
     @Override
     public Match joinMatchAsPlayer(MatchDto matchDto) {
         Match match = findMatchById(matchDto.getId());
-        teamValidator.validateInsertionPlayerInTeam(match,matchDto);
+        teamValidator.validateInsertionPlayerInTeam(match, matchDto);
         var team = match.getTeams().stream()
                 .filter(teamed -> teamed.getName().equals(matchDto.getTeams().get(0).getName()))
                 .collect(Collectors.toList()).get(0);
@@ -372,6 +389,7 @@ public class MatchServiceImpl implements MatchService {
     @Override
     public void sendNotificationOfMatchEvaluation(Match match, Player player) {
         NotificationPlayer notificationPlayer = notificationPlayerService.create(match, player);
+        notificationPlayer.setMessage(StringUtils.getNotificationPlayerMessageForEvaluation(match));
         notificationPlayerService.save(notificationPlayer);
     }
 

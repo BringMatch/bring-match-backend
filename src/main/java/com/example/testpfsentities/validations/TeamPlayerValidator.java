@@ -25,7 +25,7 @@ public class TeamPlayerValidator {
         playerService.checksPlayerExist(player);
         checksPlayerExistInTheTeam(player, team);
         checksLengthTeamInferiorOrEqualToMaxLengthTeam(team);
-        checksPositionNameExistsInSystem(teamPlayerDto.getPosition());
+        checksPositionNameExistsInSystem(teamPlayerDto.getPosition().name());
         checksPositionPlayerDtoFree(teamPlayerDto, team);
     }
 
@@ -39,7 +39,7 @@ public class TeamPlayerValidator {
         var listTeamPlayers = team.getPlayersTeams();
         List<String> listPositionsInTeam = new ArrayList<>();
         for (TeamPlayer teamPlayer : listTeamPlayers) {
-            listPositionsInTeam.add(teamPlayer.getPosition());
+            listPositionsInTeam.add(teamPlayer.getPosition().name());
         }
         if (listPositionsInTeam.contains(teamPlayerDto.getPosition())) {
             throw new IllegalArgumentException("this position already exists in the team ! please choose another position !");

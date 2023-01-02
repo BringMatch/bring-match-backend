@@ -20,7 +20,7 @@ import java.util.List;
 public class PlayerStatsServiceImpl implements PlayerStatsService {
     private final PlayerStatsRepository playerStatsRepository;
     private final UserService userService;
-//    private final PlayerService playerService;
+    //    private final PlayerService playerService;
     private final PlayerStatsMapper playerStatsMapper;
     private final PlayerRepository playerRepository;
 
@@ -47,9 +47,17 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
     @Override
     public void updateGoalsScoredWhenMatchEnds(List<PlayerStatsDto> list) {
         for (PlayerStatsDto playerStatsDto : list) {
-            var player = playerRepository.findById(playerStatsDto.getPlayer().getId()).get();
-            var playerStat = playerStatsMapper.toBo(playerStatsDto);
-            playerStat.setPlayer(player);
+            var optionalPlayer = playerRepository.findById(playerStatsDto.getPlayer().getId());
+            if (optionalPlayer.isEmpty()) {
+                throw new IllegalArgumentException("Player not found !");
+            }
+            var player = optionalPlayer.get();
+            var playerStatOptional = playerStatsRepository.findByPlayer(player);
+            if (playerStatOptional.isEmpty()) {
+                throw new IllegalArgumentException("no player stat found !");
+            }
+            var playerStat = playerStatOptional.get();
+            playerStat.setNumGoals(playerStatsDto.getNumGoals());
             playerStatsRepository.save(playerStat);
         }
     }

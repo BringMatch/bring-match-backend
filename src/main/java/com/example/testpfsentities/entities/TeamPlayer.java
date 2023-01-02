@@ -1,5 +1,6 @@
 package com.example.testpfsentities.entities;
 
+import com.example.testpfsentities.entities.enums.PlayerPosition;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "players_teams")
-@JsonIgnoreProperties(value = {"team"},allowSetters = true)
+@JsonIgnoreProperties(value = {"team"}, allowSetters = true)
 public class TeamPlayer extends AbstractEntity {
 
 
@@ -30,6 +31,7 @@ public class TeamPlayer extends AbstractEntity {
     @Column(columnDefinition = "boolean default false")
     private boolean team_owner;
 
-    private String position;
+    @Enumerated(EnumType.STRING)
+    private PlayerPosition position;
 
 }

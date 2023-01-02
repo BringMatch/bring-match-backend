@@ -83,7 +83,7 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
         var listTeamPlayer = teamPlayerRepository.findAll();
         List<String> finalCurrentTeamPosition = new ArrayList<>();
         for (TeamPlayer teamPlayer : listTeamPlayer) {
-            finalCurrentTeamPosition.add(teamPlayer.getPosition());
+            finalCurrentTeamPosition.add(teamPlayer.getPosition().name());
         }
         return finalCurrentTeamPosition;
     }

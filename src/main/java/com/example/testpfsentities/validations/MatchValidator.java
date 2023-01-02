@@ -32,7 +32,7 @@ public class MatchValidator {
 
     public void validateCreation(MatchDto matchDto) {
         // first we must check if the player's position already exist in our string utils or not !
-        String position_given = matchDto.getTeams().get(0).getPlayersTeams().get(0).getPosition();
+        String position_given = matchDto.getTeams().get(0).getPlayersTeams().get(0).getPosition().name();
         if (!StringUtils.getListAvailablePositionsInATeam().contains(position_given)) {
             throw new IllegalArgumentException("position not existing in our system ! please try another one !");
         }

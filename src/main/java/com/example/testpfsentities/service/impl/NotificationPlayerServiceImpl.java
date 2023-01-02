@@ -34,13 +34,12 @@ public class NotificationPlayerServiceImpl implements NotificationPlayerService 
 
     @Override
     public NotificationPlayer create(Match match, Player player) {
-        var owner_match_player = playerService.returnOwnerMatchPlayer(match);
         NotificationPlayer notificationPlayer = new NotificationPlayer();
         notificationPlayer.setDelivered(true);
         notificationPlayer.setCreatedAt(Date.from(Instant.now()));
         notificationPlayer.setRead(false);
         notificationPlayer.setMessage(player.getUsername() + " has join the match which held at " + match.getDate());
-        notificationPlayer.setPlayer(owner_match_player);
+        notificationPlayer.setPlayer(player);
         notificationPlayer.setMatch(match);
         return notificationPlayerRepository.save(notificationPlayer);
     }
