@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ApiPaths.MATCHES)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8081")
 public class MatchController {
     private final MatchService matchService;
 
@@ -131,5 +132,6 @@ public class MatchController {
     public ResponseEntity<List<MatchDto>> getMatchesByPlayer() {
         return ResponseEntity.ok().body(matchService.getMatchesByPlayer());
     }
+
 
 }
