@@ -5,6 +5,7 @@ import com.example.testpfsentities.service.NotificationPlayerService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ApiPaths.NOTIFICATIONS)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8081")
 public class NotificationPlayerController {
     private final NotificationPlayerService notificationPlayerService;
     @GetMapping(ApiPaths.GET_NOTIFICATIONS_PLAYER)

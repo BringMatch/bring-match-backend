@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ApiPaths.GROUNDS)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8081")
 @Slf4j
 public class GroundController {
     private final GroundService groundService;

@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ApiPaths.GLOBAL_STATS)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8081")
 public class GlobalStatsController {
 
     private final GlobalStatsService globalStatsService;

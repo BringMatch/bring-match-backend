@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ApiPaths.MATCHES)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8081")
 public class MatchController {
     private final MatchService matchService;
 
@@ -102,7 +103,7 @@ public class MatchController {
         return ResponseEntity.ok().body(matchService.getMatchCode(match_id));
     }
 
-    @GetMapping(ApiPaths.GET_MATCHES + "/{match_id}")
+    @GetMapping(ApiPaths.GET_MATCHES + "{match_id}")
     public ResponseEntity<MatchDto> getMatchById(@PathVariable(name = "match_id") String match_id) {
         return ResponseEntity.ok().body(matchService.getMatchById(match_id));
     }
