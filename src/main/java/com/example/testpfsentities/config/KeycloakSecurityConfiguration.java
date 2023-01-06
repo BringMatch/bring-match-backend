@@ -36,7 +36,7 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
     };
 
     private static final String[] WHITE_LIST = {
-            "/h2-console/**", "/owners/save", "/players/save"
+            "/h2-console/**", "/owners/save", "/players/save","/file/**"
     };
 
     /**

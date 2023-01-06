@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ApiPaths.NOTIF_ADMINS)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8081")
 public class NotificationAdminController {
     private final NotificationAdminService notificationAdminService;
 

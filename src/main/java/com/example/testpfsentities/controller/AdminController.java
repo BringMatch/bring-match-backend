@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ApiPaths.ADMINS)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8081")
 @Slf4j
 public class AdminController {
     private final AdminService adminService;

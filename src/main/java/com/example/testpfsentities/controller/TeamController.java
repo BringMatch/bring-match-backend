@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ApiPaths.TEAMS)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8081")
 public class TeamController {
     private final TeamService teamService;
 
