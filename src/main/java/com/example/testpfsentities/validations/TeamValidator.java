@@ -51,12 +51,6 @@ public class TeamValidator {
         if (!StringUtils.getListAvailablePositionsInATeam().contains(position_given)) {
             throw new IllegalArgumentException("position not existing in our system ! please try another one !");
         }
-
-        if (matchDto.getMatchCode() == null) {
-            throw new IllegalArgumentException("please provide the code before joining the match !");
-        }
-
-        //playerService.checksPlayerExist(matchDto.getTeams().get(0).getPlayersTeams().get(0).getPlayer());
     }
 
     public void validateInsertionPlayerInTeam(Match match, MatchDto matchDto) {
