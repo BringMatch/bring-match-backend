@@ -24,7 +24,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class GlobalStatsServiceImpl implements GlobalStatsService {
-
     private final GlobalStatsRepository globalStatsRepository;
     private final GlobalStatsMapper globalStatsMapper;
     private final NotificationPlayerService notificationPlayerService;

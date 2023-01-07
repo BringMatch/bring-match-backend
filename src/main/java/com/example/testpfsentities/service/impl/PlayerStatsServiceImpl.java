@@ -2,7 +2,6 @@ package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.PlayerStatsDto;
 import com.example.testpfsentities.entities.*;
-import com.example.testpfsentities.mapper.PlayerStatsMapper;
 import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.repository.PlayerStatsRepository;
 import com.example.testpfsentities.service.PlayerStatsService;
@@ -19,7 +18,6 @@ import java.util.List;
 public class PlayerStatsServiceImpl implements PlayerStatsService {
     private final PlayerStatsRepository playerStatsRepository;
     private final UserService userService;
-    private final PlayerStatsMapper playerStatsMapper;
     private final PlayerRepository playerRepository;
 
     @Override
@@ -52,7 +50,7 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
             }
             var player = optionalPlayer.get();
             checkPlayerAlreadyJoiningTheMatch(player, match);
-            var playerStatOptional = playerStatsRepository.findByPlayer(player);
+            var playerStatOptional = playerStatsRepository.findByPlayer(player, match.getId());
             if (playerStatOptional.isEmpty()) {
                 throw new IllegalArgumentException("no player stat found !");
             }

@@ -8,7 +8,6 @@ import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.mapper.NotificationPlayerMapper;
 import com.example.testpfsentities.repository.NotificationPlayerRepository;
 import com.example.testpfsentities.service.NotificationPlayerService;
-import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ import java.util.Optional;
 public class NotificationPlayerServiceImpl implements NotificationPlayerService {
     private final NotificationPlayerRepository notificationPlayerRepository;
     private final NotificationPlayerMapper notificationPlayerMapper;
-    private final PlayerService playerService;
     private final UserService userService;
 
     @Override
