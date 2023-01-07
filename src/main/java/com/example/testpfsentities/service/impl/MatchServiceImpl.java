@@ -57,14 +57,14 @@ public class MatchServiceImpl implements MatchService {
         match.setMatchStatus(MatchStatus.NOT_PLAYED);
         match.getTeams().get(0).setLength(matchDto.getNumberTeamPlayers() - 1);
         match.getTeams().get(0).setMatchResult(MatchResult.DRAW);
-        Match match1 = matchRepository.save(match);
+        Match matchSaved = matchRepository.save(match);
 
-        teamService.assignPlayersWithTeams(match1.getTeams(), matchDto.getTeams().get(0));
-        playerStatsService.savePlayerStats();
+        teamService.assignPlayersWithTeams(matchSaved.getTeams(), matchDto.getTeams().get(0));
+        playerStatsService.savePlayerStats(matchSaved.getId());
 
         NotificationOwner notificationOwner = notificationOwnerService.create(reservation, ground);
         notificationOwnerService.save(notificationOwner);
-        sendMailToOwnerMatchIfMatchIsPrivate(match1);
+        sendMailToOwnerMatchIfMatchIsPrivate(matchSaved);
     }
 
     void sendMailToOwnerMatchIfMatchIsPrivate(Match match) {
@@ -111,7 +111,7 @@ public class MatchServiceImpl implements MatchService {
         //matchRepository.save(match);
 
         var listPlayerStats = evaluationMatchDto.getPlayers();
-        playerStatsService.updateGoalsScoredWhenMatchEnds(listPlayerStats);
+        playerStatsService.updateGoalsScoredWhenMatchEnds(listPlayerStats, match.getId());
         notificationPlayerService.updateNotificationState(notification_player_id);
     }
 
@@ -196,7 +196,7 @@ public class MatchServiceImpl implements MatchService {
 
         var playerConnected = userService.getPlayerConnected();
         notificationPlayerService.create(match, playerConnected);
-        playerStatsService.savePlayerStats();
+        playerStatsService.savePlayerStats(matchSaved.getId());
 
         return matchSaved;
 
@@ -221,7 +221,7 @@ public class MatchServiceImpl implements MatchService {
         //TeamDto teamDto = matchDto.getTeams().get(0);
         //teamService.assignPlayersWithTeams(match.getTeams(), teamDto);
         var matchSaved = matchRepository.save(match);
-        playerStatsService.savePlayerStats();
+        playerStatsService.savePlayerStats(matchSaved.getId());
         var playerConnected = userService.getPlayerConnected();
         notificationPlayerService.create(matchSaved, playerConnected);
         return matchSaved;

@@ -5,7 +5,6 @@ import com.example.testpfsentities.entities.*;
 import com.example.testpfsentities.mapper.PlayerStatsMapper;
 import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.repository.PlayerStatsRepository;
-import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.service.PlayerStatsService;
 import com.example.testpfsentities.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +24,12 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
     private final PlayerRepository playerRepository;
 
     @Override
-    public void savePlayerStats() {
+    public void savePlayerStats(String match_id) {
         var player = userService.getPlayerConnected();
         PlayerStats playerStats = new PlayerStats();
         playerStats.setNumGoals(0);
         playerStats.setPlayer(player);
+        playerStats.setMatch_id(match_id);
         playerStatsRepository.save(playerStats);
     }
 
@@ -45,14 +45,14 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
     }
 
     @Override
-    public void updateGoalsScoredWhenMatchEnds(List<PlayerStatsDto> list) {
+    public void updateGoalsScoredWhenMatchEnds(List<PlayerStatsDto> list, String match_id) {
         for (PlayerStatsDto playerStatsDto : list) {
             var optionalPlayer = playerRepository.findById(playerStatsDto.getPlayer().getId());
             if (optionalPlayer.isEmpty()) {
                 throw new IllegalArgumentException("Player not found !");
             }
             var player = optionalPlayer.get();
-            var playerStatOptional = playerStatsRepository.findByPlayer(player);
+            var playerStatOptional = playerStatsRepository.findByPlayerAAndMatch_id(player, match_id);
             if (playerStatOptional.isEmpty()) {
                 throw new IllegalArgumentException("no player stat found !");
             }

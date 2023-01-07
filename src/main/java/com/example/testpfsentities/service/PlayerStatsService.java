@@ -8,10 +8,10 @@ import java.util.List;
 
 @Service
 public interface PlayerStatsService {
-    void savePlayerStats();
+    void savePlayerStats(String match_id);
 
     Integer getGoalsScoredByPlayer(Player player);
 
-    void updateGoalsScoredWhenMatchEnds(List<PlayerStatsDto> list);
+    void updateGoalsScoredWhenMatchEnds(List<PlayerStatsDto> list , String match_id);
 
 }
