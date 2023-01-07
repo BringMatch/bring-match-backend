@@ -60,7 +60,7 @@ public class MatchServiceImpl implements MatchService {
         Match match1 = matchRepository.save(match);
 
         teamService.assignPlayersWithTeams(match1.getTeams(), matchDto.getTeams().get(0));
-        playerStatsService.savePlayerStats();
+        playerStatsService.savePlayerStats(match1.getId());
 
         NotificationOwner notificationOwner = notificationOwnerService.create(reservation, ground);
         notificationOwnerService.save(notificationOwner);
@@ -111,7 +111,7 @@ public class MatchServiceImpl implements MatchService {
         //matchRepository.save(match);
 
         var listPlayerStats = evaluationMatchDto.getPlayers();
-        playerStatsService.updateGoalsScoredWhenMatchEnds(listPlayerStats);
+        playerStatsService.updateGoalsScoredWhenMatchEnds(listPlayerStats, match);
         notificationPlayerService.updateNotificationState(notification_player_id);
     }
 
@@ -196,7 +196,7 @@ public class MatchServiceImpl implements MatchService {
 
         var playerConnected = userService.getPlayerConnected();
         notificationPlayerService.create(match, playerConnected);
-        playerStatsService.savePlayerStats();
+        playerStatsService.savePlayerStats(matchSaved.getId());
 
         return matchSaved;
 
@@ -221,7 +221,7 @@ public class MatchServiceImpl implements MatchService {
         //TeamDto teamDto = matchDto.getTeams().get(0);
         //teamService.assignPlayersWithTeams(match.getTeams(), teamDto);
         var matchSaved = matchRepository.save(match);
-        playerStatsService.savePlayerStats();
+        playerStatsService.savePlayerStats(matchSaved.getId());
         var playerConnected = userService.getPlayerConnected();
         notificationPlayerService.create(matchSaved, playerConnected);
         return matchSaved;

@@ -17,6 +17,7 @@ import com.example.testpfsentities.service.UserService;
 import com.example.testpfsentities.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.juli.logging.Log;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -69,10 +70,11 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<String> getFreePositions(String team_name) {
-        getTeamByName(team_name);
+    public List<String> getFreePositions(String team_id) {
+        var currentTeam = getTeamById(team_id);
+        log.info(currentTeam.getId());
         var listAllPositions = StringUtils.getListAvailablePositionsInATeam();
-        var listCurrentTeamPositions = teamPlayerService.getCurrentTeamPositions();
+        var listCurrentTeamPositions = teamPlayerService.getCurrentTeamPositions(currentTeam);
         List<String> freePositionsList = new ArrayList<>();
         for (String current : listCurrentTeamPositions) {
             for (String all : listAllPositions) {
@@ -137,7 +139,7 @@ public class TeamServiceImpl implements TeamService {
         Team team = teams.stream()
                 .filter(teamElement -> teamElement.getName().equals(teamDto.getName()))
                 .collect(Collectors.toList()).get(0);
-        log.info("this the team name of second team {}" , team.getName());
+        log.info("this the team name of second team {}", team.getName());
 
         boolean updateMatchOwner = teams.size() == 1;
         boolean updateTeamOwner = team.getPlayersTeams().size() == 1;
@@ -163,7 +165,7 @@ public class TeamServiceImpl implements TeamService {
                 .filter(teamElement -> teamElement.getName().equals(teamDto.getName()))
                 .collect(Collectors.toList()).get(0);
 
-        log.info("this the team name of second team {}" , team.getName());
+        log.info("this the team name of second team {}", team.getName());
 
         boolean updateMatchOwner = teams.size() == 1;
         boolean updateTeamOwner = team.getPlayersTeams().size() == 1;

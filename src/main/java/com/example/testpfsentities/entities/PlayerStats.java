@@ -16,4 +16,6 @@ public class PlayerStats extends AbstractEntity {
     @OneToOne
     private Player player;
 
+    private String match_id;
+
 }

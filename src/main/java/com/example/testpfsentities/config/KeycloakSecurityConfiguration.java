@@ -23,16 +23,19 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
             ApiPaths.GET_NUMBER_OWNER_GROUNDS_CLOSED,
             ApiPaths.GET_NUMBER_OWNER_GROUNDS_OPEN,
             ApiPaths.GET_NUMBER_OWNER_GROUNDS,
-            ApiPaths.DELETE_GROUND};
+            ApiPaths.DELETE_GROUND,
+            "/teams/**"
+    };
 
     private static final String[] APIS_HAVING_PLAYER_ROLE = {
             "/players/**",
             "/matches/create-match",
-            "/matches/join-match-team"
+            "/matches/join-match-team",
+            "/teams/free-positions/**"
     };
 
     private static final String[] APIS_HAVING_ADMIN_ROLE = {
-            "/owners/**",
+            "/owners/**","/teams/**"
     };
 
     private static final String[] WHITE_LIST = {

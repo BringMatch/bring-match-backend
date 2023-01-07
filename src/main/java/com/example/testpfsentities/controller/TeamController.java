@@ -22,9 +22,9 @@ public class TeamController {
         teamService.createTeam(teamDto);
     }
 
-    @GetMapping(ApiPaths.GET_FREE_POSITIONS_IN_A_TEAM + "/{team_name}")
-    public ResponseEntity<List<String>> getFreePositions(@PathVariable(name = "team_name") String team_name) {
-        return ResponseEntity.ok().body(teamService.getFreePositions(team_name));
+    @GetMapping(ApiPaths.GET_FREE_POSITIONS_IN_A_TEAM + "/{team_id}")
+    public ResponseEntity<List<String>> getFreePositions(@PathVariable(name = "team_id") String team_id) {
+        return ResponseEntity.ok().body(teamService.getFreePositions(team_id));
     }
     @GetMapping(ApiPaths.GET_LENGTH_REMAINING + "/{team_name}")
     public ResponseEntity<Integer> getLengthRemaining(@PathVariable(name = "team_name") String team_name){

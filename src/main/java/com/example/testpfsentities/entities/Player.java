@@ -16,7 +16,7 @@ public class Player extends User {
     //    @ManyToMany(mappedBy = "")
 //    private List<Team> teams;
     @OneToMany(mappedBy = "player")
-    Set<TeamPlayer> playersTeams;
+    List<TeamPlayer> playersTeams;
 
 
     @OneToOne(mappedBy = "player")

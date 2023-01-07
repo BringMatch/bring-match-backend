@@ -29,7 +29,7 @@ public interface TeamPlayerService {
 
     void assignTeamsPlayersToTeam(Team team, List<TeamPlayerDto> teamPlayerDtoList);
 
-    List<String> getCurrentTeamPositions();
+    List<String> getCurrentTeamPositions(Team team);
 
     TeamPlayer save(Team team , TeamPlayerDto teamPlayer);
 

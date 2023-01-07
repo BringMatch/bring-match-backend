@@ -5,7 +5,6 @@ import com.example.testpfsentities.entities.*;
 import com.example.testpfsentities.mapper.PlayerStatsMapper;
 import com.example.testpfsentities.repository.PlayerRepository;
 import com.example.testpfsentities.repository.PlayerStatsRepository;
-import com.example.testpfsentities.service.PlayerService;
 import com.example.testpfsentities.service.PlayerStatsService;
 import com.example.testpfsentities.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +19,16 @@ import java.util.List;
 public class PlayerStatsServiceImpl implements PlayerStatsService {
     private final PlayerStatsRepository playerStatsRepository;
     private final UserService userService;
-    //    private final PlayerService playerService;
     private final PlayerStatsMapper playerStatsMapper;
     private final PlayerRepository playerRepository;
 
     @Override
-    public void savePlayerStats() {
+    public void savePlayerStats(String match_id) {
         var player = userService.getPlayerConnected();
         PlayerStats playerStats = new PlayerStats();
         playerStats.setNumGoals(0);
         playerStats.setPlayer(player);
+        playerStats.setMatch_id(match_id);
         playerStatsRepository.save(playerStats);
     }
 
@@ -45,13 +44,14 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
     }
 
     @Override
-    public void updateGoalsScoredWhenMatchEnds(List<PlayerStatsDto> list) {
+    public void updateGoalsScoredWhenMatchEnds(List<PlayerStatsDto> list, Match match) {
         for (PlayerStatsDto playerStatsDto : list) {
             var optionalPlayer = playerRepository.findById(playerStatsDto.getPlayer().getId());
             if (optionalPlayer.isEmpty()) {
                 throw new IllegalArgumentException("Player not found !");
             }
             var player = optionalPlayer.get();
+            checkPlayerAlreadyJoiningTheMatch(player, match);
             var playerStatOptional = playerStatsRepository.findByPlayer(player);
             if (playerStatOptional.isEmpty()) {
                 throw new IllegalArgumentException("no player stat found !");
@@ -59,6 +59,12 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
             var playerStat = playerStatOptional.get();
             playerStat.setNumGoals(playerStatsDto.getNumGoals());
             playerStatsRepository.save(playerStat);
+        }
+    }
+
+    private void checkPlayerAlreadyJoiningTheMatch(Player player, Match match) {
+        if (player.getPlayersTeams().get(0).getTeam().getMatch().getId().equals(match.getId())) {
+            throw new IllegalArgumentException("match_id_not_found");
         }
     }
 

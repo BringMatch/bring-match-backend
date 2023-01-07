@@ -79,8 +79,9 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
     }
 
     @Override
-    public List<String> getCurrentTeamPositions() {
-        var listTeamPlayer = teamPlayerRepository.findAll();
+    public List<String> getCurrentTeamPositions(Team team) {
+        var listTeamPlayer = teamPlayerRepository.findByTeam(team);
+
         List<String> finalCurrentTeamPosition = new ArrayList<>();
         for (TeamPlayer teamPlayer : listTeamPlayer) {
             finalCurrentTeamPosition.add(teamPlayer.getPosition().name());
