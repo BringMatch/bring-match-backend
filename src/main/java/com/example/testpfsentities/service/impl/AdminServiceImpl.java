@@ -37,11 +37,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void initAdmin() {
 //        Admin admin = new Admin();
-//        admin.setEmail("yessinejawa@gmail.com");
+//        admin.setEmail("bardichefatiha@gmail.com");
 //        admin.setUpdatedAt(Date.from(Instant.now()));
-//        admin.setPassword("yessine");
-//        admin.setFirstName("ajaoua");
-//        admin.setLastName("ajaqsdfoua");
+//        admin.setPassword("admin");
+//        admin.setFirstName("haha");
+//        admin.setLastName("haha");
 //        admin.setPhoneNumber("45454");
 //        admin.setUsername("yessine");
 //        admin.setRole(Role.ADMIN);
