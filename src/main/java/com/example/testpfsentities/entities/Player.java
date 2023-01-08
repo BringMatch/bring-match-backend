@@ -18,8 +18,8 @@ public class Player extends User {
     @OneToMany(mappedBy = "player", orphanRemoval = true)
     List<TeamPlayer> playersTeams;
 
-    @OneToOne
-    private PlayerStats playerStat;
+    @OneToMany(mappedBy = "player")
+    private List<PlayerStats> playerStat;
 
     @OneToMany(mappedBy = "player")
     private List<NotificationPlayer> notificationPlayer;

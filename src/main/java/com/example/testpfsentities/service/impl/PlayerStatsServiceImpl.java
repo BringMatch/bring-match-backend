@@ -7,6 +7,7 @@ import com.example.testpfsentities.repository.PlayerStatsRepository;
 import com.example.testpfsentities.service.PlayerStatsService;
 import com.example.testpfsentities.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,6 +16,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class PlayerStatsServiceImpl implements PlayerStatsService {
     private final PlayerStatsRepository playerStatsRepository;
     private final UserService userService;
@@ -33,9 +35,12 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
     @Override
     public Integer getGoalsScoredByPlayer(Player player) {
         var list = playerStatsRepository.findAll();
+        log.info(String.valueOf(list.size()));
         for (PlayerStats playerStats : list) {
-            if (playerStats.getPlayer().getId().equals(player.getId())) {
-                return playerStats.getNumGoals();
+            if (playerStats.getPlayer().getId() != null) {
+                if (playerStats.getPlayer().getId().equals(player.getId())) {
+                    return playerStats.getNumGoals();
+                }
             }
         }
         return 0;
