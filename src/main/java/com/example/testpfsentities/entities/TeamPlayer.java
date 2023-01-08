@@ -19,7 +19,7 @@ public class TeamPlayer extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "player_id")
     Player player;
-    @ManyToOne(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "team_id")
     Team team;
 

@@ -7,10 +7,13 @@ import com.example.testpfsentities.utils.consts.ApiPaths;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Data
@@ -24,7 +27,8 @@ public class OwnerController {
     private final UserService userService;
 
     @PostMapping(ApiPaths.SAVE_OWNER)
-    public void save(@RequestBody @Validated OwnerDto ownerDto) {
+    public void save(@RequestParam("json") OwnerDto ownerDto
+    ) throws IOException {
         ownerService.save(ownerDto);
     }
 
@@ -34,12 +38,12 @@ public class OwnerController {
     }
 
     @GetMapping(ApiPaths.OWNER_CONNECTED)
-    public ResponseEntity<OwnerDto> getOwnerConnected(){
+    public ResponseEntity<OwnerDto> getOwnerConnected() {
         return ResponseEntity.ok().body(userService.getOwnerDtoConnected());
     }
 
     @DeleteMapping(ApiPaths.DELETE_OWNER + "/{owner_id}")
-    public void deleteOwner(@PathVariable(name = "owner_id") String owner_id){
+    public void deleteOwner(@PathVariable(name = "owner_id") String owner_id) {
         ownerService.delete(owner_id);
     }
 

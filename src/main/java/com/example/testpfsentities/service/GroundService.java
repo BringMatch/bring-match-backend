@@ -13,7 +13,7 @@ public interface GroundService {
 
     void updateGround(GroundDto groundDto);
 
-    void saveGround(GroundDto groundDto);
+    Ground saveGround(GroundDto groundDto);
     List<GroundDto>  getAllGroundsByTownAndRegion(GroundSearchDto groundSearchDto);
 
     List<GroundDto> getOwnerGrounds();

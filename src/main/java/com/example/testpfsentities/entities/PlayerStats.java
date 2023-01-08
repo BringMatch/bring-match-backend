@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class PlayerStats extends AbstractEntity {
 
     private int numGoals;
-    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "playerStat")
     private Player player;
     private String match_id;
 

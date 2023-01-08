@@ -43,15 +43,9 @@ public class NotificationPlayerServiceImpl implements NotificationPlayerService 
     }
 
     @Override
-    public List<NotificationPlayerDto> getNotifications() {
+    public List<NotificationPlayer> getNotifications() {
         var player = userService.getPlayerConnected();
-        List<NotificationPlayer> listNotificationPlayer = new ArrayList<>();
-        for (NotificationPlayer notificationPlayer : notificationPlayerRepository.findAll()) {
-            if (notificationPlayer.getPlayer().getId().equals(player.getId())) {
-                listNotificationPlayer.add(notificationPlayer);
-            }
-        }
-        return notificationPlayerMapper.toDto(listNotificationPlayer);
+        return notificationPlayerRepository.findByPlayer(player);
     }
 
     @Override

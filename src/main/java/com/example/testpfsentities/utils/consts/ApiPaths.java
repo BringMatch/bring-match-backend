@@ -87,4 +87,9 @@ public final class ApiPaths {
     public static final String GLOBAL_STATS = "/globalStats";
     public static final String SAVE_GLOBAL_STATS = "/save";
     public static final String GET_GLOBAL_STATS = "/get-global-stats";
+
+
+    public static final String PLAYER_STATS = "/player-stats";
+
+    public static final String GET_PLAYER_STATS = SLASH;
 }

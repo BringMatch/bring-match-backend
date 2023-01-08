@@ -13,4 +13,7 @@ import java.util.List;
 public interface NotificationPlayerRepository extends JpaRepository<NotificationPlayer,String> {
     @Query("SELECT c FROM NotificationPlayer c WHERE c.player=:player ORDER BY c.createdAt DESC")
     List<NotificationPlayer> findNotificationPlayerByOwner_matchAnd(@Param("player") Player player);
+
+
+    List<NotificationPlayer> findByPlayer(Player player);
 }

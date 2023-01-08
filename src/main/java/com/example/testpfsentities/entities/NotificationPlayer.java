@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationPlayer extends Notification {
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Player player;
 
     @OneToOne

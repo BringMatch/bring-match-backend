@@ -29,6 +29,7 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
 
     private static final String[] APIS_HAVING_PLAYER_ROLE = {
             "/players/**",
+            "/players/player/**",
             "/matches/create-match",
             "/matches/join-match-team",
             "/teams/free-positions/**"

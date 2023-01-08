@@ -17,8 +17,7 @@ import java.util.List;
 @JsonIgnoreProperties(value = {"matches"}, allowSetters = true)
 public class Ground extends AbstractEntity {
 
-    @OneToMany(mappedBy = "ground")
-    List<Image> images;
+    private String image;
     @OneToMany(mappedBy = "ground")
     private List<Match> matches;
 

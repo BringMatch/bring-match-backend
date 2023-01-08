@@ -6,14 +6,16 @@ import com.example.testpfsentities.service.OwnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 
+import java.io.IOException;
+
 @RequiredArgsConstructor
 public class SendUserRegisteredEmailHandler {
     private final OwnerService ownerService;
     private final OwnerMapper ownerMapper;
 
     @EventListener
-    public void handleNewUserEvent(final NewUserEvent newUserEvent) {
-        ownerService.save(ownerMapper.toDto(newUserEvent.getUser()));
+    public void handleNewUserEvent(final NewUserEvent newUserEvent) throws IOException {
+        //ownerService.save(ownerMapper.toDto(newUserEvent.getUser()));
     }
 
 }

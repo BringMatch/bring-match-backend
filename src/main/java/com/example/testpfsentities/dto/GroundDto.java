@@ -1,6 +1,7 @@
 package com.example.testpfsentities.dto;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -16,4 +17,5 @@ public class GroundDto {
     private String region;
     private boolean open;
     private boolean free;
+    private MultipartFile multipartFile;
 }

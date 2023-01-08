@@ -13,7 +13,7 @@ public interface NotificationPlayerService {
     void save(NotificationPlayer notificationPlayer);
     NotificationPlayer create(Match match , Player player );
 
-    List<NotificationPlayerDto> getNotifications();
+    List<NotificationPlayer> getNotifications();
     List<NotificationPlayerDto> getNotifications(int max);
 
     void updateNotificationState(String notification_player_id);

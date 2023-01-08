@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties(value = {"playersTeams"},allowGetters = true)
+@JsonIgnoreProperties(value = {"playersTeams"}, allowGetters = true)
 public class Team extends AbstractEntity {
 //    @ManyToMany(cascade = CascadeType.ALL)
 //    @JoinTable(name = "players_teams",
@@ -25,10 +25,10 @@ public class Team extends AbstractEntity {
 //    )
 //    private List<Player> players;
 
-    @OneToMany(mappedBy = "team",cascade = CascadeType.ALL , fetch = FetchType.LAZY,orphanRemoval = true)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     List<TeamPlayer> playersTeams;
 
-//    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    //    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 //    @JoinTable(name = "match_teams", joinColumns = @JoinColumn(name = "team_id"), inverseJoinColumns = @JoinColumn(name = "match_id"))
 //    @ManyToOne
 //    private Match match;

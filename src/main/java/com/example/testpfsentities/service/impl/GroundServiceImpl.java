@@ -59,14 +59,14 @@ public class GroundServiceImpl implements GroundService {
     }
 
     @Override
-    public void saveGround(GroundDto groundDto) {
+    public Ground saveGround(GroundDto groundDto) {
         groundValidator.validateCreation(groundDto);
         var owner = userService.getOwnerBoConnected();
         if (owner != null){
             var ground = groundRepository.save(groundMapper.toBo(groundDto));
             ground.setOpen(true);
             ground.setOwner(owner);
-            groundRepository.save(ground);
+            return groundRepository.save(ground);
         } else{
             throw new IllegalArgumentException("owner not existing !");
         }

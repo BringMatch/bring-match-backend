@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface PlayerStatsRepository extends JpaRepository<PlayerStats, String> {
-    @Query("SELECT c FROM PlayerStats c WHERE c.player=:player AND c.match_id=:match_id")
+    @Query("SELECT c FROM PlayerStats c WHERE  c.match_id=:match_id AND c.player=:player")
     Optional<PlayerStats> findByPlayerAndMatch_id(@Param("player") Player player, @Param("match_id") String match_id);
 }

@@ -1,6 +1,7 @@
 package com.example.testpfsentities.controller;
 
 import com.example.testpfsentities.dto.NotificationPlayerDto;
+import com.example.testpfsentities.entities.NotificationPlayer;
 import com.example.testpfsentities.service.NotificationPlayerService;
 import com.example.testpfsentities.utils.consts.ApiPaths;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.List;
 public class NotificationPlayerController {
     private final NotificationPlayerService notificationPlayerService;
     @GetMapping(ApiPaths.GET_NOTIFICATIONS_PLAYER)
-    public ResponseEntity<List<NotificationPlayerDto>> getNotificationsPlayer(){
+    public ResponseEntity<List<NotificationPlayer>> getNotificationsPlayer(){
         return ResponseEntity.ok().body(notificationPlayerService.getNotifications());
     }
 
