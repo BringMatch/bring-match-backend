@@ -50,7 +50,7 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
             }
             var player = optionalPlayer.get();
             checkPlayerAlreadyJoiningTheMatch(player, match);
-            var playerStatOptional = playerStatsRepository.findByPlayer(player, match.getId());
+            var playerStatOptional = playerStatsRepository.findByPlayerAndMatch_id(player, match.getId());
             if (playerStatOptional.isEmpty()) {
                 throw new IllegalArgumentException("no player stat found !");
             }
@@ -61,9 +61,9 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
     }
 
     private void checkPlayerAlreadyJoiningTheMatch(Player player, Match match) {
-        if (player.getPlayersTeams().get(0).getTeam().getMatch().getId().equals(match.getId())) {
-            throw new IllegalArgumentException("match_id_not_found");
-        }
+//        if (player.getPlayersTeams().get(0).getTeam().getMatch().getId().equals(match.getId())) {
+//            throw new IllegalArgumentException("match_id_not_found");
+//        }
     }
 
 

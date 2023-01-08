@@ -60,7 +60,7 @@ public class MatchServiceImpl implements MatchService {
         Match match1 = matchRepository.save(match);
 
         teamService.assignPlayersWithTeams(match1.getTeams(), matchDto.getTeams().get(0));
-        playerStatsService.savePlayerStats(match1.getId());
+        //playerStatsService.savePlayerStats(match1.getId());
 
         NotificationOwner notificationOwner = notificationOwnerService.create(reservation, ground);
         notificationOwnerService.save(notificationOwner);
@@ -278,9 +278,9 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public MatchDto getMatchById(String match_id) {
+    public Match getMatchById(String match_id) {
         var match = findMatchById(match_id);
-        return matchMapper.toDto(match);
+        return match;
     }
 
     @Override

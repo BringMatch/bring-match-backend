@@ -11,15 +11,14 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@JsonIgnoreProperties(value = {"playersTeams","playerStat","notificationPlayer"},allowSetters = true)
+@JsonIgnoreProperties(value = {"playersTeams", "playerStat", "notificationPlayer"}, allowSetters = true)
 public class Player extends User {
     //    @ManyToMany(mappedBy = "")
 //    private List<Team> teams;
-    @OneToMany(mappedBy = "player")
-    List<TeamPlayer> playersTeams;
+//    @OneToMany(mappedBy = "player", orphanRemoval = true)
+//    List<TeamPlayer> playersTeams;
 
-
-    @OneToOne(mappedBy = "player")
+    @OneToOne(mappedBy = "player", orphanRemoval = true)
     private PlayerStats playerStat;
 
     @OneToMany(mappedBy = "player")

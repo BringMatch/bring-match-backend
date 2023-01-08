@@ -16,12 +16,10 @@ import javax.persistence.*;
 @JsonIgnoreProperties(value = {"team"}, allowSetters = true)
 public class TeamPlayer extends AbstractEntity {
 
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "player_id")
     Player player;
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     Team team;
 
