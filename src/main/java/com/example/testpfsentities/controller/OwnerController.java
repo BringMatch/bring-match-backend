@@ -27,7 +27,7 @@ public class OwnerController {
     private final UserService userService;
 
     @PostMapping(ApiPaths.SAVE_OWNER)
-    public void save(@RequestParam("json") OwnerDto ownerDto
+    public void save(@RequestBody OwnerDto ownerDto
     ) throws IOException {
         ownerService.save(ownerDto);
     }

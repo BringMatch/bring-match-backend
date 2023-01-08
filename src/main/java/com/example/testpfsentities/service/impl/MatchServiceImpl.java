@@ -190,11 +190,12 @@ public class MatchServiceImpl implements MatchService {
         listTeams.add(newTeam);
         match.setTeams(listTeams);
         Match matchSaved = matchRepository.save(match);
+        log.info(newTeam.getPlayersTeams().get(0).getId());
 
+        var playerConnected = userService.getPlayerConnected();
         TeamDto teamDto = matchDto.getTeams().get(0);
         teamService.assignPlayersWithTeamsWhenJoinAsTeam(matchSaved.getTeams(), teamDto);
 
-        var playerConnected = userService.getPlayerConnected();
         notificationPlayerService.create(match, playerConnected);
         playerStatsService.savePlayerStats(matchSaved.getId());
 
@@ -377,7 +378,6 @@ public class MatchServiceImpl implements MatchService {
         var player = userService.getPlayerConnected();
         String player_id = player.getId();
         var matches = matchRepository.findAllByMatchStatus_Played();
-        List<Match> finalFilteredListMatches = new ArrayList<>();
         var matchesDto = matchMapper.toDto(matches);
         for (MatchDto matchDto : matchesDto) {
             Match match = findMatchById(matchDto.getId());

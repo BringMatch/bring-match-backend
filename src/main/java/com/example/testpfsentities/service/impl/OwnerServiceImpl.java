@@ -39,11 +39,11 @@ public class OwnerServiceImpl implements OwnerService {
 
 //        String url_image = uploadImageService.getUrlImage(owner.getGrounds().get(0).get);
         String url_image = "kjh";
-        Ground ground = groundMapper.toBo(ownerDto.getGrounds().get(0));
-        ground.setImage(url_image);
-        groundRepository.save(ground);
+//        Ground ground = groundMapper.toBo(ownerDto.getGrounds().get(0));
+//        ground.setImage(url_image);
+//        groundRepository.save(ground);
         ownerRepository.save(owner);
-        owner.setGrounds(List.of(ground));
+//        owner.setGrounds(List.of(ground));
         Admin admin = adminService.save(owner);
         // we will create him in keycloak !
         userService.create(ownerDto);

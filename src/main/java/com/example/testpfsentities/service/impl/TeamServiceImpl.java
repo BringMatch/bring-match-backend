@@ -164,9 +164,6 @@ public class TeamServiceImpl implements TeamService {
         Team team = teams.stream()
                 .filter(teamElement -> teamElement.getName().equals(teamDto.getName()))
                 .collect(Collectors.toList()).get(0);
-
-        log.info("this the team name of second team {}", team.getName());
-
         boolean updateMatchOwner = teams.size() == 1;
         boolean updateTeamOwner = team.getPlayersTeams().size() == 1;
 

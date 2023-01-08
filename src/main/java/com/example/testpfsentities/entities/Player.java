@@ -18,10 +18,10 @@ public class Player extends User {
     @OneToMany(mappedBy = "player", orphanRemoval = true)
     List<TeamPlayer> playersTeams;
 
-    @OneToMany(mappedBy = "player")
+    @OneToMany(mappedBy = "player", orphanRemoval = true)
     private List<PlayerStats> playerStat;
 
-    @OneToMany(mappedBy = "player")
+    @OneToMany(mappedBy = "player", orphanRemoval = true)
     private List<NotificationPlayer> notificationPlayer;
 
     private String town;

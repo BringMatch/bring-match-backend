@@ -64,7 +64,6 @@ public class MatchValidator {
         List<Match> matchesList = ground.getMatches();
         matchesList.forEach(match -> {
             var newDateAfterDuration = DateUtils.returnDateAfterDuration(match.getDate(), match.getDuration());
-            log.info("this is the new date {}", newDateAfterDuration);
             if (matchDto.getDate().getTime() < newDateAfterDuration.getTime()
                     &&
                     matchDto.getDate().getTime() >= match.getDate().getTime()
