@@ -49,8 +49,8 @@ public class TeamPlayerServiceImpl implements TeamPlayerService {
         teamPlayer.setPlayer(player);
         teamPlayer.setTeam(team);
 //        playerStatsService.savePlayerStats();
-        return teamPlayer;
-//        return teamPlayerRepository.save(teamPlayer);
+//        return teamPlayer;
+        return teamPlayerRepository.save(teamPlayer);
     }
 
     @Override

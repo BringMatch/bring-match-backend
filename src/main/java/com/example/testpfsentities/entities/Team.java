@@ -25,7 +25,7 @@ public class Team extends AbstractEntity {
 //    )
 //    private List<Player> players;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team",cascade = CascadeType.ALL , fetch = FetchType.LAZY,orphanRemoval = true)
     List<TeamPlayer> playersTeams;
 
 //    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
