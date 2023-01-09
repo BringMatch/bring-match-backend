@@ -73,6 +73,7 @@ public class AdminServiceImpl implements AdminService {
         }
         Owner owner = ownerOptional.get();
         owner.setActive(true);
+        owner.setPending(false);
         ownerRepository.save(owner);
 
         userService.enableUser(owner.getId());
@@ -103,6 +104,7 @@ public class AdminServiceImpl implements AdminService {
         }
         Owner owner = ownerOptional.get();
         owner.setActive(false);
+        owner.setPending(false);
         ownerRepository.save(owner);
 
         userService.disableUser(owner.getId());

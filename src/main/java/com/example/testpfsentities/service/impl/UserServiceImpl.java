@@ -256,7 +256,7 @@ public class UserServiceImpl implements UserService {
         }
         Optional<Player> optionPlayer = playerRepository.findByEmail(email.get());
         if (optionPlayer.isEmpty()) {
-            throw new IllegalArgumentException("admin not found !");
+            throw new BusinessException(new Message("admin not found !"));
         }
         return optionPlayer.get();
     }
