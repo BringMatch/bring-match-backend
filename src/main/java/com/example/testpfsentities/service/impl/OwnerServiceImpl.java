@@ -1,6 +1,7 @@
 package com.example.testpfsentities.service.impl;
 
 import com.example.testpfsentities.dto.OwnerDto;
+import com.example.testpfsentities.email.EmailSenderForOwner;
 import com.example.testpfsentities.entities.*;
 import com.example.testpfsentities.mapper.GroundMapper;
 import com.example.testpfsentities.mapper.OwnerMapper;
@@ -29,26 +30,33 @@ public class OwnerServiceImpl implements OwnerService {
     private final AdminService adminService;
     private final UserService userService;
     private final ApplicationEventPublisher applicationEventPublisher;
-    private final UploadImageService uploadImageService;
     private final GroundMapper groundMapper;
+    private final EmailSenderForOwner emailSenderForOwner;
 
     @Override
     public void save(OwnerDto ownerDto) throws IOException {
         ownerValidator.validateCreation(ownerDto);
         Owner owner = ownerMapper.toBo(ownerDto);
 
-//        String url_image = uploadImageService.getUrlImage(owner.getGrounds().get(0).get);
         String url_image = "kjh";
-//        Ground ground = groundMapper.toBo(ownerDto.getGrounds().get(0));
-//        ground.setImage(url_image);
-//        groundRepository.save(ground);
+        //Ground ground = groundMapper.toBo(ownerDto.getGrounds().get(0));
         owner.setPending(true);
-        ownerRepository.save(owner);
+        var ownerSaved = ownerRepository.save(owner);
+
+        ownerSaved.getGrounds().get(0).setOwner(ownerSaved);
+        groundRepository.save(ownerSaved.getGrounds().get(0));
 //        owner.setGrounds(List.of(ground));
         Admin admin = adminService.save(owner);
         // we will create him in keycloak !
         userService.create(ownerDto);
         notificationAdminService.save(admin, owner);
+        String subject = "Votre Inscription Chez Bring Match";
+        String Body = "Bienvenue chez Bring Match " + System.lineSeparator() +
+                "Merci pour votre inscription à notre application " + System.lineSeparator() +
+                "votre inscription sera traitée le plutot possible" + System.lineSeparator() +
+                "Merci de ne pas répondre a cette email";
+
+        emailSenderForOwner.sendEmail(owner.getEmail(), subject, Body);
         applicationEventPublisher.publishEvent(new NewUserEvent(this, owner));
     }
 

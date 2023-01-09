@@ -18,10 +18,10 @@ import java.util.List;
 public class Ground extends AbstractEntity {
 
     private String image;
-    @OneToMany(mappedBy = "ground")
+    @OneToMany(mappedBy = "ground", orphanRemoval = true)
     private List<Match> matches;
 
-//    @OneToMany(cascade = CascadeType.ALL)
+    //    @OneToMany(cascade = CascadeType.ALL)
 //    private List<Reservation> reservations;
     @ManyToOne
     private Owner owner;

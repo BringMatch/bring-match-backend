@@ -19,7 +19,7 @@ import java.util.List;
 @JsonIgnoreProperties(value = {"grounds"},allowSetters = true)
 public class Owner extends User {
 
-    @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL, targetEntity = Ground.class)
+    @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL, targetEntity = Ground.class,orphanRemoval = true)
     private List<Ground> grounds;
 
     @OneToMany(mappedBy = "owner")

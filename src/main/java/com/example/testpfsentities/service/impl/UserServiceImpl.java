@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
 //        clientRoles.put("bring-match-front", List.of("OWNER"));
 //        user.setClientRoles(clientRoles);
         if (userBo instanceof Owner) {
-            user.setEnabled(true);
+            user.setEnabled(false);
         } else {
             user.setEnabled(true);
         }
