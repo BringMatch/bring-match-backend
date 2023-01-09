@@ -3,6 +3,8 @@ package com.example.testpfsentities.service.impl;
 import com.example.testpfsentities.dto.PlayerDto;
 import com.example.testpfsentities.dto.PlayerSearchDto;
 import com.example.testpfsentities.entities.*;
+import com.example.testpfsentities.exceptions.BusinessException;
+import com.example.testpfsentities.exceptions.Message;
 import com.example.testpfsentities.mapper.PlayerMapper;
 import com.example.testpfsentities.repository.*;
 import com.example.testpfsentities.service.PlayerStatsService;
@@ -54,7 +56,7 @@ public class PlayerServiceImpl implements PlayerService {
     public void checksPlayerExist(Player player) {
         Optional<Player> optionalPlayer = playerRepository.findById(player.getId());
         if (optionalPlayer.isEmpty()) {
-            throw new IllegalArgumentException("player not found !");
+            throw new BusinessException(new Message("player not found !"));
         }
     }
 
@@ -72,7 +74,7 @@ public class PlayerServiceImpl implements PlayerService {
     public Player findPlayerById(String id) {
         Optional<Player> optionalPlayer = playerRepository.findById(id);
         if (optionalPlayer.isEmpty()) {
-            throw new IllegalArgumentException("player not found !");
+            throw new BusinessException(new Message("player not found !"));
         }
         return optionalPlayer.get();
     }

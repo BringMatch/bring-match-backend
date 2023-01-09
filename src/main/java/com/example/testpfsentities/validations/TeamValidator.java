@@ -51,14 +51,14 @@ public class TeamValidator {
         // second we must check if the player's position already exist in our string utils or not !
         String position_given = matchDto.getTeams().get(0).getPlayersTeams().get(0).getPosition().name();
         if (!StringUtils.getListAvailablePositionsInATeam().contains(position_given)) {
-            throw new IllegalArgumentException("position not existing in our system ! please try another one !");
+            throw new BusinessException(new Message("position not existing in our system ! please try another one !"));
         }
     }
 
     public void validateInsertionPlayerInTeam(Match match, MatchDto matchDto) {
         var teamDto = matchDto.getTeams().get(0);
         if (!teamService.checksTeamByNameInMatch(teamDto.getName(), matchDto)) {
-            throw new IllegalArgumentException("name of team not existing !");
+            throw new BusinessException(new Message("name of team not existing !"));
         }
         if (!teamService.checksTeamById(teamDto.getId())) {
             throw new IllegalArgumentException("id team not found !");

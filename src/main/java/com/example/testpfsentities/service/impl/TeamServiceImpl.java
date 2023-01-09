@@ -8,6 +8,8 @@ import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.entities.TeamPlayer;
 import com.example.testpfsentities.entities.enums.MatchResult;
+import com.example.testpfsentities.exceptions.BusinessException;
+import com.example.testpfsentities.exceptions.Message;
 import com.example.testpfsentities.mapper.TeamMapper;
 import com.example.testpfsentities.repository.MatchRepository;
 import com.example.testpfsentities.repository.TeamRepository;
@@ -50,7 +52,7 @@ public class TeamServiceImpl implements TeamService {
     public Team getTeamByName(String name) {
         Optional<Team> teamOptional = teamRepository.findByName(name);
         if (teamOptional.isEmpty()) {
-            throw new IllegalArgumentException("team not found !");
+            throw new BusinessException(new Message("team not found !"));
         }
         return teamOptional.get();
     }
@@ -59,7 +61,7 @@ public class TeamServiceImpl implements TeamService {
     public Team getTeamById(String team_id) {
         Optional<Team> teamOptional = teamRepository.findById(team_id);
         if (teamOptional.isEmpty()) {
-            throw new IllegalArgumentException("team not found !");
+            throw new BusinessException(new Message("team not found !"));
         }
         return teamOptional.get();
     }
@@ -109,7 +111,7 @@ public class TeamServiceImpl implements TeamService {
     public boolean checksTeamByNameInMatch(String name, MatchDto matchDto) {
         Optional<Match> optionalMatch = matchRepository.findById(matchDto.getId());
         if (optionalMatch.isEmpty()) {
-            throw new IllegalArgumentException("no match found !");
+            throw new BusinessException(new Message("match not found !"));
         }
         var listTeamsInMatch = optionalMatch.get().getTeams();
         for (Team team : listTeamsInMatch) {

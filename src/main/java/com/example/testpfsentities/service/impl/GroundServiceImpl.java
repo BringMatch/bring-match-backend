@@ -3,6 +3,8 @@ package com.example.testpfsentities.service.impl;
 import com.example.testpfsentities.dto.GroundDto;
 import com.example.testpfsentities.dto.GroundSearchDto;
 import com.example.testpfsentities.entities.Ground;
+import com.example.testpfsentities.exceptions.BusinessException;
+import com.example.testpfsentities.exceptions.Message;
 import com.example.testpfsentities.mapper.GroundMapper;
 import com.example.testpfsentities.repository.GroundRepository;
 import com.example.testpfsentities.service.GroundService;
@@ -37,7 +39,7 @@ public class GroundServiceImpl implements GroundService {
     public Ground findByName(String ground_name) {
         Optional<Ground> groundOptional = groundRepository.findByName(ground_name);
         if (groundOptional.isEmpty()) {
-            throw new IllegalArgumentException("ground not existing !");
+            throw new BusinessException(new Message("ground not found !"));
         }
 
         return groundOptional.get();
@@ -46,7 +48,7 @@ public class GroundServiceImpl implements GroundService {
     public Ground findById(String ground_id) {
         Optional<Ground> groundOptional = groundRepository.findById(ground_id);
         if (groundOptional.isEmpty()) {
-            throw new IllegalArgumentException("ground not found !");
+            throw new BusinessException(new Message("ground not found !"));
         }
         return groundOptional.get();
     }
@@ -68,7 +70,7 @@ public class GroundServiceImpl implements GroundService {
             ground.setOwner(owner);
             return groundRepository.save(ground);
         } else{
-            throw new IllegalArgumentException("owner not existing !");
+            throw new BusinessException(new Message("ground not found !"));
         }
     }
 
@@ -93,7 +95,7 @@ public class GroundServiceImpl implements GroundService {
         var owner = userService.getOwnerBoConnected();
         var grounds = groundRepository.findByOwner_Id(owner.getId());
         if (grounds.size() == 0) {
-            throw new IllegalArgumentException("owner not existing");
+            throw new BusinessException(new Message("owner not found !"));
         }
         return grounds.stream().map((groundMapper::toDto))
                 .collect(Collectors.toList());
@@ -123,7 +125,7 @@ public class GroundServiceImpl implements GroundService {
         log.info(String.valueOf(groundRepository.findByOwner_Id(owner_id).size()));
         boolean ownerExists = ownerService.checkOwnerExists(owner_id);
         if (!ownerExists) {
-            throw new IllegalArgumentException("owner not existing ");
+            throw new BusinessException(new Message("owner not found !"));
         }
         return groundRepository.findByOwner_Id(owner_id).size();
     }
@@ -134,7 +136,7 @@ public class GroundServiceImpl implements GroundService {
         String owner_id = owner.getId();
         boolean ownerExists = ownerService.checkOwnerExists(owner_id);
         if (!ownerExists) {
-            throw new IllegalArgumentException("owner not existing ");
+            throw new BusinessException(new Message("owner not found !"));
         }
         return (int) groundRepository.findByOwner_Id(owner_id).stream().filter(Ground::isOpen).count();
     }
@@ -145,7 +147,7 @@ public class GroundServiceImpl implements GroundService {
         String owner_id = owner.getId();
         boolean ownerExists = ownerService.checkOwnerExists(owner_id);
         if (!ownerExists) {
-            throw new IllegalArgumentException("owner not existing ");
+            throw new BusinessException(new Message("owner not found !"));
         }
 
         return (int) groundRepository.findByOwner_Id(owner_id).stream().filter(ground ->

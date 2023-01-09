@@ -5,6 +5,8 @@ import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.NotificationPlayer;
 
 import com.example.testpfsentities.entities.Player;
+import com.example.testpfsentities.exceptions.BusinessException;
+import com.example.testpfsentities.exceptions.Message;
 import com.example.testpfsentities.mapper.NotificationPlayerMapper;
 import com.example.testpfsentities.repository.NotificationPlayerRepository;
 import com.example.testpfsentities.service.NotificationPlayerService;
@@ -65,7 +67,7 @@ public class NotificationPlayerServiceImpl implements NotificationPlayerService 
     private NotificationPlayer findById(String notification_player_id) {
         Optional<NotificationPlayer> optionalNotificationPlayer = notificationPlayerRepository.findById(notification_player_id);
         if (optionalNotificationPlayer.isEmpty()) {
-            throw new IllegalArgumentException("notification player not found !");
+            throw new BusinessException(new Message("notification not found !"));
         }
         return optionalNotificationPlayer.get();
     }

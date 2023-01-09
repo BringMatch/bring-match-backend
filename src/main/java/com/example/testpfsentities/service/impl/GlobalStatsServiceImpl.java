@@ -5,6 +5,8 @@ import com.example.testpfsentities.entities.GlobalStats;
 import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.Team;
 import com.example.testpfsentities.entities.enums.MatchResult;
+import com.example.testpfsentities.exceptions.BusinessException;
+import com.example.testpfsentities.exceptions.Message;
 import com.example.testpfsentities.mapper.GlobalStatsMapper;
 import com.example.testpfsentities.repository.GlobalStatsRepository;
 import com.example.testpfsentities.repository.MatchRepository;
@@ -35,7 +37,7 @@ public class GlobalStatsServiceImpl implements GlobalStatsService {
     public GlobalStats getGlobalStatsById(long GlobalStatsId) {
         Optional<GlobalStats> optionalGlobalStats = globalStatsRepository.findById(GlobalStatsId);
         if (optionalGlobalStats.isEmpty()) {
-            throw new IllegalArgumentException("global Stat not existing !");
+            throw new BusinessException(new Message("global stat not found !"));
         }
 
         return optionalGlobalStats.get();

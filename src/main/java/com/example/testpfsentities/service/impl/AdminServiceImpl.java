@@ -6,6 +6,8 @@ import com.example.testpfsentities.entities.Admin;
 import com.example.testpfsentities.entities.NotificationAdmin;
 import com.example.testpfsentities.entities.Owner;
 import com.example.testpfsentities.entities.enums.Role;
+import com.example.testpfsentities.exceptions.BusinessException;
+import com.example.testpfsentities.exceptions.Message;
 import com.example.testpfsentities.mapper.OwnerMapper;
 import com.example.testpfsentities.repository.AdminRepository;
 import com.example.testpfsentities.repository.NotificationAdminRepository;
@@ -58,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
     public void updateStatusNotification(String notif_id) {
         Optional<NotificationAdmin> notificationAdmin = notificationAdminRepository.findById(notif_id);
         if (notificationAdmin.isEmpty()) {
-            throw new IllegalArgumentException("Notification not existing !");
+            throw new BusinessException(new Message("notification not found !"));
         }
         notificationAdmin.get().setRead(true);
         notificationAdminRepository.save(notificationAdmin.get());
