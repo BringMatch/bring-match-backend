@@ -1,6 +1,5 @@
 package com.example.testpfsentities.service.impl;
 
-import com.amazonaws.services.apigateway.model.Op;
 import com.example.testpfsentities.config.AdminManagementBuilder;
 import com.example.testpfsentities.dto.OwnerDto;
 import com.example.testpfsentities.dto.PlayerDto;
@@ -11,6 +10,7 @@ import com.example.testpfsentities.entities.Owner;
 import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.User;
 import com.example.testpfsentities.exceptions.BusinessException;
+import com.example.testpfsentities.exceptions.Message;
 import com.example.testpfsentities.mail.OwnerSenderEmail;
 import com.example.testpfsentities.mapper.OwnerMapper;
 import com.example.testpfsentities.mapper.PlayerMapper;
@@ -22,14 +22,10 @@ import com.example.testpfsentities.service.PlayerStatsService;
 import com.example.testpfsentities.service.UserService;
 import com.example.testpfsentities.utils.PasswordUtils;
 import com.example.testpfsentities.utils.SecurityUtils;
-import com.example.testpfsentities.utils.consts.ErrorCodes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.CreatedResponseUtil;
-import org.keycloak.admin.client.resource.ClientResource;
-import org.keycloak.admin.client.resource.ClientsResource;
 import org.keycloak.admin.client.resource.UserResource;
-import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -80,7 +76,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void disableUser(String id) {
         Optional<User> userBo = userRepository.findById(id);
-        if (userBo.isEmpty()) throw new BusinessException(ErrorCodes.USER_NOT_FOUND);
+        if (userBo.isEmpty()) throw new BusinessException(new Message("user not found !"));
         userBo.get().setActive(false);
         userRepository.save(userBo.get());
         desactivateUserInProvider(userBo.get());
@@ -89,7 +85,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void enableUser(String id) {
         Optional<User> userBo = userRepository.findById(id);
-        if (userBo.isEmpty()) throw new BusinessException(ErrorCodes.USER_NOT_FOUND);
+        if (userBo.isEmpty()) throw new BusinessException(new Message("user not found !"));
         userBo.get().setActive(true);
         userRepository.save(userBo.get());
         activateUserInProvider(userBo.get());

@@ -5,6 +5,8 @@ import com.example.testpfsentities.dto.TeamPlayerDto;
 import com.example.testpfsentities.entities.Match;
 import com.example.testpfsentities.entities.Player;
 import com.example.testpfsentities.entities.Team;
+import com.example.testpfsentities.exceptions.BusinessException;
+import com.example.testpfsentities.exceptions.Message;
 import com.example.testpfsentities.repository.MatchRepository;
 import com.example.testpfsentities.service.*;
 import com.example.testpfsentities.utils.StringUtils;
@@ -27,13 +29,13 @@ public class TeamValidator {
     public void validateInsertionTeam(MatchDto matchDto, Match match) {
 
         if (match.getTeams().size() == 2) {
-            throw new IllegalArgumentException("you cannot join match ! it has already two teams !");
+            throw new BusinessException(new Message("you cannot join match ! it has already two teams !"));
         }
 
         // 0 : we must check if the match is private the user must provide the right code
         if (match.getPrivateMatch()) {
             if (!matchDto.getMatchCode().equals(match.getMatchCode())) {
-                throw new IllegalArgumentException("please check the code before you join the match !");
+                throw new BusinessException(new Message("please check the code before you join the match !"));
             }
         }
 
@@ -42,7 +44,7 @@ public class TeamValidator {
         String team_name_in_match_dto = matchDto.getTeams().get(0).getName();
         for (Team team : teamList) {
             if (team.getName().equals(team_name_in_match_dto)) {
-                throw new IllegalArgumentException("Team Already Exist in the match ! Please try another name for your team !");
+                throw new BusinessException(new Message("Team Already Exist in the match ! Please try another name for your team !"));
             }
         }
 

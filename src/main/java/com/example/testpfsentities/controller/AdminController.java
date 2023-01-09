@@ -53,7 +53,7 @@ public class AdminController {
 
     @GetMapping(ApiPaths.GET_NUMBER_ALL_OWNERS)
     public ResponseEntity<Integer> getAcceptedOwners() {
-        return ResponseEntity.ok().body(adminService.getAcceptedOwners().size());
+        return ResponseEntity.ok().body(adminService.getAllOwners().size());
     }
 
     @GetMapping(ApiPaths.GET_NUMBER_REFUSED_OWNERS)
@@ -63,7 +63,7 @@ public class AdminController {
 
     @GetMapping(ApiPaths.GET_NUMBER_ACCEPTED_OWNERS)
     public ResponseEntity<Integer> getNumberOwners() {
-        return ResponseEntity.ok().body(adminService.getAllOwners().size());
+        return ResponseEntity.ok().body(adminService.getAcceptedOwners().size());
     }
 
     @GetMapping(ApiPaths.GET_NUMBER_PLAYERS_SAVED)

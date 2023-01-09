@@ -1,10 +1,10 @@
 package com.example.testpfsentities.validations;
 
 import com.example.testpfsentities.dto.GroundDto;
-import com.example.testpfsentities.dto.OwnerDto;
 import com.example.testpfsentities.entities.Ground;
+import com.example.testpfsentities.exceptions.BusinessException;
+import com.example.testpfsentities.exceptions.Message;
 import com.example.testpfsentities.repository.GroundRepository;
-import com.example.testpfsentities.service.GroundService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class GroundValidator {
         var list = groundRepository.findAll();
         for (Ground ground : list) {
             if (ground.getName().equals(groundDto.getName())) {
-                throw new IllegalArgumentException("ground name already existing !");
+                throw new BusinessException(new Message("Ground not found!"));
             }
         }
     }

@@ -27,4 +27,5 @@ public class OwnerDto extends UserDto {
     @Size(min = 8, message = "min is 8")
     private String num_certif_prop;
     private List<GroundDto> grounds;
+    private boolean pending;
 }
